@@ -1,7 +1,8 @@
 import React from "react";
 import ShoesImg from "../../../images/shoes.png";
 import ShoesImg1 from "../../../images/shoes_1.png";
-import ProductCart from "../ProductCart/ProductCart.jsx";
+import { Link } from "react-router-dom";
+import ProductCard from "../ProductCard/ProductCard.jsx";
 const Shoes = () => {
   return (
     <div className="relative mt-[100px]">
@@ -12,14 +13,14 @@ const Shoes = () => {
           </h2>
           <div className="border border-solid border-[#f66315] w-fit mr-6 min-w-[120px] rounded-[4rem] relative">
             <div className="text-[#fff] cursor-pointer relative bg-[#f66315] hover:bg-[#fff] hover:text-[#031230] duration-300 mx-auto rounded-[4rem] items-center justify-center flex">
-              <a
+              <Link
                 href="/vot-cau-long"
                 className="py-[10px] px-[10px] flex items-center justify-center gap-[6px]"
               >
                 <span className="text-[16px] font-[500] leading-[1.2]">
                   Xem tất cả
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -28,13 +29,13 @@ const Shoes = () => {
           <div className="flex mx-[-7px] max-sm:flex-wrap max-sm:flex-col-reverse">
             {/* left */}
             <div className="w-[69.333333333%] px-[7px] max-sm:w-full">
-              <div className="flex flex-wrap mx-[-7px] gap-y-[24px]">
-                <ProductCart />
-                <ProductCart />
-                <ProductCart />
-                <ProductCart />
-                <ProductCart />
-                <ProductCart />
+              <div className="grid grid-cols-3 mx-[-7px] gap-5">
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
               </div>
             </div>
             {/* right */}
