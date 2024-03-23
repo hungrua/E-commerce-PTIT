@@ -9,7 +9,7 @@ import {
   FaMinus,
   FaPlus,
 } from "react-icons/fa";
-import { IoIosSearch } from "react-icons/io";
+import { FaSearch } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 
 const Header = () => {
@@ -46,26 +46,31 @@ const Header = () => {
             <div class="flex items-center lg:order-2">
               <div className="flex gap-[0.8rem] items-center">
                 <div className="flex gap-[0.8rem] items-center">
-                  <div className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all">
-                    <IoIosSearch className="text-[20px] hover:text-[#f66315]" />
+                  <div className="flex items-center w-80 justify-end">
+                      <input type="text" placeholder="Search..."
+                            className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500"/>
+                      <button className="bg-[#00B4CC] text-white w-10 h-10 flex items-center justify-center rounded-r-md">
+                        <FaSearch/>
+                      </button>
+
                   </div>
                 </div>
                 <div className="flex gap-[0.8rem] items-center">
                   <div>
-                    <a
-                      href="/san-pham-yeu-thich"
+                    <Link
+                      to="/san-pham-yeu-thich"
                       className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
                     >
                       <FaRegHeart className="text-[16px] hover:text-[#f66315]" />
-                    </a>
+                    </Link>
                   </div>
                   <div>
-                    <a
-                      href="/trang-ca-nhan"
+                    <Link
+                      to="/trang-ca-nhan"
                       className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
                     >
                       <FaUser className="text-[16px] hover:text-[#f66315]" />
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div className="border border-solid border-[#f66315] rounded-[4rem] relative">
@@ -109,12 +114,12 @@ const Header = () => {
                                 />
                               </div>
                               <div className="flex flex-col">
-                                <a
-                                  href="/san-pham/id"
+                                <Link
+                                  to="/san-pham/id"
                                   className="no-underline text-[16px]"
                                 >
                                   Quần Cầu Lông Yonex Nam Trắng
-                                </a>
+                                </Link>
                                 <div className="flex mt-auto">
                                   <div className="flex gap-[20px] p-[6px] rounded-[30px] border border-solid border-[#eee]">
                                     <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]">
@@ -141,8 +146,8 @@ const Header = () => {
                           </div>
 
                           <div className="mt-auto pr-[20px] flex gap-6">
-                            <a
-                              href="/gio-hang"
+                            <Link
+                              to="/gio-hang"
                               className="bg-[#fff] hover:bg-[#f66315] text-[#031230]  hover:text-[white] border border-solid border-[#f66315] w-full cursor-pointer relative overflow-hidden transition-all my-0 mx-auto rounded-[40px] flex items-center justify-center"
                             >
                               <span className="flex items-center justify-center py-[10px] px-[20px]">
@@ -150,10 +155,10 @@ const Header = () => {
                                   Xem giỏ hàng
                                 </span>
                               </span>
-                            </a>
+                            </Link>
 
-                            <a
-                              href="/thanh-toan"
+                            <Link
+                              to="/thanh-toan"
                               className="hover:bg-[#fff] bg-[#f66315] hover:text-[#031230] text-white border border-solid border-[#f66315] w-full cursor-pointer relative overflow-hidden transition-all my-0 mx-auto rounded-[40px] flex items-center justify-center"
                             >
                               <span className="flex items-center justify-center py-[10px] px-[20px] gap-[6px]">
@@ -162,7 +167,7 @@ const Header = () => {
                                   Đặt mua
                                 </span>
                               </span>
-                            </a>
+                            </Link>
                           </div>
 
                           <div className="absolute w-[40%] bottom-0 right-0 -z-1 translate-y-[15%]">
@@ -218,54 +223,54 @@ const Header = () => {
               >
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li>
-                    <a
-                      href="/"
+                    <Link
+                      to="/"
                       class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] rounded lg:bg-transparent hover:text-[#fff] lg:p-0"
                       aria-current="page"
                     >
                       Trang chủ
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/san-pham"
+                    <Link
+                      to="/san-pham"
                       class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Sản phẩm
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/cua-hang"
+                    <Link
+                      to="/cua-hang"
                       class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Cửa hàng
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/tra-don-hang"
+                    <Link
+                      to="/tra-don-hang"
                       class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Tra đơn hàng
-                    </a>
+                    </Link>
                   </li>
-                  <li>
-                    <a
-                      href="/tin-tuc"
+                  {/* <li>
+                    <Link
+                      to="/tin-tuc"
                       class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Tin tức
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/lien-he"
+                    <Link
+                      to="/lien-he"
                       class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Liên hệ
-                    </a>
-                  </li>
+                    </Link>
+                  </li> */}
                 </ul>
               </div>
             ) : (
@@ -275,13 +280,13 @@ const Header = () => {
               >
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li>
-                    <a
-                      href="/"
+                    <Link
+                      to="/"
                       class="block uppercase py-2 pl-3 pr-4 text-black bg-[#f66315] rounded lg:bg-transparent lg:hover:text-[#f66315] lg:p-0 "
                       aria-current="page"
                     >
                       Trang chủ
-                    </a>
+                    </Link>
                   </li>
                   <li className="relative cursor-pointer">
                     <span
@@ -302,44 +307,44 @@ const Header = () => {
                                 </span>
                               </li>
                               <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <a
-                                  href="/"
+                                <Link
+                                  to="/"
                                   className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
                                 >
                                   Vợt cầu lông
-                                </a>
+                                </Link>
                               </li>
                               <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <a
-                                  href="/"
+                                <Link
+                                  to="/"
                                   className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
                                 >
                                   Giày cầu lông
-                                </a>
+                                </Link>
                               </li>
                               <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <a
-                                  href="/"
+                                <Link
+                                  to="/"
                                   className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
                                 >
                                   Túi vợt cầu lông
-                                </a>
+                                </Link>
                               </li>
                               <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <a
-                                  href="/"
+                                <Link
+                                  to="/"
                                   className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
                                 >
                                   Balo cầu lông
-                                </a>
+                                </Link>
                               </li>
                               <li className="lg:w-full lg:pt-[5px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <a
-                                  href="/"
+                                <Link
+                                  to="/"
                                   className="md:block text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal w-full pb-[5px] no-underline"
                                 >
                                   Phụ kiện cầu lông
-                                </a>
+                                </Link>
                               </li>
                             </ul>
                           </div>
@@ -348,37 +353,37 @@ const Header = () => {
                     ) : null}
                   </li>
                   <li>
-                    <a
-                      href="/cua-hang"
+                    <Link
+                      to="/cua-hang"
                       class="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Cửa hàng
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="/tra-don-hang"
+                    <Link
+                      to="/tra-don-hang"
                       class="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Tra đơn hàng
-                    </a>
+                    </Link>
                   </li>
-                  <li>
-                    <a
-                      href="/tin-tuc"
+                  {/* <li>
+                    <Link
+                      to="/tin-tuc"
                       class="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Tin tức
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="lien-he"
+                    <Link
+                      to="lien-he"
                       class="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Liên hệ
-                    </a>
-                  </li>
+                    </Link>
+                  </li> */}
                 </ul>
               </div>
             )}
