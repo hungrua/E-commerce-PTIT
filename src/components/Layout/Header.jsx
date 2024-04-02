@@ -147,7 +147,7 @@ const Header = () => {
 
                           <div className="mt-auto pr-[20px] flex gap-6">
                             <Link
-                              to="/gio-hang"
+                              to="/cart"
                               className="bg-[#fff] hover:bg-[#f66315] text-[#031230]  hover:text-[white] border border-solid border-[#f66315] w-full cursor-pointer relative overflow-hidden transition-all my-0 mx-auto rounded-[40px] flex items-center justify-center"
                             >
                               <span className="flex items-center justify-center py-[10px] px-[20px]">
