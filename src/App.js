@@ -7,19 +7,19 @@ import {
   ShopsPage,
   ProductDetailPage,
 } from "./routes/Routes.js";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import AdminHomePage from "./pages/admin/AdminHomePage.jsx";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/sign-up" element={<SignupPage />} />
-        <Route path="/cua-hang" element={<ShopsPage />} />
-        <Route path="/san-pham/:id" element={<ProductDetailPage />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/sign-up" element={<SignupPage />} />
+      <Route path="/cua-hang" element={<ShopsPage />} />
+      <Route path="/san-pham/:id" element={<ProductDetailPage />} />
+      <Route path="/admin/*" element={<AdminHomePage />} />
+    </Routes>
   );
 };
 
