@@ -1,0 +1,30 @@
+.cart_area {
+    grid-area: cart;
+}
+
+.viewed_area {
+    grid-area: viewed;
+}
+
+.info_area {
+    grid-area: info;
+}
+
+.custom_grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+        "cart cart cart info"
+        "viewed viewed viewed ..."
+}
+
+@media screen and (max-width : 740px) {
+    .custom_grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "cart"
+            "info"
+            "viewed"
+    }
+}

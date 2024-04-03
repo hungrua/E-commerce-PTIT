@@ -7,6 +7,7 @@ import { RiCoupon2Line } from "react-icons/ri";
 import slider1 from '../../../images/cart/slider.webp'
 import { Link } from "react-router-dom";
 import ViewedProduct from "../ViewedProducts/ViewedProducts";
+import styles from './Cart.module.css'
 
 const Cart = () => {
     return (
@@ -14,8 +15,8 @@ const Cart = () => {
             <div className="font-Roboto font-bold mb-5">
                 <h1> GIỎ HÀNG</h1>
             </div>
-            <div className="grid grid-cols-[3fr_1fr]">
-                <div className="pr-5">
+            <div className={styles.custom_grid}>
+                <div className={`${styles.cart_area} pr-5`}>
                     <div className="mb-5">
                         <div className="grid grid-cols-[auto_180px_120px_120px_20px] gap-x-6 rounded items-center py-2 px-4 sticky top-[77px] bg-white 
                         before:contents-[''] before:bg-[#efefef] before:absolute before:w-full before:h-5 before:top-[-20px]
@@ -226,9 +227,11 @@ const Cart = () => {
                             </div>
                         </div>
                     </div>
-                    <ViewedProduct/>
                 </div>
-                <div className="right-container">
+                <div className={`${styles.viewed_area} pr-5`}>
+                    <ViewedProduct  />
+                </div>
+                <div className={`${styles.info_area} right-container`}>
                     <div className="p-4 mb-3 bg-white rounded">
                         <div className="flex justify-between mb-3">
                             <div className="text-lg">Giao tới</div>
@@ -252,7 +255,7 @@ const Cart = () => {
                         </div>
                         <div className="pt-4 text-[rgb(11_116_229)]">
                             <Link to="#" className="flex items-center gap-x-1">
-                                <RiCoupon2Line/>
+                                <RiCoupon2Line />
                                 Chọn hoặc nhập khuyến mãi khác
                             </Link>
                         </div>
