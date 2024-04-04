@@ -7,7 +7,6 @@ import { RiCoupon2Line } from "react-icons/ri";
 import slider1 from '../../../images/cart/slider.webp'
 import { Link } from "react-router-dom";
 import ViewedProduct from "../ViewedProducts/ViewedProducts";
-import styles from './Cart.module.css'
 
 const Cart = () => {
     return (
@@ -15,8 +14,8 @@ const Cart = () => {
             <div className="font-Roboto font-bold mb-5">
                 <h1> GIỎ HÀNG</h1>
             </div>
-            <div className={styles.custom_grid}>
-                <div className={`${styles.cart_area} pr-5`}>
+            <div className='grid gap-5 grid-cols-1 lg:grid-cols-4'>
+                <div className="col-span-1 lg:col-span-3">
                     <div className="mb-5">
                         <div className="grid grid-cols-[auto_180px_120px_120px_20px] gap-x-6 rounded items-center py-2 px-4 sticky top-[77px] bg-white 
                         before:contents-[''] before:bg-[#efefef] before:absolute before:w-full before:h-5 before:top-[-20px]
@@ -228,10 +227,7 @@ const Cart = () => {
                         </div>
                     </div>
                 </div>
-                <div className={`${styles.viewed_area} pr-5`}>
-                    <ViewedProduct  />
-                </div>
-                <div className={`${styles.info_area} right-container`}>
+                <div className="col-span-1">
                     <div className="p-4 mb-3 bg-white rounded">
                         <div className="flex justify-between mb-3">
                             <div className="text-lg">Giao tới</div>
@@ -293,11 +289,14 @@ const Cart = () => {
 
                         <button className="w-full bg-[rgb(254_56_52)] py-[13px] px-[10px] text-white text-base mt-[10px] rounded outline-none">Mua hàng <span>(2)</span></button>
                         <div className="mt-[10px]">
-                            <div className="overflow-hidden rounded-[5px]">
+                            <div className="overflow-hidden rounded-[5px] hidden lg:block">
                                 <img className="w-full" src={slider1} alt="" />
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="col-span-1 lg:col-span-3">
+                    <ViewedProduct  />
                 </div>
             </div>
 

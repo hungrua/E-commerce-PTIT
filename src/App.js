@@ -7,9 +7,13 @@ import {
   ShopsPage,
   ProductDetailPage,
   CartPage, 
-  ProductListPage
+  ProductListPage,
+  UserAccountPage
 } from "./routes/Routes.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import UserProfile from "./components/User/Profile/UserProfile.jsx";
+import OrderNav from "./components/User/Order/OrderNav.jsx";
 
 const App = () => {
   return (
@@ -22,6 +26,8 @@ const App = () => {
         <Route path="/san-pham/:id" element={<ProductDetailPage />} />
         <Route path="/loai-san-pham" element={<ProductListPage/>}/>
         <Route path="/cart" element={<CartPage/>}/>
+        <Route path="/account" element={<UserAccountPage/>}/>
+        <Route path="/test" element={<OrderNav/>}/>
       </Routes>
     </BrowserRouter>
   );

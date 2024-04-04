@@ -66,7 +66,7 @@ const Header = () => {
                   </div>
                   <div>
                     <Link
-                      to="/trang-ca-nhan"
+                      to="/account"
                       className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
                     >
                       <FaUser className="text-[16px] hover:text-[#f66315]" />

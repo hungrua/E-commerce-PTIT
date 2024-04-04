@@ -5,4 +5,5 @@ import ShopsPage from "../pages/ShopsPage.jsx";
 import ProductDetailPage from "../pages/ProductDetailPage.jsx";
 import CartPage from "../pages/CartPage.jsx";
 import ProductListPage from "../pages/ProductListPage.jsx"
-export { HomePage, LoginPage, SignupPage, ShopsPage, ProductDetailPage, CartPage, ProductListPage };
+import UserAccountPage from "../pages/UserAccountPage.jsx";
+export { HomePage, LoginPage, SignupPage, ShopsPage, ProductDetailPage, CartPage, ProductListPage, UserAccountPage };

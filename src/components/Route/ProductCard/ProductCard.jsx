@@ -18,7 +18,7 @@ const ProductCard = () => {
                 </div>
             </div>
             <div className="p-2.5 pt-0">
-                <div className="group-hover:text-green-600">Mini PC ASRock DeskMini X300 - X300/B/BB/BOX/US</div>
+                <div className="group-hover:text-green-600 line-clamp-3">Mini PC ASRock DeskMini X300 - X300/B/BB/BOX/US</div>
                 <div className="pb-[5px]">
                     <div className="inline-block font-medium text-green-600">
                         3.450.000đ
@@ -27,7 +27,7 @@ const ProductCard = () => {
                         3.990.000đ
                     </div>
                 </div>
-                <div className="flex justify-between flex-[2]">
+                <div className="flex justify-between flex-[2] flex-wrap lg:flex-nowrap">
                     <div className="flex justify-around flex-1">
                         <FaStar style={{color: "#ffa534"}}/>
                         <FaStar style={{color: "#ffa534"}}/>
