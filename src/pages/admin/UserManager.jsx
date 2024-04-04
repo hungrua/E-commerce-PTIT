@@ -6,7 +6,7 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddUser from '../../components/Admin/UserManager/AddUser';
-
+import { useSelector } from 'react-redux';
 function UserManager() {
     const columns = [
         {
@@ -88,10 +88,25 @@ function UserManager() {
                 rank: 'Tiềm năng'
             }
         ]
+    const employees = useSelector((state) => state.users.employees)
+
+    const employeesRows = employees.map((employee) => {
+        return {
+            id: employee.id,
+            username: employee.username,
+            email: employee.email,
+            fullname: employee.name,
+            dob: employee.createDate,
+            phone: "0393541444",
+            address: employee.address,
+            rank: 'VIP'
+        }
+    })
     const [value, setValue] = useState(0)
 
     const handleChange = (event, newValue) => {
         setValue(newValue)
+        console.log(employees)
     }
     const [displayAddUser, setDisplayAddUser] = useState(false)
     return (
@@ -128,7 +143,7 @@ function UserManager() {
                         </Box>
                         <DataGrid
                             columns={columns}
-                            rows={rows}
+                            rows={employeesRows}
                             slots={{
                                 toolbar: GridToolbar,
                             }}

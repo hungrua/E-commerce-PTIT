@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 
-import { ThemeProvider, Box, CssBaseline } from '@mui/material';
+import { ThemeProvider, Box, CssBaseline, CircularProgress } from '@mui/material';
 import theme from '../../config/theme.js';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -8,8 +8,8 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import SideNav from '../../components/Admin/SideNav.jsx';
 import AppHeader from '../../components/Admin/AppHeader.jsx';
-import { Routes,Route } from 'react-router-dom';
-import {Dashboard,Promotion,UserManager,ProductManager,Voucher,Bill,Category} from '../../routes/AdminRouter.jsx';
+import { Routes, Route } from 'react-router-dom';
+import { Dashboard, Promotion, UserManager, ProductManager, Voucher, Bill, Category } from '../../routes/AdminRouter.jsx';
 function AdminHomePage() {
   const [sideNavExpanded, setSideNavExpanded] = useState(false)
   return (
@@ -20,15 +20,17 @@ function AdminHomePage() {
         <Box sx={style.container} >
           <SideNav sideNavExpanded={sideNavExpanded} />
           <Box component={'main'} sx={style.mainSection}>
-            <Routes>
-              <Route path='/' element={<Dashboard />} />
-              <Route path='/bill' element={<Bill />} />
-              <Route path='/productmanager' element={<ProductManager />} />
-              <Route path='/promotion' element={<Promotion />} />
-              <Route path='/usermanager' element={<UserManager />} />
-              <Route path='/voucher' element={<Voucher />} />
-              <Route path='/category' element={<Category />} />
-            </Routes>
+            <Suspense fallback={<CircularProgress />}>
+              <Routes>
+                <Route path='/' element={<Dashboard />} />
+                <Route path='/bill' element={<Bill />} />
+                <Route path='/productmanager' element={<ProductManager />} />
+                <Route path='/promotion' element={<Promotion />} />
+                <Route path='/usermanager' element={<UserManager />} />
+                <Route path='/voucher' element={<Voucher />} />
+                <Route path='/category' element={<Category />} />
+              </Routes>
+            </Suspense>
           </Box>
         </Box>
       </ThemeProvider>
