@@ -11,6 +11,7 @@ import { Routes, Route } from "react-router-dom";
 import AdminHomePage from "./pages/admin/AdminHomePage.jsx";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
+import Payment from "./components/Payment/Payment.jsx";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/cua-hang" element={<ShopsPage />} />
         <Route path="/san-pham/:id" element={<ProductDetailPage />} />
         <Route path="/admin/*" element={<AdminHomePage />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
     </Provider>
   );
