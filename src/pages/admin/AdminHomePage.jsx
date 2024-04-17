@@ -10,6 +10,8 @@ import SideNav from '../../components/Admin/SideNav.jsx';
 import AppHeader from '../../components/Admin/AppHeader.jsx';
 import { Routes, Route } from 'react-router-dom';
 import { Dashboard, Promotion, UserManager, ProductManager, Voucher, Bill, Category } from '../../routes/AdminRouter.jsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function AdminHomePage() {
   const [sideNavExpanded, setSideNavExpanded] = useState(false)
   return (
@@ -34,6 +36,7 @@ function AdminHomePage() {
           </Box>
         </Box>
       </ThemeProvider>
+      <ToastContainer></ToastContainer>
     </React.Fragment>
   )
 }

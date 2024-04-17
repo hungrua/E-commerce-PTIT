@@ -12,8 +12,8 @@ import AdminHomePage from "./pages/admin/AdminHomePage.jsx";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import Payment from "./components/Payment/Payment.jsx";
-
 const App = () => {
+  
   return (
     <Provider store={store}>
       <Routes>

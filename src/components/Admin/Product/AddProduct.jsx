@@ -12,7 +12,7 @@ import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import DragDropImage from '../DragDropImage';
 
 const AddProduct = ({ setDisplayAddProduct }) => {
-    const [category, setCategory] = useState("Laptop")
+    const [category, setCategory] = useState("laptop")
     const [brand, setBrand] = useState("Samsung")
     const [soldStatus, setSoldStatus] = useState("Có sẵn")
     const handleCloseAddProduct = () => {
@@ -40,6 +40,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                     </Box>
                     <form>
                         <Grid sx={style.form} container rowSpacing={2} columnSpacing={2}>
+                            {/* Ảnh sản phẩm  */}
                             <Grid item xs={12} sm={12} md={12} sx={style.inputContainer}>
                                 <FormControl fullWidth={true} >
                                     <FormLabel sx={style.formLabel}>
@@ -50,6 +51,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
+                            {/* Tên sản phẩm  */}
                             <Grid item xs={12} sm={12} md={12} sx={style.inputContainer}>
                                 <FormControl fullWidth={true} >
                                     <FormLabel sx={style.formLabel}>
@@ -60,6 +62,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
+                            {/* Gía bán sản phẩm  */}
                             <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
                                 <FormControl fullWidth={true} >
                                     <FormLabel sx={style.formLabel} >
@@ -70,6 +73,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
+                            {/* Danh mục sản phẩm  */}
                             <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
                                 <FormControl fullWidth={true}>
                                     <FormLabel sx={style.formLabel} >
@@ -81,13 +85,14 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                         value={category}
                                         onChange={handleChangeCategory}
                                     >
-                                        <MenuItem value='Laptop' >Laptop</MenuItem>
-                                        <MenuItem value='Điện thoại' >Điện thoại</MenuItem>
-                                        <MenuItem value='Phụ kiện'>Phụ kiện</MenuItem>
+                                        <MenuItem value='laptop' >Laptop</MenuItem>
+                                        <MenuItem value='dien-thoai' >Điện thoại</MenuItem>
+                                        <MenuItem value='phu-kien'>Phụ kiện</MenuItem>
                                     </Select>
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
+                            {/* Hãng sản xuất */}
                             <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
                                 <FormControl fullWidth={true}>
                                     <FormLabel sx={style.formLabel} >
@@ -106,6 +111,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
+                            {/* Tình trạng  */}
                             <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
                                 <FormControl fullWidth={true}>
                                     <FormLabel sx={style.formLabel} >
@@ -123,13 +129,129 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
+
+                            {/* Thuộc tính của laptop */}
+                            {category === "laptop" &&
+                                <React.Fragment>
+                                    {/* CPU  */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
+                                        <FormControl fullWidth={true} >
+                                            <FormLabel sx={style.formLabel} >
+                                                <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>CPU</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined' />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    {/* Card */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
+                                        <FormControl fullWidth={true} >
+                                            <FormLabel sx={style.formLabel} >
+                                                <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Card</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined' />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    {/* Tần số quét */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
+                                        <FormControl fullWidth={true}>
+                                            <FormLabel sx={style.formLabel} >
+                                                <AnalyticsOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Tần số quét</Box>
+                                            </FormLabel>
+                                            <Select
+                                                sx={style.select}
+                                                value={soldStatus}
+                                                onChange={handleChangeSoldStatus}
+                                            >
+                                                <MenuItem value='60' >60 Hz</MenuItem>
+                                                <MenuItem value='120' >120 Hz</MenuItem>
+                                                <MenuItem value='144' >144 Hz</MenuItem>
+                                            </Select>
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    {/* Hệ điều hành */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
+                                        <FormControl fullWidth={true}>
+                                            <FormLabel sx={style.formLabel} >
+                                                <AnalyticsOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Hệ điều hành</Box>
+                                            </FormLabel>
+                                            <Select
+                                                sx={style.select}
+                                                value={soldStatus}
+                                                onChange={handleChangeSoldStatus}
+                                            >
+                                                <MenuItem value='window' >Window</MenuItem>
+                                                <MenuItem value='ios' >IOS</MenuItem>
+                                            </Select>
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    {/* Số cổng USB  */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
+                                        <FormControl fullWidth={true} >
+                                            <FormLabel sx={style.formLabel} >
+                                                <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Số cổng USB</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined' />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    {/* Loại ổ cứng  */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
+                                        <FormControl fullWidth={true}>
+                                            <FormLabel sx={style.formLabel} >
+                                                <AnalyticsOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Loại ổ cứng</Box>
+                                            </FormLabel>
+                                            <Select
+                                                sx={style.select}
+                                                value={soldStatus}
+                                                onChange={handleChangeSoldStatus}
+                                            >
+                                                <MenuItem value='HDD' >HDD</MenuItem>
+                                                <MenuItem value='SSD' >SSD</MenuItem>
+                                            </Select>
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    {/* Khối lượng  */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
+                                        <FormControl fullWidth={true} >
+                                            <FormLabel sx={style.formLabel} >
+                                                <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Khối lượng</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined' />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                     {/* Dung lượng pin */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
+                                        <FormControl fullWidth={true} >
+                                            <FormLabel sx={style.formLabel} >
+                                                <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Dung lượng pin</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined' />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                </React.Fragment>
+                            }
                             <Grid item xs={12} sm={12} md={12} sx={style.inputContainer}>
                                 <FormControl fullWidth={true} >
                                     <FormLabel sx={style.formLabel} >
                                         <NotesOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                         <Box>Mô tả sản phẩm</Box>
                                     </FormLabel>
-                                    <TextareaAutosize minRows={10} maxRows={20} />
+                                    <TextareaAutosize style={{ border: "1px solid gray"}} minRows={10} maxRows={20} />
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
@@ -156,14 +278,14 @@ const style = {
     },
     addUserModal: {
         backgroundColor: "white",
-        width: "75%",
+        width: "80%",
         position: 'absolute',
         top: "50%",
         left: "50%",
         transform: "translate(-50%,-50%)",
         boxShadow: 5,
         padding: '10px',
-        maxHeight: "70%",
+        maxHeight: "80%",
         overflowY: "auto"
     },
     form: {

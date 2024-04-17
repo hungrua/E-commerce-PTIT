@@ -1,30 +1,30 @@
-import { Box, Tooltip } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Box, Tooltip } from "@mui/material";
+import React, { useEffect, useState } from "react";
 const RankProduct = ({ number, product }) => {
-  const [styleRank, setStyleRank] = useState("#FFAF45")
+  const [styleRank, setStyleRank] = useState("#FFAF45");
   const setStyleForProductRank = () => {
     switch (number) {
       case 1:
-        setStyleRank("#FFAF45")
-        break
+        setStyleRank("#FFAF45");
+        break;
       case 2:
-        setStyleRank("#FB6D48")
-        break
+        setStyleRank("#FB6D48");
+        break;
       case 3:
-        setStyleRank("#D74B76")
-        break
+        setStyleRank("#D74B76");
+        break;
       default:
-        setStyleRank("#673F69")
+        setStyleRank("#673F69");
     }
-  }
+  };
   useEffect(() => {
-    setStyleForProductRank()
-  }, [])
+    setStyleForProductRank();
+  }, []);
   return (
-    <Box sx={style.productContainer} style={{ backgroundColor: styleRank }} >
+    <Box sx={style.productContainer} style={{ backgroundColor: styleRank }}>
       <Box sx={style.productContainer.rankContainer}>
         <Box sx={style.productContainer.rankContainer.rank}>
-          <span>{number}</span>
+          {number}
         </Box>
       </Box>
       <Box sx={style.productContainer.infoContainer}>
@@ -33,11 +33,13 @@ const RankProduct = ({ number, product }) => {
             {product.name}
           </Box>
         </Tooltip>
-        <Box sx={style.productContainer.infoContainer.monthSale} >Doanh số tháng: {product.sale} sản phẩm</Box>
+        <Box sx={style.productContainer.infoContainer.monthSale}>
+          Doanh số tháng: {product.sale} sản phẩm
+        </Box>
       </Box>
     </Box>
-  )
-}
+  );
+};
 /**  @type {import("@mui/material").SxProps} */
 const style = {
   productContainer: {
@@ -68,8 +70,8 @@ const style = {
         justifyContent: "center",
         fontSize: "2em",
         fontWeight: "800",
-        fontFamily: "monospace"
-      }
+        fontFamily: "monospace",
+      },
     },
     infoContainer: {
       padding: " 0 20px",
@@ -79,13 +81,12 @@ const style = {
         fontSize: "1em",
         overflowX: "hidden",
         textWrap: "nowrap",
-        textOverflow: "ellipsis"
+        textOverflow: "ellipsis",
       },
       monthSale: {
-        fontSize: "0.9em"
-      }
-    }
-
-  }
-}
-export default RankProduct
+        fontSize: "0.9em",
+      },
+    },
+  },
+};
+export default RankProduct;

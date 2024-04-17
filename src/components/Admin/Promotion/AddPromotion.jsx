@@ -111,7 +111,7 @@ const AddPromotion = ({ setDisplayAddPromotion }) => {
                     </Box>
                 </Box>}
                 {
-                    addProductToPromotion && <AddProductToPromotion />
+                    addProductToPromotion && <AddProductToPromotion  setDisplayAddPromotion={setDisplayAddPromotion} />
                 }
             </Box>
         </Box>
