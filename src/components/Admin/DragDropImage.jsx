@@ -24,6 +24,7 @@ export default function DragDropImage() {
                 ])
             }
         }
+        console.log(images)
     }
     const handleDeleteImg= (index)=>{
         setImages((prevImages)=>
@@ -51,7 +52,7 @@ export default function DragDropImage() {
                         return (
                             <Box sx={style.container.image} key={index} >
                                 <Box sx={style.container.image.delete} onClick={ ()=>handleDeleteImg(index)}>x</Box>
-                                <img src={img.url} alt={img.name} height="100%" width="auto"></img>
+                                <img src={img.url} alt={img.name} style={{height:"100%"}} ></img>
                             </Box>
                         )
                     })
@@ -98,6 +99,7 @@ const style = {
             width: "auto",
             marginRight: "10px",
             height: "75px",
+            maxHeight:"75px",
             position: "relative",
             delete: {
                 position: 'absolute',
