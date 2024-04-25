@@ -33,22 +33,25 @@ const Hero = () => {
 
   return (
     <div className="relative mb-8 mt-[58px] sm:mb-10 md:mb-12 lg:mb-16 group">
-      <Link to="/san-pham">
-        <div
-          style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
-          className="w-full h-64 sm:h-80 md:h-96 lg:h-[480px] bg-center bg-cover duration-500"
-        ></div>
-      </Link>
-      {/* Left Arrow */}
-      <div className="hidden group-hover:block absolute top-[50%] left-5 transform -translate-y-1/2 text-xl rounded-full p-2 bg-[#f66315] text-white cursor-pointer">
-        <BsChevronCompactLeft onClick={prevSlide} size={25} />
-      </div>
-      {/* Right Arrow */}
-      <div className="hidden group-hover:block absolute top-[50%] right-5 transform -translate-y-1/2 text-xl rounded-full p-2 bg-[#f66315] text-white cursor-pointer">
-        <BsChevronCompactRight onClick={nextSlide} size={25} />
-      </div>
+
     </div>
   );
 };
 
+
 export default Hero;
+
+
+
+{/* <Link to="/san-pham">
+  <div
+    style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
+    className="w-full h-64 sm:h-80 md:h-96 lg:h-[480px] bg-center bg-cover duration-500"
+  ></div>
+</Link>
+<div className="hidden group-hover:block absolute top-[50%] left-5 transform -translate-y-1/2 text-xl rounded-full p-2 bg-[#f66315] text-white cursor-pointer">
+  <BsChevronCompactLeft onClick={prevSlide} size={25} />
+</div>
+<div className="hidden group-hover:block absolute top-[50%] right-5 transform -translate-y-1/2 text-xl rounded-full p-2 bg-[#f66315] text-white cursor-pointer">
+  <BsChevronCompactRight onClick={nextSlide} size={25} />
+</div> */}

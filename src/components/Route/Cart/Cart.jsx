@@ -17,12 +17,12 @@ const Cart = () => {
             <div className='grid gap-5 grid-cols-1 lg:grid-cols-4'>
                 <div className="col-span-1 lg:col-span-3">
                     <div className="mb-5">
-                        <div className="grid grid-cols-[auto_180px_120px_120px_20px] gap-x-6 rounded items-center py-2 px-4 sticky top-[77px] bg-white 
+                        <div className="text-sm md:text-base grid grid-cols-[repeat(5,1fr)_0.5fr] lg:grid-cols-[auto_180px_120px_120px_20px] gap-x-6 rounded items-center py-2 px-4 sticky top-[77px] bg-white 
                         before:contents-[''] before:bg-[#efefef] before:absolute before:w-full before:h-5 before:top-[-20px]
                         after:contents-[''] after:bg-[#efefef] after:absolute after:w-full after:h-[10px] after:bottom-[-10px]">
-                            <div className="flex items-center gap-x-3">
+                            <div className="flex items-center gap-x-3 col-span-2 lg:col-span-1">
                                 <input type="checkbox" name="" id="all-cart" />
-                                <label for="all-cart">tất cả (x sản phẩm)</label>
+                                <label for="all-cart">Tất cả (x sản phẩm)</label>
                             </div>
                             <span>Đơn giá</span>
                             <span>Số lượng</span>
@@ -32,10 +32,10 @@ const Cart = () => {
                             </span>
                         </div>
                         <div className="bg-white rounded mt-[15px] [&>*:not(:last-child)]:border-b-[1px]">
-                            <div className="grid grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
-                                <div className="grid grid-cols-[18px_80px_1fr] items-center gap-x-3">
+                            <div className="text-sm md:text-base grid grid-cols-[repeat(5,1fr)_0.5fr] lg:grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
+                                <div className="block md:grid col-span-2 grid-cols-[18px_1fr_2fr] lg:col-span-1 lg:grid-cols-[18px_80px_1fr] items-center gap-x-3">
                                     <input type="checkbox" />
-                                    <div className="w-20 h-20 aspect-square">
+                                    <div className="aspect-square max-w-20">
                                         <img className="w-full h-full" src={require("../../../images/cart/amsieutoc.webp")} alt="" />
                                     </div>
                                     <div className="item">
@@ -64,10 +64,10 @@ const Cart = () => {
                                     <FaTrash />
                                 </button>
                             </div>
-                            <div className="grid grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
-                                <div className="grid grid-cols-[18px_80px_1fr] items-center gap-x-3">
+                            <div className="text-sm md:text-base grid grid-cols-[repeat(5,1fr)_0.5fr] lg:grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
+                                <div className="block md:grid col-span-2 grid-cols-[18px_1fr_2fr] lg:col-span-1 lg:grid-cols-[18px_80px_1fr] items-center gap-x-3">
                                     <input type="checkbox" />
-                                    <div className="w-20 h-20 aspect-square">
+                                    <div className="aspect-square max-w-20">
                                         <img className="w-full h-full" src={require("../../../images/cart/amsieutoc.webp")} alt="" />
                                     </div>
                                     <div className="item">
@@ -96,10 +96,10 @@ const Cart = () => {
                                     <FaTrash />
                                 </button>
                             </div>
-                            <div className="grid grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
-                                <div className="grid grid-cols-[18px_80px_1fr] items-center gap-x-3">
+                            <div className="text-sm md:text-base grid grid-cols-[repeat(5,1fr)_0.5fr] lg:grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
+                                <div className="block md:grid col-span-2 grid-cols-[18px_1fr_2fr] lg:col-span-1 lg:grid-cols-[18px_80px_1fr] items-center gap-x-3">
                                     <input type="checkbox" />
-                                    <div className="w-20 h-20 aspect-square">
+                                    <div className="aspect-square max-w-20">
                                         <img className="w-full h-full" src={require("../../../images/cart/amsieutoc.webp")} alt="" />
                                     </div>
                                     <div className="item">
@@ -128,10 +128,10 @@ const Cart = () => {
                                     <FaTrash />
                                 </button>
                             </div>
-                            <div className="grid grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
-                                <div className="grid grid-cols-[18px_80px_1fr] items-center gap-x-3">
+                            <div className="text-sm md:text-base grid grid-cols-[repeat(5,1fr)_0.5fr] lg:grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
+                                <div className="block md:grid col-span-2 grid-cols-[18px_1fr_2fr] lg:col-span-1 lg:grid-cols-[18px_80px_1fr] items-center gap-x-3">
                                     <input type="checkbox" />
-                                    <div className="w-20 h-20 aspect-square">
+                                    <div className="aspect-square max-w-20">
                                         <img className="w-full h-full" src={require("../../../images/cart/amsieutoc.webp")} alt="" />
                                     </div>
                                     <div className="item">
@@ -160,10 +160,10 @@ const Cart = () => {
                                     <FaTrash />
                                 </button>
                             </div>
-                            <div className="grid grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
-                                <div className="grid grid-cols-[18px_80px_1fr] items-center gap-x-3">
+                            <div className="text-sm md:text-base grid grid-cols-[repeat(5,1fr)_0.5fr] lg:grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
+                                <div className="block md:grid col-span-2 grid-cols-[18px_1fr_2fr] lg:col-span-1 lg:grid-cols-[18px_80px_1fr] items-center gap-x-3">
                                     <input type="checkbox" />
-                                    <div className="w-20 h-20 aspect-square">
+                                    <div className="aspect-square max-w-20">
                                         <img className="w-full h-full" src={require("../../../images/cart/amsieutoc.webp")} alt="" />
                                     </div>
                                     <div className="item">
@@ -192,10 +192,10 @@ const Cart = () => {
                                     <FaTrash />
                                 </button>
                             </div>
-                            <div className="grid grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
-                                <div className="grid grid-cols-[18px_80px_1fr] items-center gap-x-3">
+                            <div className="text-sm md:text-base grid grid-cols-[repeat(5,1fr)_0.5fr] lg:grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
+                                <div className="block md:grid col-span-2 grid-cols-[18px_1fr_2fr] lg:col-span-1 lg:grid-cols-[18px_80px_1fr] items-center gap-x-3">
                                     <input type="checkbox" />
-                                    <div className="w-20 h-20 aspect-square">
+                                    <div className="aspect-square max-w-20">
                                         <img className="w-full h-full" src={require("../../../images/cart/amsieutoc.webp")} alt="" />
                                     </div>
                                     <div className="item">
@@ -224,6 +224,7 @@ const Cart = () => {
                                     <FaTrash />
                                 </button>
                             </div>
+                            
                         </div>
                     </div>
                 </div>

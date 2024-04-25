@@ -16,6 +16,7 @@ const Navbar = (props) => {
                 <ul className="[&>*:not(:last-child)]:mb-2">
                     {
                         Object.entries(props.tabs).map(([key, tab]) => (
+                            tab.display && 
                             <li key={key} value={key} className={`flex gap-x-3 items-center px-4 py-[7px] rounded hover:bg-[rgb(230_230_230)] cursor-pointer ${key == props.activeTab ? `bg-[rgb(230_230_230)]` : ''}`} onClick={() => { props.setActiveTab(key); console.log(key, props.activeTab) }}>
                                 {tab.icon}
                                 <span>{tab.name}</span>

@@ -18,13 +18,7 @@ const Footer = () => {
   return (
     <div className="py-[60px] relative bg-5">
       <div className="absolute left-0 top-0 right-0 bottom-0 bg-[#e27237] -z-1"></div>
-      <div className="absolute w-[22%] right-0 top-0 translate-y-[-50%]">
-        <img
-          src="https://fbshop.vn/template/assets/images/dcor-ft.webp"
-          alt=""
-          className="block w-full max-w-full h-auto"
-        />
-      </div>
+
       <div className="w-full max-w-[1230px] h-full mx-auto px-[15px]">
         <div className="xl:px-[30px] lg:px-[12px]  px-[12px] flex max-lg:flex-wrap items-center">
           {/* left */}

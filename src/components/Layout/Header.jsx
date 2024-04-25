@@ -76,7 +76,7 @@ const Header = () => {
                 <div className="border border-solid border-[#f66315] rounded-[4rem] relative">
                   <div className="text-[#fff] cursor-pointer relative bg-[#f66315] hover:bg-[#fff] hover:text-[#031230] mx-auto rounded-[4rem] items-center justify-center flex duration-300 ease-in-out">
                     <div
-                      onClick={() => setOpenCartList(true)}
+                      onClick={() => setOpenCartList(!openCartList)}
                       className="py-[8px] px-[10px] flex items-center justify-center gap-[6px]"
                     >
                       <FaCartShopping className="text-[16px]" />
@@ -94,7 +94,7 @@ const Header = () => {
                       <div className="h-full flex flex-col">
                         <div className="py-[40px] pl-[40px] pr-[30px] flex flex-col h-full relative overflow-hidden">
                           <div
-                            onClick={() => setOpenCartList(false)}
+                            onClick={() => setOpenCartList(!openCartList)}
                             className="absolute top-[20px] right-[20px] w-[30px] h-[30px] border border-solid border-[#031230] flex items-center justify-center cursor-pointer"
                           >
                             <FaTimes className="text-[18px] font-[400] text-[#444545] hover:text-[#f66315] transition-all" />

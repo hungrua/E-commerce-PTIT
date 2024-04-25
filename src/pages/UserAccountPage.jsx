@@ -12,27 +12,36 @@ import Navbar from "../components/User/Navbar/Navbar";
 import Order from "../components/User/Order/Order";
 import Header from "../components/Layout/Header";
 import Footer from "../components/Layout/Footer";
+import Notification from "../components/User/Notification/Notification";
+import ChangePassword from "../components/User/Profile/ChangePassword";
 
 
 const UserAccountPage = () => {
+    const [activeTab, setActiveTab] = useState(0)
+
     const tabs = {
         0: {
             name: 'Thông tin tài khoản',
             icon: <FaUser />,
-            tab: <UserProfile />
+            display: true,
+            tab: <UserProfile activeTab={activeTab} setActiveTab={setActiveTab} />
         },
         1: {
             name: 'Thông báo của tôi',
-            icon: <FaBell />
+            icon: <FaBell />,
+            display: true,
+            tab: <Notification/>
         },
         2: {
             name: 'Quản lý đơn hàng',
             icon: <IoReceipt />,
+            display: true,
             tab: <Order />
         },
         3: {
             name: 'Nhận xét sản phẩm',
-            icon: <BiSolidCommentDetail />
+            icon: <BiSolidCommentDetail />,
+            display: true
         },
         4: {
             name: 'Đánh giá sản phẩm',
@@ -40,10 +49,15 @@ const UserAccountPage = () => {
         },
         5: {
             name: 'Sản phẩm đã xem',
-            icon: <FaEye />
+            icon: <FaEye />,
+            display: true
+        },
+        6 : {
+            name: 'Thay đổi mật khẩu',
+            tab: <ChangePassword />,
+            display: false
         }
     }
-    const [activeTab, setActiveTab] = useState(0)
 
 
     return (

@@ -63,8 +63,8 @@ const OrderList = (props) => {
                                 <div className=''>166.000<span>đ</span></div>
                             </div>
                             <div className='flex gap-x-3 mt-3'>
-                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)]'>Mua lại</button>
-                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)]'>Xem chi tiết</button>
+                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>Mua lại</button>
+                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>Xem chi tiết</button>
                             </div>
                         </div>
 
@@ -104,8 +104,8 @@ const OrderList = (props) => {
                                 <div className=''>166.000<span>đ</span></div>
                             </div>
                             <div className='flex gap-x-3 mt-3'>
-                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)]'>Mua lại</button>
-                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)]'>Xem chi tiết</button>
+                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>Mua lại</button>
+                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>Xem chi tiết</button>
                             </div>
                         </div>
 
@@ -145,8 +145,8 @@ const OrderList = (props) => {
                                 <div className=''>166.000<span>đ</span></div>
                             </div>
                             <div className='flex gap-x-3 mt-3'>
-                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)]'>Mua lại</button>
-                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)]'>Xem chi tiết</button>
+                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>Mua lại</button>
+                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>Xem chi tiết</button>
                             </div>
                         </div>
 
@@ -186,8 +186,8 @@ const OrderList = (props) => {
                                 <div className=''>166.000<span>đ</span></div>
                             </div>
                             <div className='flex gap-x-3 mt-3'>
-                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)]'>Mua lại</button>
-                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)]'>Xem chi tiết</button>
+                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>Mua lại</button>
+                                <button className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>Xem chi tiết</button>
                             </div>
                         </div>
 
