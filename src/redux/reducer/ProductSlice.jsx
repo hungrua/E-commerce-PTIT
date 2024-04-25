@@ -1,19 +1,19 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP, token } from "../../config/const";
-const categorySlice = createSlice({
-  name: "category",
+const productSlice = createSlice({
+  name: "product",
   initialState: {
-    categories: [],
-    currentSetCategory: {
-      id: "",
-      name: "",
-      description: "",
-      totalItem:0
+    brand: [],
+    currentSetProducr:{
+      
     }
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchBrand.fulfilled,(state,action)=>{
+        state.brand = action.payload
+      })
       .addCase(fetchCategory.fulfilled, (state, action) => {
         state.categories = action.payload;
       })
@@ -124,4 +124,14 @@ export const deleteCategory = createAsyncThunk(
     };
   }
 );
-export default categorySlice;
+export const fetchBrand = createAsyncThunk("/product/fetchBrand", async () => {
+  console.log("brand")
+  const res = await fetch(IP + "/api/brands", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  })
+  const data = await res.json()
+  return data
+})
+export default productSlice;

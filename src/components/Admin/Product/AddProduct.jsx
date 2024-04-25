@@ -6,34 +6,40 @@ import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import NotesOutlinedIcon from '@mui/icons-material/NotesOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
+import CameraRearOutlinedIcon from '@mui/icons-material/CameraRearOutlined';
 import WarehouseOutlinedIcon from '@mui/icons-material/WarehouseOutlined';
-import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+import SimCardOutlinedIcon from '@mui/icons-material/SimCardOutlined';
 import MemoryIcon from '@mui/icons-material/Memory';
 import GraphicEqIcon from '@mui/icons-material/GraphicEq';
 import AutofpsSelectIcon from '@mui/icons-material/AutofpsSelect';
 import WysiwygIcon from '@mui/icons-material/Wysiwyg';
+import CameraFrontOutlinedIcon from '@mui/icons-material/CameraFrontOutlined';
 import UsbIcon from '@mui/icons-material/Usb';
 import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
 import ScaleOutlinedIcon from '@mui/icons-material/ScaleOutlined';
 import BatteryChargingFullOutlinedIcon from '@mui/icons-material/BatteryChargingFullOutlined';
+import SensorsOutlinedIcon from '@mui/icons-material/SensorsOutlined';
+import SmartButtonOutlinedIcon from '@mui/icons-material/SmartButtonOutlined';
 import DragDropImage from '../DragDropImage';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchBrand } from '../../../redux/reducer/ProductSlice';
 import { fetchCategory } from '../../../redux/reducer/CategorySlice';
 
 const AddProduct = ({ setDisplayAddProduct }) => {
     const dispatch = useDispatch()
     const [category, setCategory] = useState(1)
-    const [brand, setBrand] = useState("Samsung")
+    const [brand, setBrand] = useState(1)
     const [soldStatus, setSoldStatus] = useState("Có sẵn")
     const [frequencyScreen, setFrequencyScreen] = useState("")
 
     const [currentSetProduct, setCurrentSetProduct] = useState({})
-    
-    const categories = useSelector((state) => state.category.categories)
-    useEffect(()=>{
-        dispatch(fetchCategory)
-    },[])
+
+    var categories = useSelector((state) => state.category.categories)
+    var brands = useSelector((state) => state.product.brand)
+    useEffect(() => {
+        dispatch(fetchCategory())
+        dispatch(fetchBrand())
+    }, [dispatch])
 
     const handleCloseAddProduct = () => {
         setDisplayAddProduct(false)
@@ -96,23 +102,23 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
-                            {/* Gía bán sản phẩm  */}
-                            <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
+                            {/* Nhà cung cấp*/}
+                            <Grid item xs={12} sm={12} md={4} sx={style.inputContainer}>
                                 <FormControl fullWidth={true} >
-                                    <FormLabel sx={style.formLabel} >
-                                        <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                        <Box>Giá bán (VND)</Box>
+                                    <FormLabel sx={style.formLabel}>
+                                        <WarehouseOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                        <Box>Nhà cung cấp</Box>
                                     </FormLabel>
                                     <TextField fullWidth={true} variant='outlined'
                                         onChange={(e) => {
-                                            handleOnChangeProperties("price", e.target.value)
+                                            handleOnChangeProperties("vendor", e.target.value)
                                         }}
                                     />
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
                             {/* Danh mục sản phẩm  */}
-                            <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
+                            <Grid item xs={12} sm={12} md={4} sx={style.inputContainer} >
                                 <FormControl fullWidth={true}>
                                     <FormLabel sx={style.formLabel} >
                                         <CategoryOutlinedIcon sx={style.formLabel.formLabelIcon} />
@@ -124,9 +130,9 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                         onChange={handleChangeCategory}
                                     >
                                         {
-                                            categories.map((category)=>{
+                                            categories.map((category) => {
                                                 return <MenuItem value={category.id} >{category.name}</MenuItem>
-                                                
+
                                             })
                                         }
                                     </Select>
@@ -134,7 +140,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                 </FormControl>
                             </Grid>
                             {/* Hãng sản xuất */}
-                            <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
+                            <Grid item xs={12} sm={12} md={4} sx={style.inputContainer} >
                                 <FormControl fullWidth={true}>
                                     <FormLabel sx={style.formLabel} >
                                         <WarehouseOutlinedIcon sx={style.formLabel.formLabelIcon} />
@@ -145,27 +151,11 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                         value={brand}
                                         onChange={handleChangeBrand}
                                     >
-                                        <MenuItem value='Samsung' >Samsung</MenuItem>
-                                        <MenuItem value='Apple' >Apple</MenuItem>
-                                        <MenuItem value='Xiaomi'>Xiaomi</MenuItem>
-                                    </Select>
-                                    <FormHelperText></FormHelperText>
-                                </FormControl>
-                            </Grid>
-                            {/* Tình trạng  */}
-                            <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
-                                <FormControl fullWidth={true}>
-                                    <FormLabel sx={style.formLabel} >
-                                        <AnalyticsOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                        <Box>Tình trạng</Box>
-                                    </FormLabel>
-                                    <Select
-                                        sx={style.select}
-                                        value={soldStatus}
-                                        onChange={handleChangeSoldStatus}
-                                    >
-                                        <MenuItem value='Có sẵn' >Có sẵn</MenuItem>
-                                        <MenuItem value='Hết hàng' >Hết hàng</MenuItem>
+                                        {
+                                            brands.map((brand) => {
+                                                return <MenuItem value={brand.id} >{brand.name}</MenuItem>
+                                            })
+                                        }
                                     </Select>
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
@@ -181,7 +171,10 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                                 <MemoryIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>CPU</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("cpu", e.target.value)
+                                                }} />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -192,7 +185,10 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                                 <GraphicEqIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>Card</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("card", e.target.value)
+                                                }} />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -224,7 +220,10 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                                 <WysiwygIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>Hệ điều hành</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("os", e.target.value)
+                                                }} />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -235,7 +234,10 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                                 <UsbIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>Cổng USB</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("usbNumber", e.target.value)
+                                                }} />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -246,7 +248,11 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                                 <StorageOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>Ổ cứng</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("typeDisk", e.target.value)
+                                                }}
+                                            />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -257,7 +263,11 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                                 <ScaleOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>Khối lượng (kg)</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("weight", e.target.value)
+                                                }}
+                                            />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -268,22 +278,30 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                                 <BatteryChargingFullOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>Dung lượng pin (mAh)</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("batteryCapacity", e.target.value)
+                                                }}
+                                            />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
                                 </React.Fragment>
                             }
-                            {category === "dien-thoai" &&
+                            {/** Thuộc tính của điện thoại */}
+                            {category === 2 &&
                                 <React.Fragment>
                                     {/* CPU  */}
                                     <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
                                         <FormControl fullWidth={true} >
                                             <FormLabel sx={style.formLabel} >
-                                                <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <MemoryIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>CPU</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("cpu", e.target.value)
+                                                }} />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -291,13 +309,15 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
                                         <FormControl fullWidth={true}>
                                             <FormLabel sx={style.formLabel} >
-                                                <AnalyticsOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <AutofpsSelectIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>Tần số quét</Box>
                                             </FormLabel>
                                             <Select
                                                 sx={style.select}
-                                                value={soldStatus}
-                                                onChange={handleChangeSoldStatus}
+                                                value={frequencyScreen}
+                                                onChange={(e) => {
+                                                    handleChangeFrequencyScreen(e)
+                                                }}
                                             >
                                                 <MenuItem value='60' >60 Hz</MenuItem>
                                                 <MenuItem value='120' >120 Hz</MenuItem>
@@ -306,61 +326,17 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
-                                    {/* Hệ điều hành */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
-                                        <FormControl fullWidth={true}>
-                                            <FormLabel sx={style.formLabel} >
-                                                <AnalyticsOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Hệ điều hành</Box>
-                                            </FormLabel>
-                                            <Select
-                                                sx={style.select}
-                                                value={soldStatus}
-                                                onChange={handleChangeSoldStatus}
-                                            >
-                                                <MenuItem value='window' >Window</MenuItem>
-                                                <MenuItem value='ios' >IOS</MenuItem>
-                                            </Select>
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
                                     {/* Số cổng USB  */}
                                     <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
                                         <FormControl fullWidth={true} >
                                             <FormLabel sx={style.formLabel} >
-                                                <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Số cổng USB</Box>
+                                                <SimCardOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Số SIM</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Loại ổ cứng  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
-                                        <FormControl fullWidth={true}>
-                                            <FormLabel sx={style.formLabel} >
-                                                <AnalyticsOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Loại ổ cứng</Box>
-                                            </FormLabel>
-                                            <Select
-                                                sx={style.select}
-                                                value={soldStatus}
-                                                onChange={handleChangeSoldStatus}
-                                            >
-                                                <MenuItem value='HDD' >HDD</MenuItem>
-                                                <MenuItem value='SSD' >SSD</MenuItem>
-                                            </Select>
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Khối lượng  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Khối lượng (kg)</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("simNumber", e.target.value)
+                                                }} />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
@@ -368,10 +344,93 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
                                         <FormControl fullWidth={true} >
                                             <FormLabel sx={style.formLabel} >
-                                                <PaidOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <BatteryChargingFullOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>Dung lượng pin (mAh)</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("batteryCapacity", e.target.value)
+                                                }}
+                                            />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    {/* Camera trước */}
+                                    <Grid item xs={12} sm={6} md={6} sx={style.inputContainer} >
+                                        <FormControl fullWidth={true}>
+                                            <FormLabel sx={style.formLabel} >
+                                                <CameraFrontOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Camera trước</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("frontCamera", e.target.value)
+                                                }} />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                    {/* Camera sau  */}
+                                    <Grid item xs={12} sm={6} md={6} sx={style.inputContainer} >
+                                        <FormControl fullWidth={true}>
+                                            <FormLabel sx={style.formLabel} >
+                                                <CameraRearOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Camera sau</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("rearCamera", e.target.value)
+                                                }}
+                                            />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+                                </React.Fragment>
+                            }
+                            {/** Thuộc tính của phụ kiện */}
+                            {category === 3 &&
+                                <React.Fragment>
+                                    {/* Loại kết nối  */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
+                                        <FormControl fullWidth={true} >
+                                            <FormLabel sx={style.formLabel} >
+                                                <SensorsOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Loại kết nối</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("connectType", e.target.value)
+                                                }} />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+
+                                    {/* Khối lượng  */}
+                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
+                                        <FormControl fullWidth={true} >
+                                            <FormLabel sx={style.formLabel} >
+                                                <ScaleOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Khối lượng (kg)</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("weight", e.target.value)
+                                                }}
+                                            />
+                                            <FormHelperText></FormHelperText>
+                                        </FormControl>
+                                    </Grid>
+
+                                    {/* Thuộc tính đặc biệt  */}
+                                    <Grid item xs={12} sm={12} md={6} sx={style.inputContainer}>
+                                        <FormControl fullWidth={true} >
+                                            <FormLabel sx={style.formLabel} >
+                                                <SmartButtonOutlinedIcon sx={style.formLabel.formLabelIcon} />
+                                                <Box>Thuộc tính đặc biệt</Box>
+                                            </FormLabel>
+                                            <TextField fullWidth={true} variant='outlined'
+                                                onChange={(e) => {
+                                                    handleOnChangeProperties("specialProperties", e.target.value)
+                                                }} />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>

@@ -26,6 +26,7 @@ const voucherSlice = createSlice({
             })
             .addCase(addVoucher.fulfilled, (state, action) => {
                 state.message = action.payload;
+                state.vouchers.push(action.payload.voucher)
             })
           .addCase(editVoucher.fulfilled, (state, action) => {
             state.message = action.payload.data;
@@ -48,7 +49,11 @@ const voucherSlice = createSlice({
 export const fetchVoucher = createAsyncThunk(
     "voucher/fetchVoucher",
     async () => {
-        const res = await fetch(IP + "/api/vouchers");
+        const res = await fetch(IP + "/api/vouchers",{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
         const data = await res.json();
         return data;
     }

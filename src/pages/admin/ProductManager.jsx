@@ -6,6 +6,7 @@ import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddProduct from '../../components/Admin/Product/AddProduct';
+import ProductCollapseTable from '../../components/Admin/Product/ProductCollapseTable';
 const ProductManager = () => {
   const [displayAddProduct, setDisplayAddProduct] = useState(false)
   const columns = [
@@ -92,14 +93,7 @@ const ProductManager = () => {
               <Box ml={1}>Thêm sản phẩm</Box>
             </Button>
           </Box>
-          <DataGrid
-            sx={{ boxShadow: 2, mt: 2 }}
-            columns={columns}
-            rows={rows}
-            slots={{
-              toolbar: GridToolbar,
-            }}
-          ></DataGrid>
+          <ProductCollapseTable />
         </Box>
       </Box>
       {displayAddProduct && <AddProduct setDisplayAddProduct={setDisplayAddProduct}  /> } 

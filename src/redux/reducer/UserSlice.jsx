@@ -47,6 +47,7 @@ const userSlice = createSlice({
       })
       .addCase(addUser.fulfilled, (state, action) => {
         state.alert = action.payload
+        
       })
       .addCase(editUser.fulfilled, (state, action) => {
         state.alert = action.payload.data
@@ -113,6 +114,7 @@ export const addUser = createAsyncThunk("user/addUser", async (newUser) => {
   let tmpRole = newUser.roles==='ADMIN'?1:newUser.roles==="EMPLOYEE"?0:3
   const res = await fetch(IP+`/api/v1/signup?role=`+tmpRole, options);
   const data = await res.json();
+  console.log(data)
   return data;
 });
 export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
@@ -122,6 +124,7 @@ export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
     body: JSON.stringify(newUser),
     headers: {
       "Content-Type":"application/json",
+      Authorization: `Bearer ${token}`
     },
   };
   const res = await fetch(IP+`/api/user`, options);
