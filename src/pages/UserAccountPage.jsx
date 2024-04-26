@@ -10,8 +10,8 @@ import { FaStarHalfAlt } from "react-icons/fa";
 import UserProfile from "../components/User/Profile/UserProfile";
 import Navbar from "../components/User/Navbar/Navbar";
 import Order from "../components/User/Order/Order";
-import Header from "../components/Layout/Header";
-import Footer from "../components/Layout/Footer";
+import Header from "../components/Layout/Header/Header";
+import Footer from "../components/Layout/Footer/Footer";
 import Notification from "../components/User/Notification/Notification";
 import ChangePassword from "../components/User/Profile/ChangePassword";
 

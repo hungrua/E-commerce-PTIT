@@ -11,8 +11,7 @@ import {
   UserAccountPage
 } from "./routes/Routes.js";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProductCard from "./components/Route/ProductCard/ProductCard.jsx";
-import ChangePassword from "./components/User/Profile/ChangePassword.jsx";
+import Voucher from "./components/Route/Voucher/Voucher.jsx";
 
 const App = () => {
   return (
@@ -26,7 +25,7 @@ const App = () => {
         <Route path="/loai-san-pham" element={<ProductListPage/>}/>
         <Route path="/cart" element={<CartPage/>}/>
         <Route path="/account" element={<UserAccountPage/>}/>
-        <Route path="/test" element={<ChangePassword/>}/>
+        <Route path="/test" element={<Voucher/>}/>
       </Routes>
     </BrowserRouter>
   );

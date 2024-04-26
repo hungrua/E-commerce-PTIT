@@ -4,6 +4,8 @@ import { FaGifts } from "react-icons/fa";
 import { MdOutlineHistory } from "react-icons/md";
 import { BiSolidDiscount } from "react-icons/bi";
 import NotificationNav from "./NotificationNav";
+import { TbTruckDelivery } from "react-icons/tb";
+
 
 
 const Notification = () => {
@@ -19,10 +21,10 @@ const Notification = () => {
         },
         2: {
             name: 'Thông báo đơn hàng',
-            icon: <BiSolidDiscount/>
+            icon: <TbTruckDelivery/>
         },
         3: {
-            name: 'Thông báo hệ thông',
+            name: 'Thông báo hệ thống',
             icon: <MdOutlineHistory/>
         }
     }

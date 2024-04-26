@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
+import webImage1 from '../../../images/banner-2.png'
+import promotion1 from '../../../images/promotion1.jpg'
+import promotion2 from '../../../images/promotion2.jpg'
 
 const Hero = () => {
   const slides = [
@@ -32,8 +35,27 @@ const Hero = () => {
   };
 
   return (
-    <div className="relative mb-8 mt-[58px] sm:mb-10 md:mb-12 lg:mb-16 group">
+    <div className="mb-4 mt-[58px] sm:mb-10 md:mb-12 lg:mb-10">
+      <div className="grid grid-cols-6 gap-2 p-4 justify-center">
+        <div className=" relative col-span-6 overflow-hidden rounded-lg group w-full lg:w[850px] lg:h-[478px] lg:col-span-4">
+          <div className="hidden group-hover:block absolute top-[50%] left-5 transform -translate-y-1/2 text-xl rounded-full p-2 bg-[#f66315] text-white cursor-pointer">
+            <BsChevronCompactLeft onClick={prevSlide} size={25} />
+          </div>
+          <img src={webImage1} alt="" />
+          <div className="hidden group-hover:block absolute top-[50%] right-5 transform -translate-y-1/2 text-xl rounded-full p-2 bg-[#f66315] text-white cursor-pointer">
+            <BsChevronCompactRight onClick={nextSlide} size={25} />
+          </div>
+        </div>
+        <div className="col-span-6 hidden gap-y-[5px] md:grid md:grid-cols-6 lg:col-span-2">
+          <div className="overflow-hidden rounded md:col-span-3 lg:col-span-6 items-center justify-center">
+            <img src={promotion1} alt="" />
+          </div>
+          <div className=" overflow-hidden rounded md:col-span-3 lg:col-span-6 items-center justify-center">
+            <img src={promotion2} alt="" />
+          </div>
 
+        </div>
+      </div>
     </div>
   );
 };

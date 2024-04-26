@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../components/Layout/Header";
-import Footer from "../components/Layout/Footer";
+import Header from "../components/Layout/Header/Header.jsx";
+import Footer from "../components/Layout/Footer/Footer.jsx";
 import ProductDetails from "../components/Products/ProductDetails.jsx";
 import Consultation from "../components/Route/Consultation/Consultation.jsx";
 

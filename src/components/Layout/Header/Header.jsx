@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../images/logo-removebg.png";
+import logo from "../../../images/logo2.jpg";
 import {
   FaAngleDown,
-  FaRegHeart,
-  FaUser,
-  FaTimes,
-  FaMinus,
-  FaPlus,
+  FaRegBell,
+  FaUser
 } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
+import CartHeader from "./CartHeader";
+import NotificationHeader from "./NotificationHeader";
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openProductList, setOpenProductList] = useState(false);
   const [openCartList, setOpenCartList] = useState(false);
+  const [categories, setCategories] = useState(['Laptop', 'Dien thoai', 'Phu kien'])
+  const [openNotification, setOpenNotification] = useState(false);
+  const [notifications, setNotifications] = useState([])
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
@@ -31,6 +33,16 @@ const Header = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+
+  }, [openNotification])
+
+  const handleOpenNotification = () => {
+    setOpenNotification(!openNotification)
+  }
+
+
   return (
     <>
       <header class=" w-full fixed top-0 z-10">
@@ -47,22 +59,23 @@ const Header = () => {
               <div className="flex gap-[0.8rem] items-center">
                 <div className="flex gap-[0.8rem] items-center">
                   <div className="flex items-center w-80 justify-end">
-                      <input type="text" placeholder="Search..."
-                            className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500"/>
-                      <button className="bg-[#00B4CC] text-white w-10 h-10 flex items-center justify-center rounded-r-md">
-                        <FaSearch/>
-                      </button>
+                    <input type="text" placeholder="Search..."
+                      className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500" />
+                    <button className="bg-[#00B4CC] text-white w-10 h-10 flex items-center justify-center rounded-r-md">
+                      <FaSearch />
+                    </button>
 
                   </div>
                 </div>
                 <div className="flex gap-[0.8rem] items-center">
-                  <div>
-                    <Link
-                      to="/san-pham-yeu-thich"
-                      className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
-                    >
-                      <FaRegHeart className="text-[16px] hover:text-[#f66315]" />
-                    </Link>
+                  <div className="relative">
+                    <button className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
+                      onClick={handleOpenNotification}>
+                      <FaRegBell className="text-[16px] hover:text-[#f66315]" />
+                    </button>
+                    {
+                      openNotification && <NotificationHeader/>
+                    }
                   </div>
                   <div>
                     <Link
@@ -89,100 +102,9 @@ const Header = () => {
                     <span>1</span>
                   </div>
                   {/* gio hang detail */}
-                  {openCartList === true ? (
-                    <div className="fixed z-50 right-0 w-[550px] top-[58px] translate-x-0 translate-y-0 opacity-[1] max-w-[90%] bottom-0 overflow-y-auto bg-[#fff] transition-all shadow-3">
-                      <div className="h-full flex flex-col">
-                        <div className="py-[40px] pl-[40px] pr-[30px] flex flex-col h-full relative overflow-hidden">
-                          <div
-                            onClick={() => setOpenCartList(!openCartList)}
-                            className="absolute top-[20px] right-[20px] w-[30px] h-[30px] border border-solid border-[#031230] flex items-center justify-center cursor-pointer"
-                          >
-                            <FaTimes className="text-[18px] font-[400] text-[#444545] hover:text-[#f66315] transition-all" />
-                          </div>
-                          <p className="text-center mb-[20px] md:text-[35px] font-[700] text-[#031230] text-[27px]">
-                            Giỏ hàng
-                          </p>
-                          <div className="pr-[12px] max-h-[400px] flex flex-col gap-y-[30px] overflow-y-auto overflow-x-hidden">
-                            <div className="flex gap-[12px]">
-                              <div className="w-[77px] h-[77px] shrink-0 rounded-[6px] overflow-hidden">
-                                <img
-                                  className="h-full object-cover max-w-[100%]"
-                                  src="https://cdn.shopvnb.com/img/300x300/uploads/san_pham/quan-cau-long-yonex-nam-trang-ma-038-1.webp"
-                                  alt=""
-                                  width="300"
-                                  height="372"
-                                />
-                              </div>
-                              <div className="flex flex-col">
-                                <Link
-                                  to="/san-pham/id"
-                                  className="no-underline text-[16px]"
-                                >
-                                  Quần Cầu Lông Yonex Nam Trắng
-                                </Link>
-                                <div className="flex mt-auto">
-                                  <div className="flex gap-[20px] p-[6px] rounded-[30px] border border-solid border-[#eee]">
-                                    <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]">
-                                      <FaMinus className="text-[14px]" />
-                                    </div>
-                                    <p className="text-[14px] text-[#031230]">
-                                      01
-                                    </p>
-                                    <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]">
-                                      <FaPlus className="text-[14px]" />
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="text-[16px] text-[#f66315] mt-auto ml-auto font-[700]">
-                                <span>5.150.000đ</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex justify-between gap-[12px] pr-[20px] mt-[50px] text-[16px] font-[700]">
-                            <span className="text-[#000]">Tổng cộng</span>
-                            <span className="text-[#f66315]">5.150.000đ </span>
-                          </div>
-
-                          <div className="mt-auto pr-[20px] flex gap-6">
-                            <Link
-                              to="/cart"
-                              className="bg-[#fff] hover:bg-[#f66315] text-[#031230]  hover:text-[white] border border-solid border-[#f66315] w-full cursor-pointer relative overflow-hidden transition-all my-0 mx-auto rounded-[40px] flex items-center justify-center"
-                            >
-                              <span className="flex items-center justify-center py-[10px] px-[20px]">
-                                <span className="leading-[1.2] text-[16px] font-[700] ">
-                                  Xem giỏ hàng
-                                </span>
-                              </span>
-                            </Link>
-
-                            <Link
-                              to="/thanh-toan"
-                              className="hover:bg-[#fff] bg-[#f66315] hover:text-[#031230] text-white border border-solid border-[#f66315] w-full cursor-pointer relative overflow-hidden transition-all my-0 mx-auto rounded-[40px] flex items-center justify-center"
-                            >
-                              <span className="flex items-center justify-center py-[10px] px-[20px] gap-[6px]">
-                                <FaCartShopping className="text-[16px]" />
-                                <span className="leading-[1.2] text-[16px] font-[700] ">
-                                  Đặt mua
-                                </span>
-                              </span>
-                            </Link>
-                          </div>
-
-                          <div className="absolute w-[40%] bottom-0 right-0 -z-1 translate-y-[15%]">
-                            <div className="opacity-100 transition-all">
-                              <img
-                                className="block w-full max-w-full h-auto"
-                                src="https://fbshop.vn/template/assets/images/cart-dcor.webp"
-                                alt=""
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : null}
+                  {
+                    openCartList && <CartHeader openCartList={openCartList} setOpenCartList={setOpenCartList}/>
+                  }
                 </div>
               </div>
               <button
@@ -197,9 +119,9 @@ const Header = () => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   ></path>
                 </svg>
                 <svg
@@ -209,9 +131,9 @@ const Header = () => {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   ></path>
                 </svg>
               </button>
@@ -306,46 +228,20 @@ const Header = () => {
                                   Danh mục sản phẩm
                                 </span>
                               </li>
-                              <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <Link
-                                  to="/"
-                                  className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
-                                >
-                                  Vợt cầu lông
-                                </Link>
-                              </li>
-                              <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <Link
-                                  to="/"
-                                  className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
-                                >
-                                  Giày cầu lông
-                                </Link>
-                              </li>
-                              <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <Link
-                                  to="/"
-                                  className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
-                                >
-                                  Túi vợt cầu lông
-                                </Link>
-                              </li>
-                              <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <Link
-                                  to="/"
-                                  className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
-                                >
-                                  Balo cầu lông
-                                </Link>
-                              </li>
-                              <li className="lg:w-full lg:pt-[5px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                <Link
-                                  to="/"
-                                  className="md:block text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal w-full pb-[5px] no-underline"
-                                >
-                                  Phụ kiện cầu lông
-                                </Link>
-                              </li>
+                              {
+                                categories.map(category => (
+                                  <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
+                                    <Link
+                                      to="/"
+                                      className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
+                                    >
+                                      {category}
+                                    </Link>
+                                  </li>
+                                ))
+                              }
+
+
                             </ul>
                           </div>
                         </div>

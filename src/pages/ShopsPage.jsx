@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../components/Layout/Header";
-import Footer from "../components/Layout/Footer";
+import Header from "../components/Layout/Header/Header";
+import Footer from "../components/Layout/Footer/Footer";
 import Consultation from "../components/Route/Consultation/Consultation";
 import { FaMapMarkerAlt, FaPhone } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";

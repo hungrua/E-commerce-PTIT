@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../../images/logo-removebg.png";
 import { RiMapPin2Fill } from "react-icons/ri";
 import { FaUser } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
@@ -27,7 +26,7 @@ const Footer = () => {
               <div className="shrink-0 flex items-center justify-center w-full">
                 <a href="/">
                   <img
-                    src={logo}
+                    src="/static/images/web-images/logo.png"
                     alt=""
                     width="397"
                     height="398"
@@ -36,7 +35,7 @@ const Footer = () => {
                 </a>
               </div>
               <div className="text-[14px] text-[#444545]">
-                <p className="mb-1">Công ty TNHH Badminton Shop Việt Nam </p>
+                <p className="mb-1">Công ty TNHH Tech Shop Việt Nam </p>
                 <div className="mb-[10px]">
                   <div className="flex gap-1">
                     <RiMapPin2Fill className="text-[#f66315] mt-[2px]" />
@@ -50,8 +49,7 @@ const Footer = () => {
                   <div className="flex gap-1">
                     <FaUser className="text-[#f66315] mt-[2px] text-[12px]" />
                     <p>
-                      <span className="font-[500]">Người đại diện: </span>Cao
-                      Hải Đăng
+                      <span className="font-[500]">Người đại diện: </span>Nguyễn Cảnh Hưng
                     </p>
                   </div>
                 </div>
@@ -60,7 +58,7 @@ const Footer = () => {
                     <IoMdMail className="text-[#f66315] mt-[2px]" />
                     <p>
                       <span className="font-[500]">Email: </span>
-                      badmintonshop@gmail.com
+                      hugenguyen@gmail.com
                     </p>
                   </div>
                 </div>
@@ -121,7 +119,7 @@ const Footer = () => {
                     <FaPhoneVolume className="text-[16px] text-[#f66315]" />
                     <div className="flex flex-col">
                       <p className="text-[14px] text-[#444545] font-[500]">
-                        Hàn vợt cacbon
+                        Đại lý bán lẻ
                       </p>
                       <p className="text-[16px] text-[#f66315] font-[600] items-center gap-1">
                         0866.346.993
@@ -154,19 +152,13 @@ const Footer = () => {
                     <div>
                       <ul className="list-none font-[14px] text-[#444545] text-[14px]">
                         <li className="hover:text-[#f66315] cursor-pointer mb-[10px]">
-                          Vợt cầu lông
+                          Laptop
                         </li>
                         <li className="hover:text-[#f66315] cursor-pointer mb-[10px]">
-                          Giày cầu lông
+                          Điện thoại
                         </li>
                         <li className="hover:text-[#f66315] cursor-pointer mb-[10px]">
-                          Túi vợt cầu lông
-                        </li>
-                        <li className="hover:text-[#f66315] cursor-pointer mb-[10px]">
-                          Balo cầu lông
-                        </li>
-                        <li className="hover:text-[#f66315] cursor-pointer mb-[10px]">
-                          Phụ kiện cầu lông
+                          Phụ kiện
                         </li>
                       </ul>
                     </div>

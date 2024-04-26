@@ -1,11 +1,12 @@
 import React from "react";
 import { FaHeart, FaStar } from "react-icons/fa";
 import { FaCartPlus } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 
 const ProductCard = () => {
     return (
-        <a href="#" className="block group bg-white rounded-[10px] shadow-[0px_2px_10px_#00000014] transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-[0px_8px_16px_#0000002f]">
+        <Link to="/san-pham/id" className="block group bg-white rounded-[10px] shadow-[0px_2px_10px_#00000014] transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-[0px_8px_16px_#0000002f]">
             <div className="relative">
                 <div className="p-2.5">
                     <img src={require("../../../images/products/basic/may-tinh-asrock-mini-pc-deskmini-x300-1.webp")}
@@ -50,7 +51,7 @@ const ProductCard = () => {
                     <div className="pl-2 text-[13px]">(408 đánh giá)</div>
                 </div>
             </div>
-        </a>
+        </Link>
     )
 }
 

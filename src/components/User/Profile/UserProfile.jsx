@@ -27,13 +27,14 @@ const UserProfile = (props) => {
     }, [selectedMonth, selectedYear])
 
     const isLeapYear = (year) => {
-        if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) return true;
+        if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) return true;
         return false;
     }
 
     const maxDayOfMonthInYear = () => {
+        // console.log(selectedYear, isLeapYear(selectedYear))
         if (isLeapYear(selectedYear)) { // year is leap or not selected
-            if (selectedMonth === 2 || selectedMonth === 0) {
+            if (selectedMonth === 2) {
                 return 29;
             }
         }
@@ -48,7 +49,8 @@ const UserProfile = (props) => {
 
     const handleChange = event => {
         var { name, value } = event.target
-        value = value === NaN ? 0 : parseInt(value)
+        console.log(selectedDay, selectedMonth, selectedYear)
+        value = isNaN(value) ? 0 : parseInt(value)
         if (name === "day") {
             if (!value in days) {
                 setSelectedDay(0)

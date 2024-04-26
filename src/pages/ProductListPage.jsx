@@ -1,9 +1,9 @@
 import React from "react";
-import Header from "../components/Layout/Header";
+import Header from "../components/Layout/Header/Header";
 import Filter from "../components/Route/Filter/Filter";
 import BreadScrumb from "../components/Route/BreadScrumb/BreadScrumb";
 import ProductsGrid from "../components/Route/ProductsGrid/ProductsGrid";
-import Footer from "../components/Layout/Footer";
+import Footer from "../components/Layout/Footer/Footer";
 import ViewedProduct from "../components/Route/ViewedProducts/ViewedProducts";
 
 const ProductListPage = () => {

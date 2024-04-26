@@ -8,13 +8,10 @@ const NotificationNav = (props) => {
             <div className="flex gap-x-4 justify-around text-[22px] w-1/3">
                 {
                     Object.entries(props.notiTabs).map(([index, tab]) => (
-                        <div key={index} className="w-1/4 cursor-pointer flex flex-col items-center" title={tab.name}
+                        <div key={index} className="w-1/3 cursor-pointer flex flex-col items-center" title={tab.name}
                             onClick={() => props.setNotiActiveTab(index)}>
-                            {/* {console.log(tab.icon)}
-                            {index} */}
                             {tab.icon}
                             {
-                                // console.log(index == props.notiActiveTab)
                                 index == props.notiActiveTab ? (
                                     <div className='w-full block mt-0.5 h-0.5 bg-[rgb(10_104_255)]'>
                                     </div>
