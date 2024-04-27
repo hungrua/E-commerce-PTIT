@@ -7,8 +7,6 @@ import { FaTruckFast } from "react-icons/fa6";
 import { FaTruck } from "react-icons/fa";
 import { TfiReload } from "react-icons/tfi";
 
-
-
 import ProductImage from "../../../images/products/basic/may-tinh-asrock-mini-pc-deskmini-x300-1.webp"
 
 const OrderList = (props) => {

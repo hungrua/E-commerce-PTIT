@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
-import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus, FaStar } from "react-icons/fa";
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
+import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus } from "react-icons/fa";
 
 import productDecor from "../../images/pd_decor.webp";
 import icon_hot from "../../images/icon-cate-hot.webp";
@@ -10,7 +9,7 @@ import icon_tag from "../../images/icon-cate-tag.webp";
 import ft_pay_icon from "../../images/ft-pay-icon.webp";
 import step_icon from "../../images/step-icon.webp";
 import cart_icon from "../../images/cart-icon.webp";
-import Comments from "./Comments";
+import Reviews from "./Reviews";
 const ProductDetails = () => {
   const [select, setSelect] = useState(0);
   const [active, setActive] = useState(1);
@@ -255,53 +254,15 @@ const ProductDetails = () => {
                 <div className="absolute w-[15%] bottom-0 right-0">
                   <img
                     className="block w-full max-w-full h-auto"
-                    src={productDecor}
+                    src="/static/images/web-images/bot.png"
                     alt=""
                   />
                 </div>
-                <span className="inline-block py-1 px-5 text-[#f66315] font-[500] text-[14px] rounded-t-[12px] border border-solid border-[#f66315] border-b-0 relative z-1 bg-[#fff] translate-y-[1px]">
+                <span className="inline-block py-1 px-5 text-[#f66315] font-[500] text-[14px] rounded-t-[12px] border border-solid border-[rgb(11,116,229)] border-b-0 relative z-1 bg-[#fff] translate-y-[1px]">
                   Ưu đãi
                 </span>
-                <div className="flex flex-col gap-[10px] p-5 rounded-b-[12px] rounded-r-[12px] border border-solid border-[#f66315] relative overflow-hidden min-h-[100px]">
+                <div className="flex flex-col gap-[10px] p-5 rounded-b-[12px] rounded-r-[12px] border border-solid border-[rgb(11,116,229)] relative overflow-hidden min-h-[100px]">
                   <div className="absolute w-full pt-[55%] bottom-0 right-0 z-0 bg-6 translate-x-[42%] rotate-[328deg]"></div>
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src={icon_hot}
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Tặng cước và căng cước vợt cầu lông miễn phí
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src={icon_hot}
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Tặng bao nhung/bao đơn bảo vệ vợt cầu lông
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src={icon_hot}
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Tặng quấn cán vợt cầu lông khi mua vợt
-                    </span>
-                  </div>
 
                   <div className="flex items-center gap-[10px]">
                     <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
@@ -440,7 +401,7 @@ const ProductDetails = () => {
             </div>
           ) : null}
           {active === 3 ? (
-            <Comments/>
+            <Reviews/>
           ) : null}
         </div>
       </div>

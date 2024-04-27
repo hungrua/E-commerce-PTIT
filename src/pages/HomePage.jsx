@@ -19,7 +19,7 @@ const HomePage = () => {
         <Services />
         <ProductCategories />
         <Products />
-        <News />
+        {/* <News /> */}
         <IntroBrands />
         <Consultation />
       </div>
