@@ -4,61 +4,76 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import LaptopWindowsOutlinedIcon from '@mui/icons-material/LaptopWindowsOutlined';
-import NotesOutlinedIcon from '@mui/icons-material/NotesOutlined';
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import AnalyticsOutlinedIcon from '@mui/icons-material/AnalyticsOutlined';
-import WarehouseOutlinedIcon from '@mui/icons-material/WarehouseOutlined';
+
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
-import MemoryIcon from '@mui/icons-material/Memory';
-import GraphicEqIcon from '@mui/icons-material/GraphicEq';
-import AutofpsSelectIcon from '@mui/icons-material/AutofpsSelect';
-import WysiwygIcon from '@mui/icons-material/Wysiwyg';
-import UsbIcon from '@mui/icons-material/Usb';
-import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
-import ScaleOutlinedIcon from '@mui/icons-material/ScaleOutlined';
-import BatteryChargingFullOutlinedIcon from '@mui/icons-material/BatteryChargingFullOutlined';
-import DragDropImage from '../DragDropImage';
+
 import { useDispatch, useSelector } from 'react-redux';
-// import { fetchBrand } from '../../../redux/reducer/ProductSlice';
-// import { fetchCategory } from '../../../redux/reducer/CategorySlice';
+import { addProductDetails, editProductDetails, getProductDetailsById } from '../../../redux/reducer/ProductSlice';
 
-const AddProductDetails = ({ setDisplayAddProduct, category }) => {
+
+const AddProductDetails = ({ setDisplayAddProduct, category,productId }) => {
     const dispatch = useDispatch()
-    const [soldStatus, setSoldStatus] = useState("Có sẵn")
-    const [frequencyScreen, setFrequencyScreen] = useState("")
+    const [soldStatus, setSoldStatus] = useState(false)
+    const [screenSize, setScreenSize] = useState("")
+    const [ram,setRam] = useState("")
+    const [currentSetProductDetails, setCurrentSetProductDetails] = useState({})
 
-    const [currentSetProduct, setCurrentSetProduct] = useState({})
+    var productDetails = useSelector((state) => state.product.currentSetProductDetails)
+    useEffect(() => {
+        setCurrentSetProductDetails(productDetails)
+        setRam(productDetails.ram)
+        setScreenSize(productDetails.screenSize)
+        setSoldStatus(productDetails.isAvailable)
+    }, [dispatch,productDetails])
 
-    var categories = useSelector((state) => state.category.categories)
-    var brands = useSelector((state) => state.product.brand)
-    // useEffect(() => {
-    //     dispatch(fetchCategory())
-    //     dispatch(fetchBrand())
-    // }, [dispatch])
-
-    const handleCloseAddProduct = () => {
+    const handleCloseAddProductDetails = () => {
         setDisplayAddProduct(false)
+        dispatch(getProductDetailsById(-1))
     }
     const handleChangeSoldStatus = (e) => {
         setSoldStatus(e.target.value)
+        handleOnChangeProperties("isAvailable", e.target.value)
     }
-    const handleChangeFrequencyScreen = (e) => {
-        setFrequencyScreen(e.target.value)
-        handleOnChangeProperties("frequencyScreen", e.target.value)
+    const handleChangeScreenSize = (e) => {
+        setScreenSize(e.target.value)
+        handleOnChangeProperties("screenSize", e.target.value)
     }
+
+    const handleChangeRam = (e) => {
+        setRam(e.target.value)
+        handleOnChangeProperties("ram", e.target.value)
+    }
+
     const handleOnChangeProperties = (field, value) => {
-        setCurrentSetProduct((prev) => ({
+        setCurrentSetProductDetails((prev) => ({
             ...prev,
             [field]: value,
         }));
     };
+
+    const handleSaveProductDetails = ()=>{
+        let newProductDetails= {
+            id:productId,
+            itemDetails:[
+                currentSetProductDetails
+            ]
+        }
+        console.log(newProductDetails)
+        if(currentSetProductDetails.id===null) dispatch(addProductDetails(newProductDetails))   
+        else dispatch(editProductDetails(newProductDetails))
+        handleCloseAddProductDetails()
+        
+    }
+
+
     return (
         <div>
             <Box sx={style.coverer}>
                 <Box sx={style.addUserModal}>
                     <Box style={{ display: 'flex', justifyContent: "flex-end" }}>
                         <IconButton
-                            onClick={handleCloseAddProduct}
+                            onClick={handleCloseAddProductDetails}
                         >
                             <CancelOutlinedIcon color='error' />
                         </IconButton>
@@ -73,7 +88,11 @@ const AddProductDetails = ({ setDisplayAddProduct, category }) => {
                                         <ColorLensOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                         <Box>Màu sắc</Box>
                                     </FormLabel>
-                                    <TextField fullWidth={true} variant='outlined' />
+                                    <TextField
+                                        value={currentSetProductDetails.color}
+                                        onChange={(e) => handleOnChangeProperties("color", e.target.value)}
+                                        fullWidth={true} variant='outlined'
+                                    />
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
@@ -86,11 +105,14 @@ const AddProductDetails = ({ setDisplayAddProduct, category }) => {
                                                 <SaveOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                                 <Box>Dung lượng bộ nhớ</Box>
                                             </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined' />
+                                            <TextField
+                                                value={currentSetProductDetails.diskSize}
+                                                onChange={(e) => handleOnChangeProperties("diskSize", e.target.value)}
+                                                fullWidth={true} variant='outlined' />
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
                                     </Grid>
-                                    <Grid item xs={12} sm={6} md={category == 2?3:6} sx={style.inputContainer} >
+                                    <Grid item xs={12} sm={6} md={category == 1 ? 3 : 6} sx={style.inputContainer} >
                                         <FormControl fullWidth={true}>
                                             <FormLabel sx={style.formLabel} >
                                                 <AnalyticsOutlinedIcon sx={style.formLabel.formLabelIcon} />
@@ -98,16 +120,16 @@ const AddProductDetails = ({ setDisplayAddProduct, category }) => {
                                             </FormLabel>
                                             <Select
                                                 sx={style.select}
-                                                value={frequencyScreen}
+                                                value={ram}
                                                 onChange={(e) => {
-                                                    handleChangeFrequencyScreen(e)
+                                                    handleChangeRam(e)
                                                 }}
                                             >
-                                                <MenuItem value='4G' >4G</MenuItem>
-                                                <MenuItem value='6G' >6G</MenuItem>
-                                                <MenuItem value='8G' >8G</MenuItem>
-                                                <MenuItem value='16G' >16G</MenuItem>
-                                                <MenuItem value='32G' >32G</MenuItem>
+                                                <MenuItem value='4GB' >4G</MenuItem>
+                                                <MenuItem value='6GB' >6G</MenuItem>
+                                                <MenuItem value='8GB' >8G</MenuItem>
+                                                <MenuItem value='16GB' >16G</MenuItem>
+                                                <MenuItem value='32GB' >32G</MenuItem>
                                             </Select>
                                             <FormHelperText></FormHelperText>
                                         </FormControl>
@@ -116,7 +138,7 @@ const AddProductDetails = ({ setDisplayAddProduct, category }) => {
                             )
                             }
                             {/* Kích thước màn hình */}
-                            {category == 2 && <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
+                            {category == 1 && <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
                                 <FormControl fullWidth={true}>
                                     <FormLabel sx={style.formLabel} >
                                         <LaptopWindowsOutlinedIcon sx={style.formLabel.formLabelIcon} />
@@ -124,20 +146,20 @@ const AddProductDetails = ({ setDisplayAddProduct, category }) => {
                                     </FormLabel>
                                     <Select
                                         sx={style.select}
-                                        value={frequencyScreen}
+                                        value={screenSize}
                                         onChange={(e) => {
-                                            handleChangeFrequencyScreen(e)
+                                            handleChangeScreenSize(e)
                                         }}
                                     >
-                                        <MenuItem value='13.3 inch' >13.3 inch</MenuItem>
-                                        <MenuItem value='14 inch' >14 inch</MenuItem>
-                                        <MenuItem value='15.6 inch' >15.6 inch</MenuItem>
+                                        <MenuItem value='13.3 inches' >13.3 inches</MenuItem>
+                                        <MenuItem value='14 inches' >14 inches</MenuItem>
+                                        <MenuItem value='15.6 inches' >15.6 inches</MenuItem>
                                     </Select>
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>}
                             {/* Tình trạng  */}
-                            <Grid item xs={12} sm={6} md={category == 3?3:6} sx={style.inputContainer} >
+                            <Grid item xs={12} sm={6} md={category == 3 ? 3 : 6} sx={style.inputContainer} >
                                 <FormControl fullWidth={true}>
                                     <FormLabel sx={style.formLabel} >
                                         <AnalyticsOutlinedIcon sx={style.formLabel.formLabelIcon} />
@@ -148,8 +170,8 @@ const AddProductDetails = ({ setDisplayAddProduct, category }) => {
                                         value={soldStatus}
                                         onChange={handleChangeSoldStatus}
                                     >
-                                        <MenuItem value='Có sẵn' >Có sẵn</MenuItem>
-                                        <MenuItem value='Hết hàng' >Hết hàng</MenuItem>
+                                        <MenuItem value={true} >Có sẵn</MenuItem>
+                                        <MenuItem value={false} >Hết hàng</MenuItem>
                                     </Select>
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
@@ -162,6 +184,7 @@ const AddProductDetails = ({ setDisplayAddProduct, category }) => {
                                         <Box>Giá bán (VND)</Box>
                                     </FormLabel>
                                     <TextField fullWidth={true} variant='outlined'
+                                        value={currentSetProductDetails.price}
                                         onChange={(e) => {
                                             handleOnChangeProperties("price", e.target.value)
                                         }}
@@ -172,7 +195,10 @@ const AddProductDetails = ({ setDisplayAddProduct, category }) => {
                         </Grid>
                     </form>
                     <Box style={{ display: 'flex', justifyContent: "flex-end" }}>
-                        <Button variant='contained' color='success'>Save</Button>
+                        <Button
+                            onClick={()=> handleSaveProductDetails()}
+                        
+                        variant='contained' color='success'>Save</Button>
                     </Box>
                 </Box>
             </Box>

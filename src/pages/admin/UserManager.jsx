@@ -84,13 +84,14 @@ function UserManager() {
         return (
           <Box>
             <IconButton
+
               size="medium"
               sx={{ m: 1 }}
               onClick={() => {
                 handleOpenDisplayAddUser(params.row.id);
               }}
             >
-              <ModeEditIcon />
+              <ModeEditIcon color="info" />
             </IconButton>
             <IconButton
               size="medium"
@@ -99,7 +100,7 @@ function UserManager() {
                 handleDeleteUser(params.row.id);
               }}
             >
-              <DeleteIcon />
+              <DeleteIcon color="error"/>
             </IconButton>
           </Box>
         );
@@ -160,7 +161,7 @@ function UserManager() {
                 handleOpenDisplayAddUser(params.row.id);
               }}
             >
-              <ModeEditIcon />
+              <ModeEditIcon color="info" />
             </IconButton>
             <IconButton
               size="medium"
@@ -169,7 +170,7 @@ function UserManager() {
                 handleDeleteUser(params.row.id);
               }}
             >
-              <DeleteIcon />
+              <DeleteIcon color="error" />
             </IconButton>
           </Box>
         );
@@ -196,7 +197,7 @@ function UserManager() {
       username: employee.username,
       email: employee.email,
       fullname: employee.name,
-      dob: employee.createDate,
+      dob: employee.dob,
       phone: employee.phoneNumber,
       address: employee.address,
       roles: employee.roles === "ADMIN" ? "Quản trị viên" : "Nhân viên",
@@ -211,7 +212,7 @@ function UserManager() {
   const [displayAddUser, setDisplayAddUser] = useState(false);
   const handleOpenDisplayAddUser = (id) => {
     dispatch(getUserById(id));
-    setDisplayAddUser(true);
+    setTimeout(setDisplayAddUser(true),1000);
   };
   const handleDeleteUser = (id) => {
     dispatch(deleteUser(id));

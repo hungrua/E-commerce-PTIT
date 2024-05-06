@@ -1,23 +1,20 @@
 import { Box, Button, IconButton, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddPromotion from '../../components/Admin/Promotion/AddPromotion';
+import { useDispatch, useSelector } from 'react-redux';
+import promotionSlice, { fetchPromotion, getPromtionById } from '../../redux/reducer/PromotionSlice';
+import { notify } from '../../components/Admin/notify';
 function Promotion() {
+  const dispatch = useDispatch()
   const columns = [
-    {
-      field: 'promotionName',
-      headerName: 'Tên khuyến mãi',
-      minWidth: '200',
-      hideable: false
-
-    },
     {
       field: 'content',
       headerName: "Nội dung khuyến mãi",
-      minWidth: '300'
+      minWidth: '550'
     },
     {
       field: 'startDate',
@@ -35,9 +32,9 @@ function Promotion() {
       minWidth: '100'
     },
     {
-      field: 'limit',
-      headerName: "Giới hạn",
-      minWidth: '150'
+      field: 'numberOfProduct',
+      headerName: "Số lượng mặt hàng áp dụng",
+      minWidth: '200'
     },
     {
       field: 'action',
@@ -47,46 +44,56 @@ function Promotion() {
       headerAlign: 'center',
       renderCell: (params) => {
         return <Box >
-          <IconButton size="medium" sx={{ m: 1 }} onClick={() => { setDisplayAddPromotion(true) }} >
-            <ModeEditIcon />
+          <IconButton size="medium" sx={{ m: 1 }} onClick={() => { handleDisplayAddPromotion(params.row.id) }} >
+            <ModeEditIcon color="info" />
           </IconButton>
           <IconButton size="medium" sx={{ m: 1 }}>
-            <DeleteIcon />
+            <DeleteIcon color="error" />
           </IconButton>
         </Box>
       }
     }
 
   ]
-  const rows =
-    [
-      {
-        id: 1,
-        promotionName: 'Back to school',
-        content: 'Giảm giá 10% tối đa 2.000.000 tất cả các sản phẩm laptop, điện thoại cho tân sinh viên',
-        startDate: "01/09/2023",
-        endDate: "01/011/2023",
-        percent: "10%",
-        limit: "2000000"
-      },
-      {
-        id: 2,
-        promotionName: 'Siêu sale mùa hè',
-        content: 'Giảm giá 15% tối đa 2.000.000 tất cả các sản phẩm cho khách hàng mua hàng trực tuyến',
-        startDate: "01/05/2023",
-        endDate: "30/07/2023",
-        percent: "15%",
-        limit: "2000000"
-      }
-    ]
+  var message = useSelector((state)=> state.promotion.alert)
+  var promotions = useSelector((state) => state.promotion.promotions)
   const [displayAddPromotion, setDisplayAddPromotion] = useState(false)
+  useEffect(() => {
+    dispatch(fetchPromotion())
+  }, [dispatch])
+  useEffect(() => {
+    if (message !== undefined) notify(message.message, message.code)
+    return () => {
+      dispatch(promotionSlice.actions.resetAlert(undefined))
+    }
+  }, [message, dispatch])
+  const rows = promotions.map((promotion) => {
+    return {
+      id: promotion.id,
+      content: promotion.content,
+      startDate: promotion.dateStart,
+      endDate: promotion.dateEnd,
+      percent: promotion.discount,
+      numberOfProduct: promotion.items.length
+    }
+  })
+
+  const handleDisplayAddPromotion = async (id) => {
+    setTimeout(() => {
+      // Gọi dispatch bằng cách truyền một callback function
+      dispatch(getPromtionById(id));
+  
+      // Sau khi dispatch hoàn thành, set state mới
+      setDisplayAddPromotion(true);
+    }, 200);
+  }
   return (
     <div>
       <Box>
         <Typography sx={style.pageTitle} variant='h5'>Quản lý khuyến mại</Typography>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Box>
-            <Button variant='contained' onClick={() => { setDisplayAddPromotion(true) }}>
+            <Button variant='contained' onClick={() => { handleDisplayAddPromotion(-1) }}>
               <AddBoxOutlinedIcon fontSize='small' />
               <Box ml={1}>Thêm khuyến mại</Box>
             </Button>

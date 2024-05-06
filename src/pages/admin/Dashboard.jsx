@@ -15,42 +15,52 @@ import RankProduct from '../../components/Admin/Dashboard/RankProduct';
 function Dashboard() {
     const top10 = [
         {
-            name: "Máy lọc không khí chống dị ứng thú cưng Levoit Vital 100S",
-            sale: 250
+            "id": 1,
+            "name": "Máy lọc không khí chống dị ứng thú cưng Levoit Vital 100S",
+            "sale": 250
         },
         {
-            name: "Samsung Galaxy S24 Ultra 12GB 256GB",
-            sale: 230
+            "id": 2,
+            "name": "Samsung Galaxy S24 Ultra 12GB 256GB",
+            "sale": 230
         },
         {
-            name: "Bàn chải điện Oral-B Vitality Crossaction Blue D12.513",
-            sale: 210
+            "id": 3,
+            "name": "Bàn chải điện Oral-B Vitality Crossaction Blue D12.513",
+            "sale": 210
         },
         {
+            "id": 4,
             "name": "Apple iPhone 14 Pro Max 256GB",
             "sale": 200
         },
         {
+            "id": 5,
             "name": "Google Pixel 7 XL 128GB",
             "sale": 180
         },
         {
+            "id": 6,
             "name": "OnePlus 10 Pro 12GB 256GB",
             "sale": 150
         },
         {
+            "id": 7,
             "name": "Xiaomi Mi 13 Ultra 12GB 512GB",
             "sale": 120
         },
         {
+            "id": 8,
             "name": "Huawei P50 Pro 8GB 256GB",
             "sale": 100
         },
         {
+            "id": 9,
             "name": "Sony Xperia 1 III 12GB 256GB",
             "sale": 80
         },
         {
+            "id": 10,
             "name": "LG Velvet 3 5G 8GB 128GB",
             "sale": 50
         }
@@ -204,7 +214,7 @@ function Dashboard() {
                             <Box sx={style.item.rankProductContainer}>
                                 {top10.map((product,index)=>{
                                     return(
-                                        <RankProduct number={index+1} product={product} />
+                                        <RankProduct key={product.id} number={index+1} product={product} />
                                     )
                                 })}
                             </Box>

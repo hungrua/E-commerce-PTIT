@@ -49,7 +49,7 @@ const voucherSlice = createSlice({
 export const fetchVoucher = createAsyncThunk(
     "voucher/fetchVoucher",
     async () => {
-        const res = await fetch(IP + "/api/vouchers",{
+        const res = await fetch(IP + "/customer/api/vouchers",{
           headers: {
             Authorization: `Bearer ${token}`,
           }

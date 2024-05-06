@@ -72,10 +72,10 @@ const Voucher = () => {
       renderCell: (params) => {
         return <Box >
           <IconButton size="medium" sx={{ m: 1 }} onClick={() => { handleOpenAddVoucher(params.row.id) }} >
-            <ModeEditIcon />
+            <ModeEditIcon color="info" />
           </IconButton>
           <IconButton size="medium" sx={{ m: 1 }} onClick={()=>{handleDeleteVoucher(params.row.id)} }>
-            <DeleteIcon />
+            <DeleteIcon color="error" />
           </IconButton>
         </Box>
       }

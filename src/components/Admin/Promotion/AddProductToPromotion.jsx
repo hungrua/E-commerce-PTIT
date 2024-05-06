@@ -1,95 +1,30 @@
 import { Box, Button, Chip, Divider, Grid, IconButton, Input, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { notify } from '../notify';
-const AddProductToPromotion = ({ setDisplayAddPromotion }) => {
-  const [notInPromotionProducts, setNotInPromotionProducts] = useState([
-    {
-      productCode: "LT001",
-      productName: "Dell XPS 13 2022 16G"
-    },
-    {
-      productCode: "LT002",
-      productName: "HP Spectre x360 2023 8G"
-    },
-    {
-      productCode: "LT003",
-      productName: "Lenovo ThinkPad X1 Carbon 2024 16G"
-    },
-    {
-      productCode: "LT004",
-      productName: "Asus ZenBook 14 2023 8G"
-    },
-    {
-      productCode: "LT005",
-      productName: "Acer Swift 5 2022 16G"
-    },
-    {
-      productCode: "ĐT001",
-      productName: "iPhone 13 Pro"
-    },
-    {
-      productCode: "ĐT002",
-      productName: "Samsung Galaxy S21 Ultra"
-    },
-    {
-      productCode: "ĐT003",
-      productName: "Google Pixel 6"
-    },
-    {
-      productCode: "ĐT004",
-      productName: "OnePlus 9 Pro"
-    },
-    {
-      productCode: "ĐT005",
-      productName: "Xiaomi Mi 11"
-    },
-    {
-      productCode: "LT006",
-      productName: "MSI GS66 Stealth 2024 8G"
-    },
-    {
-      productCode: "LT007",
-      productName: "Razer Blade 15 2023 16G"
-    },
-    {
-      productCode: "LT008",
-      productName: "LG Gram 2022 8G"
-    },
-    {
-      productCode: "LT009",
-      productName: "Microsoft Surface Laptop 4 2024 16G"
-    },
-    {
-      productCode: "ĐT006",
-      productName: "Apple iPhone 12"
-    },
-    {
-      productCode: "ĐT007",
-      productName: "Samsung Galaxy Note 20 Ultra"
-    },
-    {
-      productCode: "ĐT008",
-      productName: "Google Pixel 5"
-    },
-    {
-      productCode: "ĐT009",
-      productName: "OnePlus 8 Pro"
-    },
-    {
-      productCode: "ĐT010",
-      productName: "Xiaomi Mi 10"
-    },
-    {
-      productCode: "LT010",
-      productName: "Alienware M15 R4 2023 8G"
-    }
-  ])
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProduct } from '../../../redux/reducer/ProductSlice';
+import { addPromotion, editPromotion, getPromtionById } from '../../../redux/reducer/PromotionSlice';
+const AddProductToPromotion = ({ setDisplayAddPromotion, setAddProductToPromotion, currentSetPromotion }) => {
+  const dispatch = useDispatch()
+
+  const [notInPromotionProducts, setNotInPromotionProducts] = useState([])
   const [inPromotionProducts, setInPromotionProducts] = useState([])
 
   const [displayNotInPromotionProducts, setDisplayNotInPromotionProducts] = useState([...notInPromotionProducts])
   const [displayInPromotionProducts, setDisplayInPromotionProducts] = useState([...inPromotionProducts])
+
+  var products = useSelector((state) => state.product.products)
+  useEffect(() => {
+    let productId = currentSetPromotion.items.map((item) => item.id)
+    let notIn = products.filter((item) => !productId.includes(item.id))
+    setNotInPromotionProducts(notIn)
+    setDisplayNotInPromotionProducts(notIn)
+    setInPromotionProducts(currentSetPromotion.items)
+    setDisplayInPromotionProducts(currentSetPromotion.items)
+
+  }, [dispatch])
   const addToPromotionList = (item) => {
     setInPromotionProducts((prevList) => {
       return [...prevList, item]
@@ -98,22 +33,22 @@ const AddProductToPromotion = ({ setDisplayAddPromotion }) => {
       return [...prevList, item]
     })
     setNotInPromotionProducts((prevList) => {
-      let newList = prevList.filter(product => product.productCode !== item.productCode)
+      let newList = prevList.filter(product => product.id !== item.id)
       return newList
     })
     setDisplayNotInPromotionProducts((prevList) => {
-      let newList = prevList.filter(product => product.productCode !== item.productCode)
+      let newList = prevList.filter(product => product.id !== item.id)
       return newList
     })
   }
 
   const removeFromPromotionList = (item) => {
     setInPromotionProducts((prevList) => {
-      let newList = prevList.filter(product => product.productCode !== item.productCode)
+      let newList = prevList.filter(product => product.id !== item.id)
       return newList
     })
     setDisplayInPromotionProducts((prevList) => {
-      let newList = prevList.filter(product => product.productCode !== item.productCode)
+      let newList = prevList.filter(product => product.id !== item.id)
       return newList
     })
     setNotInPromotionProducts((prevList) => {
@@ -123,33 +58,48 @@ const AddProductToPromotion = ({ setDisplayAddPromotion }) => {
       return [...prevList, item]
     })
   }
+  const getItemsInAOnly = (arrA, arrB) => {
+    return arrA.filter(item => !arrB.includes(item));
+  }
 
   const handleOnchangeInputNotInPromotionProducts = (e) => {
     const keyword = e.target.value.toLocaleLowerCase()
-    const list = notInPromotionProducts.filter(item => item.productName.toLocaleLowerCase().includes(keyword) || item.productCode.toLocaleLowerCase().includes(keyword))
+    const list = notInPromotionProducts.filter(item => item.name.toLocaleLowerCase().includes(keyword))
     setDisplayNotInPromotionProducts(list)
   }
 
   const handleOnchangeInputInPromotionProducts = (e) => {
     const keyword = e.target.value.toLocaleLowerCase()
-    const list = inPromotionProducts.filter(item => item.productName.toLocaleLowerCase().includes(keyword) || item.productCode.toLocaleLowerCase().includes(keyword))
+    const list = inPromotionProducts.filter(item => item.name.toLocaleLowerCase().includes(keyword))
     console.log(list)
     setDisplayInPromotionProducts(list)
   }
 
   const handleSavePromotion = () => {
+    let productId = currentSetPromotion.items.map((item) => item.id)
+    let inPromotion = inPromotionProducts.map((item) => item.id)
+    let addList = getItemsInAOnly(inPromotion, productId)
+    let removeList = getItemsInAOnly(productId, inPromotion)
+    const newPromotion = {
+      ...currentSetPromotion,
+      "idItems": addList,
+      "idItemsRemove": removeList
+    }
+    if (newPromotion.id === null) dispatch(addPromotion(newPromotion))
+    else dispatch(editPromotion(newPromotion))
+    dispatch(getPromtionById(-1))
     setDisplayAddPromotion(false)
-    notify("WOW",1)
   }
   return (
     <Box>
       <Box>
+        <button onClick={() => setAddProductToPromotion(false)}>Back</button>
         <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={12} md={6} sx={style.gridItem}>
             <Divider>
               <Chip sx={style.chip} color='info' label="Danh sách tất cả sản phẩm" size='medium' />
             </Divider>
-            <Input fullWidth="true" placeholder='Nhập tên hoặc mã sản phẩm...' onChange={handleOnchangeInputNotInPromotionProducts} />
+            <Input fullWidth={true} placeholder='Nhập tên hoặc mã sản phẩm...' onChange={handleOnchangeInputNotInPromotionProducts} />
             <TableContainer sx={style.tableCotainer} >
               <Table padding='none' size='small' stickyHeader>
                 <TableHead>
@@ -165,8 +115,8 @@ const AddProductToPromotion = ({ setDisplayAddPromotion }) => {
                     return (
                       <TableRow>
                         <TableCell align='center' >{index + 1}</TableCell>
-                        <TableCell align='center'>{item.productCode}</TableCell>
-                        <TableCell>{item.productName}</TableCell>
+                        <TableCell align='center'>{item.id}</TableCell>
+                        <TableCell>{item.name}</TableCell>
                         <TableCell align='center'>
                           <IconButton onClick={() => addToPromotionList(item)}>
                             <AddCircleOutlineIcon color='success' />
@@ -184,7 +134,7 @@ const AddProductToPromotion = ({ setDisplayAddPromotion }) => {
             <Divider>
               <Chip sx={style.chip} color='success' label="Danh sách sản phẩm áp dụng khuyến mãi" size='medium' />
             </Divider>
-            <Input fullWidth="true" placeholder='Nhập tên hoặc mã sản phẩm...' onChange={handleOnchangeInputInPromotionProducts} />
+            <Input fullWidth={true} placeholder='Nhập tên hoặc mã sản phẩm...' onChange={handleOnchangeInputInPromotionProducts} />
             <TableContainer sx={style.tableCotainer} >
               <Table padding='none' size='small' stickyHeader>
                 <TableHead>
@@ -201,8 +151,8 @@ const AddProductToPromotion = ({ setDisplayAddPromotion }) => {
                       return (
                         <TableRow>
                           <TableCell align='center'>{index + 1}</TableCell>
-                          <TableCell align='center'>{item.productCode}</TableCell>
-                          <TableCell>{item.productName}</TableCell>
+                          <TableCell align='center'>{item.id}</TableCell>
+                          <TableCell>{item.name}</TableCell>
                           <TableCell align='center'>
                             <IconButton onClick={() => removeFromPromotionList(item)}>
                               <RemoveCircleOutlineIcon color='error' />
@@ -236,11 +186,11 @@ const style = {
     marginTop: "10px"
   },
   gridItem: {
-    mt:"20px",
+    mt: "20px",
     height: "500px"
   },
-  chip:{
-    marginBottom:"10px"
+  chip: {
+    marginBottom: "10px"
   }
 }
 

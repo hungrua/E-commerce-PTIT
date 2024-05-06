@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP, token } from "../../config/const";
+import { notify } from "../../components/Admin/notify";
 const userSlice = createSlice({
   name: "users",
   initialState: {

@@ -2,11 +2,41 @@ import { IconButton, TableCell, TableRow, Typography, TableBody, TableHead, Tabl
 import React, { useState } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddProductDetails from './AddProductDetails';
+import { useDispatch } from 'react-redux';
+import { deleteProduct, deleteProductDetails, getProductById, getProductDetailsById } from '../../../redux/reducer/ProductSlice';
 const CollapseRow = (props) => {
-    const { row, category, itemDetails } = props
+    const dispatch = useDispatch()
+    const { row, category, itemDetails, setDisplayAddProduct,productId } = props
     const [open, setOpen] = useState(false)
-    const [displayAddProductDetails,setDisplayAddProductDetails] = useState(false)
+    const [displayAddProductDetails, setDisplayAddProductDetails] = useState(false)
+
+    const handleOpenEditProductScreen = (id) => {
+        dispatch(getProductById(id))
+        setDisplayAddProduct(true)
+    }
+
+    const handleDeleteProduct = (id) => {
+        dispatch(deleteProduct(id))
+    }
+
+    const handleOpenEditProductDetails = (id)=>{
+        dispatch(getProductDetailsById(id))
+        setDisplayAddProductDetails(true)
+    }
+
+    const handleOpenAddProductDetails = ()=>{
+        dispatch(getProductDetailsById(-1))
+        setDisplayAddProductDetails(true)
+    }
+
+    const handleDeleteProductDetails = (id)=>{
+        console.log(id)
+        dispatch(deleteProductDetails({productId,id}))
+    }
+
     return (
         <React.Fragment>
             <TableRow>
@@ -21,20 +51,43 @@ const CollapseRow = (props) => {
                 </TableCell>
                 <TableCell component="th" scope='row' align='center'>{row.id}</TableCell>
                 <TableCell align='left'>{row.name}</TableCell>
-                <TableCell align='center'>{row.description}</TableCell>
+                <TableCell align='center'>{row.categoryDto.name}</TableCell>
                 <TableCell align='center'>{row.vendor}</TableCell>
+                <TableCell align='center'>
+                    <IconButton
+                        onClick={() => handleOpenEditProductScreen(row.id)}
+                    >
+                        <BorderColorOutlinedIcon color='info' />
+                    </IconButton>
+                    <IconButton
+                        onClick={() => handleDeleteProduct(row.id)}
+                    >
+                        <DeleteOutlinedIcon color='error' />
+                    </IconButton>
+                </TableCell>
             </TableRow>
             <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={5}>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={2}>
-                            <Box sx={{display:"flex",justifyContent:"space-between"}}>
-                                <Typography variant="h6" gutterBottom component="div">
+                            <Box sx={{
+                                justifyContent: itemDetails.length !== 0 ? "space-between" : "normal",
+                                display: itemDetails.length !== 0 ? "flex" : "block",
+
+                            }}>
+                                {itemDetails.length !== 0 && <Typography variant="h6" gutterBottom component="div">
                                     Loại sản phẩm
-                                </Typography>
-                                <Button onClick={()=> setDisplayAddProductDetails(true)} variant='outlined' color="error" size='small' >Thêm loại sản phẩm</Button>
+                                </Typography>}
+                                {itemDetails.length === 0 && <Box sx={{ textAlign: "center", mb: 1 }}>Chưa có loại sản phẩm vui lòng thêm mới</Box>}
+                                <Box
+                                    sx={{
+                                        display: "flex", justifyContent: "center"
+                                    }}
+                                >
+                                    <Button onClick={() => handleOpenAddProductDetails()} variant='outlined' color="error" size='small' >Thêm loại sản phẩm</Button>
+                                </Box>
                             </Box>
-                            <Table size="small" aria-label="purchases">
+                            {itemDetails.length !== 0 && <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
                                         <TableCell align='center'>Màu sắc</TableCell>
@@ -49,6 +102,7 @@ const CollapseRow = (props) => {
                                         <TableCell align='center' >Giá bán</TableCell>
                                         <TableCell align='center'>Đã bán</TableCell>
                                         <TableCell align='center'>Số lượng còn</TableCell>
+                                        <TableCell align='center'>Tác vụ</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody width="100">
@@ -62,20 +116,32 @@ const CollapseRow = (props) => {
                                                 </React.Fragment>
                                             }
                                             {category == 2 && <TableCell>{items.screenSize}</TableCell>}
-                                            <TableCell align='center' >{items.isAvailable === "true" ? "Còn hàng" : "Hết hàng"}</TableCell>
+                                            <TableCell align='center' >{items.isAvailable === true ? "Còn hàng" : "Hết hàng"}</TableCell>
                                             <TableCell align='center' >{items.price}</TableCell>
                                             <TableCell align='center'>{items.soldNumber}</TableCell>
                                             <TableCell align='center'>{items.quantity}</TableCell>
+                                            <TableCell align='center'>
+                                                <IconButton
+                                                    onClick={() => handleOpenEditProductDetails(items.id)}
+                                                >
+                                                    <BorderColorOutlinedIcon color='info' />
+                                                </IconButton>
+                                                <IconButton
+                                                    onClick={() => handleDeleteProductDetails(items.id)}
+                                                >
+                                                    <DeleteOutlinedIcon color='error' />
+                                                </IconButton>
+                                            </TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
-                            </Table>
+                            </Table>}
                         </Box>
                     </Collapse>
                 </TableCell>
             </TableRow>
-            {displayAddProductDetails && <AddProductDetails  setDisplayAddProduct={setDisplayAddProductDetails} category={3} />}
-        </React.Fragment>
+            {displayAddProductDetails && <AddProductDetails setDisplayAddProduct={setDisplayAddProductDetails} category={category} productId={productId} />}
+        </React.Fragment >
     )
 }
 

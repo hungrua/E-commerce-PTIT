@@ -117,7 +117,7 @@ function AddUser({ setDisplayAddUser, typeUser }) {
                                         }
                                     }
                                 />
-                                <FormHelperText > </FormHelperText>
+                                <FormHelperText></FormHelperText>
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}

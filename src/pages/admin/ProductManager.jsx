@@ -1,102 +1,46 @@
 
 import { Box, Button, IconButton, Tab, Tabs, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddProduct from '../../components/Admin/Product/AddProduct';
 import ProductCollapseTable from '../../components/Admin/Product/ProductCollapseTable';
+import { useDispatch, useSelector } from 'react-redux';
+import productSlice, {  getProductById } from '../../redux/reducer/ProductSlice';
+import { notify } from '../../components/Admin/notify';
 const ProductManager = () => {
+  const dispatch = useDispatch()
   const [displayAddProduct, setDisplayAddProduct] = useState(false)
-  const columns = [
-    {
-      field: 'productName',
-      headerName: 'Tên sản phẩm',
-      minWidth: '300',
-      hideable: false
+  var message = useSelector((state)=> state.product.alert)
+  useEffect(()=>{
+    if(message!==undefined) notify(message.message,message.code)
 
-    },
-    {
-      field: 'category',
-      headerName: "Danh mục",
-      minWidth: '150'
-    },
-    {
-      field: 'branch',
-      headerName: "Hãng sản xuất",
-      minWidth: '200'
-    },
-    {
-      field: 'price',
-      headerName: "Giá bán",
-      minWidth: '150'
-    },
-    {
-      field: 'status',
-      headerName: "Tình trạng",
-      minWidth: '100'
-    },
-    {
-      field: 'description',
-      headerName: "Mô tả sản phẩm",
-      minWidth: '350'
-    },
-    {
-      field: 'action',
-      headerName: 'Tác vụ',
-      minWidth: '150',
-      sortable: false,
-      headerAlign: 'center',
-      renderCell: (params) => {
-        return <Box >
-          <IconButton size="medium" sx={{ m: 1 }} onClick={() => { setDisplayAddProduct(true) }} >
-            <ModeEditIcon />
-          </IconButton>
-          <IconButton size="medium" sx={{ m: 1 }}>
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-      }
+    return ()=>{
+      dispatch(productSlice.actions.resetAlert(undefined))
     }
+  },[message,dispatch])
+  const handleOpenAddProduct = () => {
+    setDisplayAddProduct(true)
+    dispatch(getProductById(-1))
+  }
 
-  ]
-  const rows =
-    [
-      {
-        id: 1,
-        productName: 'Laptop MSI M112 16GB',
-        description: 'Lâplsndojasndonasudnasuduasbduibasiudbasuibduisa',
-        category: "Laptop",
-        branch: "MSI",
-        price: "20000000",
-        status: "Còn hàng"
-      },
-      {
-        id: 2,
-        productName: 'Iphone 14 Promax 256G',
-        description: 'Lâplsndojasndonasudnasuduasbduibasiudbasuibduisa',
-        category: "Điện thoại",
-        branch: "Apple",
-        price: "30000000",
-        status: "Còn hàng"
-      }
-    ]
   return (
     <div>
       <Box>
         <Typography sx={style.pageTitle} variant='h5'>Quản lý sản phẩm</Typography>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Box>
-            <Button variant='contained' onClick={() => { setDisplayAddProduct(true) }}>
+            <Button variant='contained' onClick={() => { handleOpenAddProduct() }}>
               <AddBoxOutlinedIcon fontSize='small' />
               <Box ml={1}>Thêm sản phẩm</Box>
             </Button>
           </Box>
-          <ProductCollapseTable />
+          <ProductCollapseTable setDisplayAddProduct={setDisplayAddProduct} />
         </Box>
       </Box>
-      {displayAddProduct && <AddProduct setDisplayAddProduct={setDisplayAddProduct}  /> } 
+      {displayAddProduct && <AddProduct setDisplayAddProduct={setDisplayAddProduct} />}
     </div>
   )
 }

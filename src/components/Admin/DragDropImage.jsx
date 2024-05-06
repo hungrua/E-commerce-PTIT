@@ -1,20 +1,42 @@
 import { Box } from '@mui/material'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-export default function DragDropImage() {
+export default function DragDropImage({ setAddImages,initImages }) {
     const [images, setImages] = useState([])
     const [isDraging, setIsDraging] = useState(false)
     const fileInputRef = useRef(null)
+    useEffect(()=>{
+        if(initImages) {
+            let tmpImg = []
+            // console.log(typeof initImages)
+            if(typeof initImages !=="string"){
+                initImages.map((img)=>{
+                    tmpImg.push({
+                        url: img.path,
+                        name: `image${img.id}`
+                    })
+                })
+            }
+            else {
+                tmpImg.push({
+                    name: "unique",
+                    url: initImages
+                })
+            }
+            setImages(tmpImg)
+        }
+    },[initImages])
     const selectFiles = () => {
         fileInputRef.current.click()
     }
     const onFilesSelect = (event) => {
+        let imageAdded = [...images]
         const files = event.target.files
         if (files.length == 0) return;
         for (let i = 0; i < files.length; i++) {
             if (files[i].type.split('/')[0] !== 'image') continue;
             if (!images.some((e) => e.name === files[i].name)) {
-                console.log(files[i].name,URL.createObjectURL(files[i]))
+                console.log(files[i].name)
                 setImages((prevImages) => [
                     ...prevImages,
                     {
@@ -22,14 +44,21 @@ export default function DragDropImage() {
                         url: URL.createObjectURL(files[i])
                     }
                 ])
+                imageAdded.push({
+                    name: files[i].name,
+                    url: URL.createObjectURL(files[i])
+                })
             }
         }
-        console.log(images)
+        setAddImages(imageAdded)
     }
-    const handleDeleteImg= (index)=>{
-        setImages((prevImages)=>
-            prevImages.filter((_,i)=> i!==index)
-    )
+    const handleDeleteImg = (index) => {
+        let imageAdded = [...images]
+        setImages((prevImages) =>
+            prevImages.filter((_, i) => i !== index)
+        )
+        imageAdded = imageAdded.filter((_, i) => i !== index)
+        setAddImages(imageAdded)
     }
     return (
         <Box>
@@ -51,8 +80,8 @@ export default function DragDropImage() {
                     images.map((img, index) => {
                         return (
                             <Box sx={style.container.image} key={index} >
-                                <Box sx={style.container.image.delete} onClick={ ()=>handleDeleteImg(index)}>x</Box>
-                                <img src={img.url} alt={img.name} style={{height:"100%"}} ></img>
+                                <Box sx={style.container.image.delete} onClick={() => handleDeleteImg(index)}>x</Box>
+                                <img src={img.url} alt={img.name} style={{ height: "100%" }} ></img>
                             </Box>
                         )
                     })
@@ -99,15 +128,15 @@ const style = {
             width: "auto",
             marginRight: "10px",
             height: "75px",
-            maxHeight:"75px",
+            maxHeight: "75px",
             position: "relative",
             delete: {
                 position: 'absolute',
                 top: "-2px",
                 right: "2px",
                 cursor: "pointer",
-                color:"red",
-                backgroundColor:"white"
+                color: "red",
+                backgroundColor: "white"
 
             }
         }

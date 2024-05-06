@@ -44,7 +44,7 @@ const categorySlice = createSlice({
 export const fetchCategory = createAsyncThunk(
   "category/fetchCategory",
   async () => {
-    const res = await fetch(IP + "/api/categories", {
+    const res = await fetch(IP + "/customer/api/categories", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
