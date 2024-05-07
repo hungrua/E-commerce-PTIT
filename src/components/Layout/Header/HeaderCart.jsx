@@ -8,7 +8,7 @@ import { FaCartShopping } from "react-icons/fa6";
 
 import { Link } from 'react-router-dom';
 
-const CartHeader = (props) => {
+const HeaderCart = (props) => {
     return (
         <div className="fixed z-50 right-0 w-[550px] top-[58px] translate-x-0 translate-y-0 opacity-[1] max-w-[90%] bottom-0 overflow-y-auto bg-[#fff] transition-all shadow-3">
             <div className="h-full flex flex-col">
@@ -105,4 +105,4 @@ const CartHeader = (props) => {
     );
 };
 
-export default CartHeader;
+export default HeaderCart;

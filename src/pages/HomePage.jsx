@@ -7,7 +7,6 @@ import ProductCategories from "../components/Route/ProductCategories/ProductCate
 import Products from "../components/Route/Products/Products";
 import IntroBrands from "../components/Route/IntroBrands/IntroBrands";
 import Consultation from "../components/Route/Consultation/Consultation";
-import News from "../components/Route/News/News";
 import Vouchers from "../components/Route/Vouchers/Vouchers";
 const HomePage = () => {
   return (

@@ -10,7 +10,7 @@ const Review = (props) => {
         "password": null,
         "avatar": "/static/images/avatars/uan.jpg",
         "address": "Quảng Bố Quảng Phú Lương Tài Bắc Ninh",
-        "createDate": "2020-04-27",
+        "createDate": "2024-05-04",
         "modifiedDate": "2024-03-22",
         "roles": "ADMIN, EMPLOYEE"
     })
@@ -25,7 +25,7 @@ const Review = (props) => {
     const getDurationCreateAccount = () => {
         let created = new Date(user.createDate);
         let now = new Date();
-        let days = (now - created) / (1000 * 3600 * 24);
+        let days = parseInt((now - created) / (1000 * 3600 * 24));
         let months = parseInt(days / 30);
         let years = parseInt(days / 365);
         if(years >= 1) {

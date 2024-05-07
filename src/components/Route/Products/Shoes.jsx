@@ -26,10 +26,10 @@ const Shoes = () => {
         </div>
 
         <div className="mt-[30px]">
-          <div className="flex mx-[-7px] max-sm:flex-wrap max-sm:flex-col-reverse">
+          <div className="flex max-sm:flex-wrap max-sm:flex-col-reverse">
             {/* left */}
             <div className="w-[69.333333333%] px-[7px] max-sm:w-full">
-              <div className="grid grid-cols-3 mx-[-7px] gap-5">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                 <ProductCard />
                 <ProductCard />
                 <ProductCard />

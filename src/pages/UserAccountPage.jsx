@@ -63,7 +63,7 @@ const UserAccountPage = () => {
     return (
         <>
             <Header />
-            <div className="p-5 bg-[#efefef]">
+            <div className="p-5 bg-[#efefef] mt-[58px]">
                 <div className="mb-4">
                     <ul className="flex gap-x-2">
                         <li>
@@ -81,7 +81,7 @@ const UserAccountPage = () => {
                         <Navbar tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
                     </div>
                     <div className="col-span-4">
-                        <h1 className="font-bold text-lg pb-6 pt-[13px]">{tabs[activeTab].name}</h1>
+                        <h1 className="font-bold text-lg pb-[13px]">{tabs[activeTab].name}</h1>
                         {tabs[activeTab].tab}
                     </div>
                 </div>

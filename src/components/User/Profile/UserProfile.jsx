@@ -27,7 +27,7 @@ const UserProfile = (props) => {
     }, [selectedMonth, selectedYear])
 
     const isLeapYear = (year) => {
-        if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) return true;
+        if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) return true;
         return false;
     }
 
@@ -49,7 +49,7 @@ const UserProfile = (props) => {
 
     const handleChange = event => {
         var { name, value } = event.target
-        console.log(selectedDay, selectedMonth, selectedYear)
+        // console.log(selectedDay, selectedMonth, selectedYear)
         value = isNaN(value) ? 0 : parseInt(value)
         if (name === "day") {
             if (!value in days) {

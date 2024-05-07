@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../images/logo2.jpg";
 import {
   FaAngleDown,
@@ -8,16 +8,18 @@ import {
 } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
-import CartHeader from "./CartHeader";
-import NotificationHeader from "./NotificationHeader";
+import HeaderCart from "./HeaderCart";
+import HeaderNotification from "./HeaderNotification";
 
 const Header = () => {
+  const navigate = useNavigate()
   const [openMenu, setOpenMenu] = useState(false);
   const [openProductList, setOpenProductList] = useState(false);
   const [openCartList, setOpenCartList] = useState(false);
   const [categories, setCategories] = useState(['Laptop', 'Dien thoai', 'Phu kien'])
   const [openNotification, setOpenNotification] = useState(false);
   const [notifications, setNotifications] = useState([])
+  const [searchValue, setSearchValue] = useState('')
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
@@ -42,30 +44,38 @@ const Header = () => {
     setOpenNotification(!openNotification)
   }
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if(searchValue.length !== 0) {
+      navigate("/search?query="+searchValue)
+    }
+  }
+
 
   return (
     <>
-      <header class=" w-full fixed top-0 z-10">
-        <nav class="bg-[#fff] shadow-headerShadow border-b-[0.1rem] border-b-solid border-[#fff] py-2">
-          <div class="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto relative">
-            <Link to="/" class="flex items-center">
+      <header className=" w-full fixed top-0 z-10">
+        <nav className="bg-[#fff] shadow-headerShadow border-b-[0.1rem] border-b-solid border-[#fff] py-2">
+          <div className="flex items-center justify-between max-w-screen-xl px-4 mx-auto relative">
+            <Link to="/" className="flex items-center">
               <img
                 src={logo}
-                class="w-11 mx-3 h-auto"
+                className="w-11 mx-3 h-auto"
                 alt="BadmintonShop Logo"
               />
             </Link>
-            <div class="flex items-center lg:order-2">
+            <div className="flex items-center lg:order-2">
               <div className="flex gap-[0.8rem] items-center">
                 <div className="flex gap-[0.8rem] items-center">
-                  <div className="flex items-center w-80 justify-end">
-                    <input type="text" placeholder="Search..."
-                      className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500" />
-                    <button className="bg-[#00B4CC] text-white w-10 h-10 flex items-center justify-center rounded-r-md">
+                  <form className="flex items-center w-80 justify-end">
+                    <input type="text" placeholder="Search..." className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500" 
+                      onChange={(e) => setSearchValue(e.target.value)} value={searchValue}/>
+                    <button type="submit" className="bg-[#00B4CC] text-white w-10 h-10 flex items-center justify-center rounded-r-md"
+                      onClick={handleSearch}>
                       <FaSearch />
                     </button>
 
-                  </div>
+                  </form>
                 </div>
                 <div className="flex gap-[0.8rem] items-center">
                   <div className="relative">
@@ -74,7 +84,7 @@ const Header = () => {
                       <FaRegBell className="text-[16px] hover:text-[#f66315]" />
                     </button>
                     {
-                      openNotification && <NotificationHeader/>
+                      openNotification && <HeaderNotification/>
                     }
                   </div>
                   <div>
@@ -103,17 +113,17 @@ const Header = () => {
                   </div>
                   {/* gio hang detail */}
                   {
-                    openCartList && <CartHeader openCartList={openCartList} setOpenCartList={setOpenCartList}/>
+                    openCartList && <HeaderCart openCartList={openCartList} setOpenCartList={setOpenCartList}/>
                   }
                 </div>
               </div>
               <button
                 type="button"
-                class="inline-flex items-center p-2 ml-1 text-sm text-[#e95221] rounded-lg lg:hidden bg-gray-100"
+                className="inline-flex items-center p-2 ml-1 text-sm text-[#e95221] rounded-lg lg:hidden bg-gray-100"
                 onClick={() => setOpenMenu(!openMenu)}
               >
                 <svg
-                  class="w-6 h-6"
+                  className="w-6 h-6"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -125,7 +135,7 @@ const Header = () => {
                   ></path>
                 </svg>
                 <svg
-                  class="hidden w-6 h-6"
+                  className="hidden w-6 h-6"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -140,14 +150,14 @@ const Header = () => {
             </div>
             {openMenu === true ? (
               <div
-                class="items-center justify-between w-full lg:flex lg:w-auto lg:order-1 fixed z-50 right-0 top-[58px] bg-[#fff]"
+                className="items-center justify-between w-full lg:flex lg:w-auto lg:order-1 fixed z-50 right-0 top-[58px] bg-[#fff]"
                 id="mobile-menu"
               >
-                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li>
                     <Link
                       to="/"
-                      class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] rounded lg:bg-transparent hover:text-[#fff] lg:p-0"
+                      className="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] rounded lg:bg-transparent hover:text-[#fff] lg:p-0"
                       aria-current="page"
                     >
                       Trang chủ
@@ -156,7 +166,7 @@ const Header = () => {
                   <li>
                     <Link
                       to="/san-pham"
-                      class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
+                      className="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Sản phẩm
                     </Link>
@@ -164,7 +174,7 @@ const Header = () => {
                   <li>
                     <Link
                       to="/cua-hang"
-                      class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
+                      className="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Cửa hàng
                     </Link>
@@ -172,7 +182,7 @@ const Header = () => {
                   <li>
                     <Link
                       to="/tra-don-hang"
-                      class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
+                      className="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Tra đơn hàng
                     </Link>
@@ -180,7 +190,7 @@ const Header = () => {
                   {/* <li>
                     <Link
                       to="/tin-tuc"
-                      class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
+                      className="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Tin tức
                     </Link>
@@ -188,7 +198,7 @@ const Header = () => {
                   <li>
                     <Link
                       to="/lien-he"
-                      class="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
+                      className="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Liên hệ
                     </Link>
@@ -197,14 +207,14 @@ const Header = () => {
               </div>
             ) : (
               <div
-                class="items-center justify-between hidden w-full lg:flex lg:w-auto md:order-1"
+                className="items-center justify-between hidden w-full lg:flex lg:w-auto md:order-1"
                 id="web-navbar"
               >
-                <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li>
                     <Link
                       to="/"
-                      class="block uppercase py-2 pl-3 pr-4 text-black bg-[#f66315] rounded lg:bg-transparent lg:hover:text-[#f66315] lg:p-0 "
+                      className="block uppercase py-2 pl-3 pr-4 text-black bg-[#f66315] rounded lg:bg-transparent lg:hover:text-[#f66315] lg:p-0 "
                       aria-current="page"
                     >
                       Trang chủ
@@ -213,7 +223,7 @@ const Header = () => {
                   <li className="relative cursor-pointer">
                     <span
                       onClick={() => setOpenProductList(!openProductList)}
-                      class="flex flex-nowrap justify-center text-center uppercase py-2 pl-3 pr-4 text-black  lg:hover:text-[#f66315] lg:p-0 "
+                      className="flex flex-nowrap justify-center text-center uppercase py-2 pl-3 pr-4 text-black  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Sản phẩm
                       <FaAngleDown className="mt-[5px]" />
@@ -251,7 +261,7 @@ const Header = () => {
                   <li>
                     <Link
                       to="/cua-hang"
-                      class="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
+                      className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Cửa hàng
                     </Link>
@@ -259,7 +269,7 @@ const Header = () => {
                   <li>
                     <Link
                       to="/tra-don-hang"
-                      class="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
+                      className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Tra đơn hàng
                     </Link>
@@ -267,7 +277,7 @@ const Header = () => {
                   {/* <li>
                     <Link
                       to="/tin-tuc"
-                      class="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
+                      className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Tin tức
                     </Link>
@@ -275,7 +285,7 @@ const Header = () => {
                   <li>
                     <Link
                       to="lien-he"
-                      class="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
+                      className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Liên hệ
                     </Link>
