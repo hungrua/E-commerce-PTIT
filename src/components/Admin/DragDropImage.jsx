@@ -64,8 +64,8 @@ export default function DragDropImage({ setAddImages,initImages }) {
         <Box>
             <Box sx={style.dropImgArea}>
                 {isDraging ? (
-                    <Box sx={style.selectSpan} >Drop images here or {" "}</Box>
-                ) : (
+                    <Box sx={style.selectSpan} >Drop images here or {" "}</Box> 
+                ) : (   
                     <>
                         Drag & Drop image here
                         <Box sx={style.selectSpan} onClick={selectFiles} >Browse</Box>
