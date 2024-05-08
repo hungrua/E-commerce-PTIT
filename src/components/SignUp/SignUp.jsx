@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import logo from "../../images/logo-removebg.png";
 const SignUp = () => {
   const [visible, setVisible] = useState(false);
 
@@ -9,12 +8,12 @@ const SignUp = () => {
     e.preventDefault();
   };
   return (
-    <div className="overflow-hidden bg-cover bg-no-repeat h-[100vh] p-12 bg-[url('https://t4.ftcdn.net/jpg/04/86/39/87/360_F_486398788_gAOGBgemxkzJ6JHUJD7vN5A0ayQ2FLxF.jpg')]">
+    <div className="overflow-hidden bg-cover bg-no-repeat h-[100vh] p-12 bg-[url('../public/static/images/web-images/bg-login.jpg')]">
       <section>
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-[90vh] lg:py-0">
+        <div class="flex flex-col items-center justify-center px-6 py-4 mx-auto md:h-[90vh] lg:py-0">
           <Link to="/" class="flex items-center mb-4 text-2xl font-semibold">
-            <img class="w-12 h-12 mr-2 mt-1" src={logo} alt="logo" />
-            <span className="text-white">BadmintonShop</span>
+            <img class="w-12 h-12 mr-2 mt-1" src="/static/images/web-images/logo.png" alt="logo" />
+            <span className="text-black">Technology shop</span>
           </Link>
           <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">

@@ -1,18 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import logo from "../../images/logo-removebg.png";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate()
   const handleSubmit = async (e) => {
     e.preventDefault();
+    navigate('/');
   };
   return (
-    <div className="overflow-hidden bg-cover bg-no-repeat h-[100vh] p-12 bg-[url('https://t4.ftcdn.net/jpg/04/86/39/87/360_F_486398788_gAOGBgemxkzJ6JHUJD7vN5A0ayQ2FLxF.jpg')]">
+    <div className="overflow-hidden bg-cover bg-no-repeat h-[100vh] p-12 bg-[url('../public/static/images/web-images/bg-login.jpg')]">
       <section>
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-[90vh] lg:py-0">
           <Link to="/" class="flex items-center mb-6 text-2xl font-semibold">
-            <img class="w-12 h-12 mr-2 mt-1" src={logo} alt="logo" />
-            <span className="text-white">BadmintonShop</span>
+            <img class="w-12 h-12 mr-2 mt-1" src="/static/images/web-images/logo.png" alt="logo" />
+            <span className="text-black">Technology Shop</span>
           </Link>
           <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -25,14 +26,14 @@ const Login = () => {
                     for="email"
                     class="block mb-2 text-sm font-medium text-gray-900 "
                   >
-                    Email
+                    Username
                   </label>
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
+                    type="text"
+                    name="username"
+                    id="username"
                     class="bg-gray-50 border-[2px] border-orange-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 block w-full p-2.5 "
-                    placeholder="shopvnb@gmail.com"
+                    placeholder="hugenguyen"
                     required
                   />
                 </div>

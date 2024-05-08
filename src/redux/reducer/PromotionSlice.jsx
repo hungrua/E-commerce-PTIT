@@ -52,10 +52,10 @@ const promotionSlice = createSlice({
                     return promotion;
                 });
             })
-            .addCase(deleteVoucher.fulfilled, (state, action) => {
-                state.message = action.payload.data;
-                state.vouchers = state.vouchers.filter(
-                    (voucher) => voucher.id !== action.payload.id
+            .addCase(deletePromotion.fulfilled, (state, action) => {
+                state.alert = action.payload.data;
+                state.promotions = state.promotions.filter(
+                    (promotion) => promotion.id !== action.payload.id
                 );
             });
     },
@@ -130,8 +130,8 @@ export const editPromotion = createAsyncThunk(
         return data
     }
 );
-export const deleteVoucher = createAsyncThunk(
-    "voucher/deleteVoucher",
+export const deletePromotion = createAsyncThunk(
+    "promotion/deletePromotion",
     async (id) => {
         console.log(id);
         const options = {
@@ -140,7 +140,7 @@ export const deleteVoucher = createAsyncThunk(
                 Authorization: `Bearer ${token}`,
             },
         };
-        const res = await fetch(IP + `/admin/api/voucher?id=` + id, options);
+        const res = await fetch(IP + `/admin/api/promotion?id=` + id, options);
         const data = await res.json();
         return {
             id: id,

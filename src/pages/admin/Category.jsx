@@ -6,10 +6,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddCategory from '../../components/Admin/Category/AddCategory';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCategory, fetchCategory, getCategoryById } from '../../redux/reducer/CategorySlice';
+import categorySlice, { deleteCategory, fetchCategory, getCategoryById } from '../../redux/reducer/CategorySlice';
+import { notify } from '../../components/Admin/notify';
 function Category() {
   const dispatch = useDispatch()
   var categories = useSelector((state) => state.category.categories)
+  
+  var message = useSelector((state)=> state.category.alert)
+  useEffect(() => {
+    if (message !== undefined) notify(message.message, message.code)
+    return () => {
+      dispatch(categorySlice.actions.resetAlert(undefined))
+    }
+  }, [message, dispatch])
   const [categoryList,setCategoryList] = useState([])
   useEffect(()=>{
     dispatch(fetchCategory())

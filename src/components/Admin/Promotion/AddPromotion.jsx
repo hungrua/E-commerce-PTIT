@@ -20,7 +20,7 @@ const AddPromotion = ({ setDisplayAddPromotion }) => {
     const [addImages, setAddImages] = useState([])
     const [currentSetPromotion, setCurrentSetPromotion] = useState({})
     const currentPromotion = useSelector((state) => state.promotion.currentSetPromotion)
-    const imgProductUrl = '/static/image/promotion/'
+    const imgProductUrl = '/static/images/promotion/'
     useEffect(() => {
         setCurrentSetPromotion(currentPromotion)
         dispatch(fetchProduct())

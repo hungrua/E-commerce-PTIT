@@ -12,6 +12,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Dashboard, Promotion, UserManager, ProductManager, Voucher, Bill, Category } from '../../routes/AdminRouter.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Supplier from './Supplier.jsx';
 function AdminHomePage() {
   const [sideNavExpanded, setSideNavExpanded] = useState(false)
   return (
@@ -31,6 +32,7 @@ function AdminHomePage() {
                 <Route path='/usermanager' element={<UserManager />} />
                 <Route path='/voucher' element={<Voucher />} />
                 <Route path='/category' element={<Category />} />
+                <Route path='/supplier' element={<Supplier />} />
               </Routes>
             </Suspense>
           </Box>

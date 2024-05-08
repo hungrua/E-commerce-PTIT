@@ -15,7 +15,11 @@ const voucherSlice = createSlice({
             endDate: "2024-11-05"
         },
     },
-    reducers: {},
+    reducers: {
+      resetAlert: (state, action) => {
+        state.alert = action.payload
+      },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchVoucher.fulfilled, (state, action) => {
@@ -25,11 +29,11 @@ const voucherSlice = createSlice({
                 state.currentSetVoucher = action.payload;
             })
             .addCase(addVoucher.fulfilled, (state, action) => {
-                state.message = action.payload;
+                state.alert = action.payload;
                 state.vouchers.push(action.payload.voucher)
             })
           .addCase(editVoucher.fulfilled, (state, action) => {
-            state.message = action.payload.data;
+            state.alert = action.payload.data;
             state.vouchers = state.vouchers.map((voucher) => {
               if (voucher.id === action.payload.newVoucher.id) {
                 return action.payload.newVoucher;
@@ -38,7 +42,7 @@ const voucherSlice = createSlice({
             });
           })
           .addCase(deleteVoucher.fulfilled, (state, action) => {
-            state.message = action.payload.data;
+            state.alert = action.payload.data;
             state.vouchers = state.vouchers.filter(
               (voucher) => voucher.id !== action.payload.id
             );
@@ -128,6 +132,7 @@ export const deleteVoucher = createAsyncThunk(
     };
     const res = await fetch(IP + `/admin/api/voucher?id=` + id, options);
     const data = await res.json();
+    console.log(data)
     return {
       id: id,
       data: data,

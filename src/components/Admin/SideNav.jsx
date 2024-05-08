@@ -8,6 +8,7 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import LoyaltyOutlinedIcon from '@mui/icons-material/LoyaltyOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import { Link, useLocation } from 'react-router-dom';
 import avatar from '../../assets/avatar.jpg'
 function SideNav(props) {
@@ -60,6 +61,9 @@ function SideNav(props) {
                 </MenuItem>
                 <MenuItem active={location.pathname === '/admin/category'} component={<Link to={'/admin/category'} />} icon={<CategoryOutlinedIcon />}> 
                     <Typography variant='body2'>Category</Typography>
+                </MenuItem>
+                <MenuItem active={location.pathname === '/admin/supplier'} component={<Link to={'/admin/supplier'} />} icon={<LocalShippingOutlinedIcon />}> 
+                    <Typography variant='body2'>Supplier</Typography>
                 </MenuItem>
             </Menu>
         </Sidebar>

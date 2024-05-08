@@ -6,7 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddVoucher from '../../components/Admin/Voucher/AddVoucher';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteVoucher, fetchVoucher, getVoucherById } from '../../redux/reducer/VoucherSlice';
+import voucherSlice, { deleteVoucher, fetchVoucher, getVoucherById } from '../../redux/reducer/VoucherSlice';
+import { notify } from '../../components/Admin/notify';
 const Voucher = () => {
   const dispatch = useDispatch()
   const [displayAddVoucher, setDisplayAddVoucher] = useState(false)
@@ -19,6 +20,15 @@ const Voucher = () => {
     console.log(vouchers)
     setVoucherList(vouchers)
   }, [vouchers])
+  var message = useSelector((state)=> state.voucher.alert)
+  useEffect(() => {
+    if (message !== undefined) notify(message.message, message.code)
+    return () => {
+      dispatch(voucherSlice.actions.resetAlert(undefined))
+    }
+  }, [message, dispatch])
+
+
   const columns = [
     {
       field: 'voucherName',

@@ -33,7 +33,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
     const [frequencyScreen, setFrequencyScreen] = useState("60 Hz");
     const [addImages, setAddImages] = useState([])
 
-    const imgProductUrl = '/static/image/product/'
+    const imgProductUrl = '/static/images/product/'
     var categories = useSelector((state) => state.category.categories)
     var brands = useSelector((state) => state.product.brand)
     var currentProduct = useSelector((state) => state.product.currentSetProduct)

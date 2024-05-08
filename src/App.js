@@ -12,6 +12,7 @@ import AdminHomePage from "./pages/admin/AdminHomePage.jsx";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import Payment from "./components/Payment/Payment.jsx";
+import Supplier from "./pages/admin/Supplier.jsx";
 const App = () => {
   
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/san-pham/:id" element={<ProductDetailPage />} />
         <Route path="/admin/*" element={<AdminHomePage />} />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/supplier" element={<Supplier />} />
       </Routes>
     </Provider>
   );

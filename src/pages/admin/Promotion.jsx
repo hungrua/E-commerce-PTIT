@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddPromotion from '../../components/Admin/Promotion/AddPromotion';
 import { useDispatch, useSelector } from 'react-redux';
-import promotionSlice, { fetchPromotion, getPromtionById } from '../../redux/reducer/PromotionSlice';
+import promotionSlice, { deletePromotion, fetchPromotion, getPromtionById } from '../../redux/reducer/PromotionSlice';
 import { notify } from '../../components/Admin/notify';
 function Promotion() {
   const dispatch = useDispatch()
@@ -47,7 +47,7 @@ function Promotion() {
           <IconButton size="medium" sx={{ m: 1 }} onClick={() => { handleDisplayAddPromotion(params.row.id) }} >
             <ModeEditIcon color="info" />
           </IconButton>
-          <IconButton size="medium" sx={{ m: 1 }}>
+          <IconButton size="medium" sx={{ m: 1 }} onClick={()=>{handleDeletePromotion(params.row.id)}}>
             <DeleteIcon color="error" />
           </IconButton>
         </Box>
@@ -77,7 +77,9 @@ function Promotion() {
       numberOfProduct: promotion.items.length
     }
   })
-
+  const handleDeletePromotion = (id)=>{
+    dispatch(deletePromotion(id))
+  }
   const handleDisplayAddPromotion = async (id) => {
     setTimeout(() => {
       // Gọi dispatch bằng cách truyền một callback function
