@@ -1,7 +1,7 @@
 import React from "react";
 import BackpackImg from "../../../images/backpacks.png";
 import BackpackImg2 from "../../../images/backpacks_1.png";
-import ProductCart from "../ProductCart/ProductCart.jsx";
+import ProductCard from "../ProductCard/ProductCard.jsx";
 const Backpack = () => {
   return (
     <div className="relative mt-[100px]">
@@ -27,7 +27,7 @@ const Backpack = () => {
         <div className="mt-[30px]">
           <div className="flex mx-[-7px] max-sm:flex-wrap">
             {/* left */}
-            <div className="px-[7px] w-[31.666666667%] max-sm:w-full">
+            <div className="px-[7px] w-[30%] max-sm:w-full">
               <div className="h-full max-[800px]:h-auto">
                 <div className="h-full rounded-[12px] overflow-hidden max-sm:hidden">
                   <img
@@ -50,14 +50,14 @@ const Backpack = () => {
               </div>
             </div>
             {/* right */}
-            <div className="w-[69.333333333%] px-[7px] max-sm:w-full">
-              <div className="flex flex-wrap mx-[-7px] gap-y-[24px]">
-                <ProductCart />
-                <ProductCart />
-                <ProductCart />
-                <ProductCart />
-                <ProductCart />
-                <ProductCart />
+            <div className="w-[70%] px-[7px] max-sm:w-full">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
               </div>
             </div>
           </div>

@@ -35,9 +35,9 @@ const Hero = () => {
   };
 
   return (
-    <div className="mb-4 mt-[58px] sm:mb-10 md:mb-12 lg:mb-10">
-      <div className="grid grid-cols-6 gap-2 p-4 justify-center">
-        <div className=" relative col-span-6 overflow-hidden rounded-lg group w-full lg:w[850px] lg:h-[478px] lg:col-span-4">
+    <div className="mb-4 mt-[58px] sm:mb-10 md:mb-12 lg:mb-10 flex gap-2 p-4">
+      <div className="shrink-0 basis-8/12 flex-grow">
+        <div className=" relative col-span-6 overflow-hidden rounded-lg group">
           <div className="hidden group-hover:block absolute top-[50%] left-5 transform -translate-y-1/2 text-xl rounded-full p-2 bg-[#f66315] text-white cursor-pointer">
             <BsChevronCompactLeft onClick={prevSlide} size={25} />
           </div>
@@ -46,13 +46,14 @@ const Hero = () => {
             <BsChevronCompactRight onClick={nextSlide} size={25} />
           </div>
         </div>
-        <div className="col-span-6 hidden gap-y-[5px] md:grid md:grid-cols-6 lg:col-span-2">
-          <div className="overflow-hidden rounded md:col-span-3 lg:col-span-6 items-center justify-center">
-            <img src={promotion1} alt="" />
-          </div>
-          <div className=" overflow-hidden rounded md:col-span-3 lg:col-span-6 items-center justify-center">
-            <img src={promotion2} alt="" />
-          </div>
+
+      </div>
+      <div className="lg:flex flex-col justify-between hidden gap-y-[5px]">
+        <div className="overflow-hidden rounded hidden lg:block lg:col-span-2 items-center justify-center">
+          <img src={promotion1} alt="" />
+        </div>
+        <div className="overflow-hidden rounded hidden lg:block lg:col-span-2 items-center justify-center">
+          <img src={promotion2} alt="" />
 
         </div>
       </div>

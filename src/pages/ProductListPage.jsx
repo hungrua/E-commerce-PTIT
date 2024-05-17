@@ -22,7 +22,7 @@ const ProductListPage = () => {
                     </div>
                     <p className="pt-5"></p>
                 </div>
-                <ViewedProduct />
+                <ViewedProduct quantity={5} />
             </div>
             <Footer />
 

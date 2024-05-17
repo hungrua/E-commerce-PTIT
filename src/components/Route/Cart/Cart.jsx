@@ -55,7 +55,7 @@ const Cart = () => {
                     <CartBill/>
                 </div>
                 <div className="col-span-1 lg:col-span-3">
-                    <ViewedProduct  />
+                    <ViewedProduct  quantity={4}/>
                 </div>
             </div>
 

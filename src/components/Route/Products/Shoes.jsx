@@ -28,7 +28,7 @@ const Shoes = () => {
         <div className="mt-[30px]">
           <div className="flex max-sm:flex-wrap max-sm:flex-col-reverse">
             {/* left */}
-            <div className="w-[69.333333333%] px-[7px] max-sm:w-full">
+            <div className="w-[70%] px-[7px] max-sm:w-full">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                 <ProductCard />
                 <ProductCard />
@@ -39,7 +39,7 @@ const Shoes = () => {
               </div>
             </div>
             {/* right */}
-            <div className="px-[7px] w-[31.666666667%] max-sm:w-full">
+            <div className="px-[7px] w-[30%] max-sm:w-full">
               <div className="h-full max-[800px]:h-auto">
                 <div className="h-full rounded-[12px] overflow-hidden max-sm:hidden">
                   <img
