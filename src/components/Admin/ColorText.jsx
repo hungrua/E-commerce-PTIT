@@ -1,9 +1,9 @@
 import { Box } from '@mui/material'
 import React from 'react'
 
-function ColorText({color,children}) {
+function ColorText({color,children,fontSize,textAlign}) {
   return (
-    <Box sx={{color}} component='span'>{children}</Box>
+    <Box sx={{color:color, fontSize: fontSize,textAlign:textAlign}} >{children}</Box>
   )
 }
 

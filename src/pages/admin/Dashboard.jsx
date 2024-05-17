@@ -109,7 +109,7 @@ function Dashboard() {
                                 </Box>
                             </Box>
                             <Box sx={style.item.cardNumber}>
-                                <ColorText color="#2D9596" children="300.000.000 VND" />
+                                <ColorText color="#2D9596" children="54.000.000 VND" />
                             </Box>
                             <Divider />
                             <Box sx={style.item.statistic}>
@@ -139,7 +139,7 @@ function Dashboard() {
                                 </Box>
                             </Box>
                             <Box sx={style.item.cardNumber}>
-                                <ColorText color="#2D9596" children="100.000.000 VND" />
+                                <ColorText color="#2D9596" children="0 VND" />
                             </Box>
                             <Divider />
                             <Box sx={style.item.statistic}>
@@ -169,7 +169,7 @@ function Dashboard() {
                                 </Box>
                             </Box>
                             <Box sx={style.item.cardNumber}>
-                                <ColorText color="#2D9596" children="200.000.000 VND" />
+                                <ColorText color="#2D9596" children="54.000.000 VND" />
                             </Box>
                             <Divider />
                             <Box sx={style.item.statistic}>

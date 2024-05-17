@@ -8,6 +8,7 @@ import AddVoucher from '../../components/Admin/Voucher/AddVoucher';
 import { useDispatch, useSelector } from 'react-redux';
 import voucherSlice, { deleteVoucher, fetchVoucher, getVoucherById } from '../../redux/reducer/VoucherSlice';
 import { notify } from '../../components/Admin/notify';
+import { Confirm } from '../../components/Admin/Confirm';
 const Voucher = () => {
   const dispatch = useDispatch()
   const [displayAddVoucher, setDisplayAddVoucher] = useState(false)
@@ -135,6 +136,7 @@ const Voucher = () => {
         </Box>
       </Box>
       {displayAddVoucher && <AddVoucher setDisplayAddVoucher={setDisplayAddVoucher} />}
+      <Confirm />
     </div>
   )
 }

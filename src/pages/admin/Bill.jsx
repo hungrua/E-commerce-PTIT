@@ -59,7 +59,7 @@ function Bill() {
     [
       {
         id: 1,
-        billcode: 'ĐH001',
+        billcode: 'HĐ001',
         createAt: '22/02/2024',
         status: "Đã thanh toán",
         paymentMethod:"Thanh toán trực tuyến",
@@ -68,7 +68,7 @@ function Bill() {
       },
       {
         id: 2,
-        billcode: 'ĐH002',
+        billcode: 'HĐ002',
         createAt: '23/02/2024',
         status: "Đã thanh toán",
         paymentMethod:"Thanh toán khi nhận được hàng",
@@ -86,7 +86,7 @@ function Bill() {
   return (
     <div>
       <Box>
-        <Typography sx={style.pageTitle} variant='h5'>Quản lý người dùng</Typography>
+        <Typography sx={style.pageTitle} variant='h5'>Quản lý hóa đơn</Typography>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange}>
             <Tab label='Hóa đơn bán' id="tab-0" />
