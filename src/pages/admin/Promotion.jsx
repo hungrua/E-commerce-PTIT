@@ -8,8 +8,11 @@ import AddPromotion from '../../components/Admin/Promotion/AddPromotion';
 import { useDispatch, useSelector } from 'react-redux';
 import promotionSlice, { deletePromotion, fetchPromotion, getPromtionById } from '../../redux/reducer/PromotionSlice';
 import { notify } from '../../components/Admin/notify';
+import { Confirm } from '../../components/Admin/Confirm';
 function Promotion() {
   const dispatch = useDispatch()
+  const [deleteId,setDeleteId] = useState(0)
+  const [openConfirm,setOpenConfirm] = useState(false)
   const columns = [
     {
       field: 'content',
@@ -78,7 +81,13 @@ function Promotion() {
     }
   })
   const handleDeletePromotion = (id)=>{
+    setDeleteId(id)
+    setOpenConfirm(true)
+  }
+  const doDelete= (id) =>{
     dispatch(deletePromotion(id))
+    setOpenConfirm(false)
+    setDeleteId(0)
   }
   const handleDisplayAddPromotion = async (id) => {
     setTimeout(() => {
@@ -111,6 +120,7 @@ function Promotion() {
         </Box>
       </Box>
       {displayAddPromotion && <AddPromotion setDisplayAddPromotion={setDisplayAddPromotion} />}
+      {openConfirm && <Confirm name="PROMOTION" noAction={()=>setOpenConfirm(false)} yesAction={()=>doDelete(deleteId)} />}
     </div>
   )
 }

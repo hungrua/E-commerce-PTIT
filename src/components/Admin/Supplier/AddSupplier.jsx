@@ -22,44 +22,46 @@ import RecentActorsOutlinedIcon from '@mui/icons-material/RecentActorsOutlined';
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory, editCategory, getCategoryById } from "../../../redux/reducer/CategorySlice";
-const AddSupplier = ({ setDisplayAddCategory }) => {
+import { addSupplier, editSupplier, getSupplierById } from "../../../redux/reducer/SupplierSlice";
+const AddSupplier = ({ setDisplayAddSupplier }) => {
   const dispatch = useDispatch();
-  const [currentSetCategory, setCurrentSetCategory] = useState({
+  const [currentSetSupplier, setCurrentSetSupplier] = useState({
     id: "",
     name: "",
     description: "",
+    phoneNumber:""
   });
-  const category = useSelector((state) => state.category.currentSetCategory);
-
+  var supplier = useSelector((state) => state.supplier.currentSetSupplier);
   useEffect(() => {
-    setCurrentSetCategory(category);
-  }, [category]);
-  const handleCloseAddCategory = () => {
-    setDisplayAddCategory(false);
-    dispatch(getCategoryById(-1))
+    setCurrentSetSupplier(supplier);
+    console.log(supplier)
+  }, [dispatch,supplier]);
+  const handleCloseAddSupplier = () => {
+    setDisplayAddSupplier(false);
+    dispatch(getSupplierById(-1))
   };
   const handleOnChangeProperties = (field, value) => {
-    setCurrentSetCategory((prev) => ({
+    setCurrentSetSupplier((prev) => ({
       ...prev,
       [field]: value,
     }));
   };
-  const handleSaveCategory = () => {
-    console.log(currentSetCategory)
-    if (currentSetCategory.id === null || currentSetCategory.id === "") {
-      dispatch(addCategory(currentSetCategory))
+  const handleSaveSupplier = () => {
+    console.log(currentSetSupplier)
+    if (currentSetSupplier.id === null || currentSetSupplier.id === "") {
+      dispatch(addSupplier(currentSetSupplier))
     }
     else {
-      dispatch(editCategory(currentSetCategory))
+      dispatch(editSupplier(currentSetSupplier))
     }
-    handleCloseAddCategory()
+    handleCloseAddSupplier()
   }
 
   return (
     <Box sx={style.coverer}>
       <Box sx={style.addUserModal}>
         <Box style={{ display: "flex", justifyContent: "flex-end" }}>
-          <IconButton onClick={handleCloseAddCategory}>
+          <IconButton onClick={handleCloseAddSupplier}>
             <CancelOutlinedIcon color="error" />
           </IconButton>
         </Box>
@@ -74,7 +76,7 @@ const AddSupplier = ({ setDisplayAddCategory }) => {
                 <TextField
                   fullWidth={true}
                   variant="outlined"
-                  value={currentSetCategory.name}
+                  value={currentSetSupplier.name}
                   onChange={(e) =>
                     handleOnChangeProperties("name", e.target.value)
                   }
@@ -91,9 +93,9 @@ const AddSupplier = ({ setDisplayAddCategory }) => {
                 <TextField
                   fullWidth={true}
                   variant="outlined"
-                  value={currentSetCategory.name}
+                  value={currentSetSupplier.phoneNumber}
                   onChange={(e) =>
-                    handleOnChangeProperties("name", e.target.value)
+                    handleOnChangeProperties("phoneNumber", e.target.value)
                   }
                 />
                 <FormHelperText></FormHelperText>
@@ -108,7 +110,7 @@ const AddSupplier = ({ setDisplayAddCategory }) => {
                 <TextField
                   fullWidth={true}
                   variant="outlined"
-                  value={currentSetCategory.description}
+                  value={currentSetSupplier.description}
                   onChange={(e) =>
                     handleOnChangeProperties("description", e.target.value)
                   }
@@ -120,7 +122,7 @@ const AddSupplier = ({ setDisplayAddCategory }) => {
         </form>
         <Box style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button variant="contained" color="success"
-            onClick={handleSaveCategory} >
+            onClick={handleSaveSupplier} >
             Save
           </Button>
         </Box>

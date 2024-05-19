@@ -13,6 +13,8 @@ const Voucher = () => {
   const dispatch = useDispatch()
   const [displayAddVoucher, setDisplayAddVoucher] = useState(false)
   const [voucherList, setVoucherList] = useState([])
+  const [openConfirm,setOpenConfirm] = useState(false)
+  const [deleteId,setDeleteId] = useState(0)
   var vouchers = useSelector((state) => state.voucher.vouchers)
   useEffect(() => {
     dispatch(fetchVoucher())
@@ -112,7 +114,13 @@ const Voucher = () => {
     setDisplayAddVoucher(true)
   }
   const handleDeleteVoucher=(id)=>{
+    setDeleteId(id)
+    setOpenConfirm(true)
+  }
+  const doDelete = (id) =>{
     dispatch(deleteVoucher(id))
+    setOpenConfirm(false)
+    setDeleteId(0)
   }
   return (
     <div>
@@ -135,8 +143,8 @@ const Voucher = () => {
           ></DataGrid>
         </Box>
       </Box>
-      {displayAddVoucher && <AddVoucher setDisplayAddVoucher={setDisplayAddVoucher} />}
-      <Confirm />
+      {displayAddVoucher && <AddVoucher setDisplayAddVoucher={setDisplayAddVoucher}  />}
+      {openConfirm && <Confirm noAction={()=>setOpenConfirm(false)} yesAction={()=>doDelete(deleteId)} name="VOUCHER" />}
     </div>
   )
 }

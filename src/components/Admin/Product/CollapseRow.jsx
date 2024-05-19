@@ -7,34 +7,50 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import AddProductDetails from './AddProductDetails';
 import { useDispatch } from 'react-redux';
 import { deleteProduct, deleteProductDetails, getProductById, getProductDetailsById } from '../../../redux/reducer/ProductSlice';
+import { Confirm } from '../Confirm';
 const CollapseRow = (props) => {
     const dispatch = useDispatch()
-    const { row, category, itemDetails, setDisplayAddProduct,productId } = props
+    const { row, category, itemDetails, setDisplayAddProduct, productId } = props
     const [open, setOpen] = useState(false)
     const [displayAddProductDetails, setDisplayAddProductDetails] = useState(false)
-
+    const [deleteProductId, setDeleteProductId] = useState(0)
+    const [openConfirmProduct, setOpenConfirmProduct] = useState(false)
+    const [deleteProductDetailId, setDeleteProductDetailId] = useState(0)
+    const [openConfirmProductDetail, setOpenConfirmProductDetail] = useState(false)
     const handleOpenEditProductScreen = (id) => {
         dispatch(getProductById(id))
         setDisplayAddProduct(true)
     }
 
     const handleDeleteProduct = (id) => {
+        setDeleteProductId(id)
+        setOpenConfirmProduct(true)
+    }
+    const doDeleteProduct = (id) => {
         dispatch(deleteProduct(id))
+        setOpenConfirmProduct(false)
+        setDeleteProductId(0)
     }
 
-    const handleOpenEditProductDetails = (id)=>{
+    const handleOpenEditProductDetails = (id) => {
         dispatch(getProductDetailsById(id))
         setDisplayAddProductDetails(true)
     }
 
-    const handleOpenAddProductDetails = ()=>{
+    const handleOpenAddProductDetails = () => {
         dispatch(getProductDetailsById(-1))
         setDisplayAddProductDetails(true)
     }
 
-    const handleDeleteProductDetails = (id)=>{
-        console.log(id)
-        dispatch(deleteProductDetails({productId,id}))
+    const handleDeleteProductDetails = (id) => {
+        setDeleteProductDetailId(id)
+        setOpenConfirmProductDetail(true)
+    }
+
+    const doDeleteProductDetail = (id) => {
+        dispatch(deleteProductDetails({ productId, id }))
+        setOpenConfirmProductDetail(false)
+        setDeleteProductDetailId(0)
     }
 
     return (
@@ -141,6 +157,9 @@ const CollapseRow = (props) => {
                 </TableCell>
             </TableRow>
             {displayAddProductDetails && <AddProductDetails setDisplayAddProduct={setDisplayAddProductDetails} category={category} productId={productId} />}
+            {openConfirmProduct && <Confirm name="PRODUCT" noAction={() => setOpenConfirmProduct(false)} yesAction={() => doDeleteProduct(deleteProductId)} />}
+            {openConfirmProductDetail && <Confirm name="PRODUCT DETAIL" noAction={() => setOpenConfirmProductDetail(false)} yesAction={() => doDeleteProductDetail(deleteProductDetailId)} />}
+            
         </React.Fragment >
     )
 }

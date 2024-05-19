@@ -13,6 +13,7 @@ import {
   getUserById,
 } from "../../redux/reducer/UserSlice";
 import { notify } from "../../components/Admin/notify";
+import { Confirm } from "../../components/Admin/Confirm";
 
 function UserManager() {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ function UserManager() {
   var users = useSelector((state) => state.users.users);
   const [customers, setCustomers] = useState([]);
   const [employees, setEmployees] = useState([]);
+  const [openConfirm,setOpenConfirm] = useState(false)
+  const [deleteId,setDeleteId] = useState(0)
   useEffect(() => {
     dispatch(fetchUser())
   }, [dispatch]);
@@ -215,8 +218,14 @@ function UserManager() {
     setTimeout(setDisplayAddUser(true),1000);
   };
   const handleDeleteUser = (id) => {
-    dispatch(deleteUser(id));
+    setDeleteId(id)
+    setOpenConfirm(true)
   };
+  const doDelete = (id) =>{
+    dispatch(deleteUser(id));
+    setOpenConfirm(false)
+    setDeleteId(0)
+  }
   return (
     <div>
       <Box>
@@ -275,6 +284,8 @@ function UserManager() {
       {displayAddUser && (
         <AddUser setDisplayAddUser={setDisplayAddUser} typeUser={value} />
       )}
+      {openConfirm && <Confirm noAction={()=>setOpenConfirm(false)} yesAction={()=>doDelete(deleteId)} name="USER" />}
+      
     </div>
   );
 }

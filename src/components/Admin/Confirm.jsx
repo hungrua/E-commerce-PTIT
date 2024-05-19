@@ -2,21 +2,26 @@ import { Box, Button } from '@mui/material'
 import React from 'react'
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import ColorText from './ColorText';
-export const Confirm = ({ props }) => {
-    // const {name} = props
+export const Confirm = (props) => {
+    const {name,yesAction,noAction} = props
     return (
         <Box style={styles.coverer} >
             <Box style={styles.confirmBox}>
                 <Box mt={7} mb={2} display={'flex'} justifyContent={"center"}>
                     <DeleteOutlineOutlinedIcon fontSize='large' sx={{color:"red"}} />
                 </Box>
-                <ColorText color={"red"} children={"DELETE VOUCHER !"} fontSize={"18px"} textAlign={"center"} />
+                <ColorText color={"red"} children={`DELETE ${name} !`} fontSize={"18px"} textAlign={"center"} />
                 <Box mt={7} style ={styles.contentBox} >
                     <Box style={styles.contentBox.text}>
                         <Box  textAlign={"center"}>Thay đổi này sẽ được thực hiện vĩnh viễn, vui lòng suy nghĩ kỹ trước khi xác nhận</Box>
                         <Box mt={2} display={"flex"} justifyContent={"space-between"}>
-                            <Button variant='contained' sx={styles.contentBox.noButton}>No, keep it</Button>
-                            <Button variant='contained' sx={styles.contentBox.yesButton}>Yes, action it</Button>
+                            <Button variant='contained' 
+                            sx={styles.contentBox.noButton}
+                            onClick={()=> noAction()}
+                            >No, keep it</Button>
+                            <Button variant='contained' sx={styles.contentBox.yesButton}
+                            onClick={()=> yesAction()}
+                            >Yes, delete it</Button>
                         </Box>
                     </Box>
                 </Box>

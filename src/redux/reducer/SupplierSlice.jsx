@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP, token } from "../../config/const";
-const categorySlice = createSlice({
-  name: "category",
+const supplierSlice = createSlice({
+  name: "supplier",
   initialState: {
-    categories: [],
-    currentSetCategory: {
+    suppliers: [],
+    currentSetSupplier: {
       id: "",
       name: "",
       description: "",
-      totalItem:0
+      phoneNumber:""
     }
   },
   reducers: {
@@ -18,37 +18,39 @@ const categorySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCategory.fulfilled, (state, action) => {
-        state.categories = action.payload;
+      .addCase(fetchSupplier.fulfilled, (state, action) => {
+        state.suppliers = action.payload;
       })
-      .addCase(getCategoryById.fulfilled, (state, action) => {
-        state.currentSetCategory = action.payload;
+      .addCase(getSupplierById.fulfilled, (state, action) => {
+        console.log(action.payload)
+        state.currentSetSupplier = action.payload;
       })
-      .addCase(addCategory.fulfilled, (state, action) => {
+      .addCase(addSupplier.fulfilled, (state, action) => {
         state.alert = action.payload;
+        state.suppliers.push(action.payload.supplier)
       })
-      .addCase(editCategory.fulfilled, (state, action) => {
+      .addCase(editSupplier.fulfilled, (state, action) => {
         state.alert = action.payload.data;
-        state.categories = state.categories.map((category) => {
-          if (category.id === action.payload.newCategory.id) {
-            return action.payload.newCategory;
+        state.suppliers = state.suppliers.map((supplier) => {
+          if (supplier.id === action.payload.newSupplier.id) {
+            return action.payload.newSupplier;
           }
-          return category;
+          return supplier;
         });
       })
-      .addCase(deleteCategory.fulfilled, (state, action) => {
+      .addCase(deleteSupplier.fulfilled, (state, action) => {
         state.alert = action.payload.data;
-        state.categories = state.categories.filter(
-          (category) => category.id !== action.payload.id
+        state.suppliers = state.suppliers.filter(
+          (supplier) => supplier.id !== action.payload.id
         );
       });
   },
 });
 
-export const fetchCategory = createAsyncThunk(
-  "category/fetchCategory",
+export const fetchSupplier = createAsyncThunk(
+  "supplier/fetchSupplier",
   async () => {
-    const res = await fetch(IP + "/customer/api/categories", {
+    const res = await fetch(IP + "/api/suppliers", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -57,61 +59,63 @@ export const fetchCategory = createAsyncThunk(
     return data;
   }
 );
-export const getCategoryById = createAsyncThunk(
-  "users/getCategoryById",
+export const getSupplierById = createAsyncThunk(
+  "supplier/getSupplierById",
   async (id) => {
     if (id === -1)
       return {
         id: "",
         name: "",
-        description: ""
+        description: "",
+        phoneNumber:""
       };
-    const res = await fetch(IP + `/admin/api/category?id=` + id, {
+    const res = await fetch(IP + `/api/supplier?id=` + id, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     const data = await res.json();
-    return data.message;
+    console.log(data)
+    return data;
   }
 );
-export const addCategory = createAsyncThunk(
-  "user/addCategory",
-  async (newCategory) => {
+export const addSupplier = createAsyncThunk(
+  "supplier/addSupplier",
+  async (newSupplier) => {
     const options = {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newCategory),
+      body: JSON.stringify(newSupplier),
     };
-    const res = await fetch(IP + `/admin/api/category`, options);
+    const res = await fetch(IP + `/api/supplier`, options);
     const data = await res.json();
     return data;
   }
 );
-export const editCategory = createAsyncThunk(
-  "user/editCategory",
-  async (newCategory) => {
+export const editSupplier = createAsyncThunk(
+  "supplier/editSupplier",
+  async (newSupplier) => {
     const options = {
       method: "PUT",
-      body: JSON.stringify(newCategory),
+      body: JSON.stringify(newSupplier),
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     };
-    const res = await fetch(IP + `/admin/api/category`, options);
+    const res = await fetch(IP + `/api/supplier`, options);
     const data = await res.json();
     return {
-      newCategory: newCategory,
+      newSupplier: newSupplier,
       data: data,
     };
   }
 );
-export const deleteCategory = createAsyncThunk(
-  "user/deleteCategory",
+export const deleteSupplier = createAsyncThunk(
+  "supplier/deleteSupplier",
   async (id) => {
     console.log(id);
     const options = {
@@ -120,7 +124,7 @@ export const deleteCategory = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     };
-    const res = await fetch(IP + `/admin/api/category?id=` + id, options);
+    const res = await fetch(IP + `/api/supplier?id=` + id, options);
     const data = await res.json();
     return {
       id: id,
@@ -128,4 +132,4 @@ export const deleteCategory = createAsyncThunk(
     };
   }
 );
-export default categorySlice;
+export default supplierSlice;
