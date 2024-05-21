@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
-import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus } from "react-icons/fa";
+import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus, FaStar, FaStarHalfAlt } from "react-icons/fa";
 
-import productDecor from "../../images/pd_decor.webp";
-import icon_hot from "../../images/icon-cate-hot.webp";
+
 import icon_new from "../../images/icon-cate-new.webp";
 import icon_tag from "../../images/icon-cate-tag.webp";
 import ft_pay_icon from "../../images/ft-pay-icon.webp";
@@ -21,6 +20,9 @@ const ProductDetails = () => {
   const [displayProduct, setDisplayProduct] = useState({})
   const product = useSelector(state => state.product.currentSetProduct)
   const images = product.images.map(img => img.path)
+  const [rating, setRating] = useState(3.5);
+
+
   useEffect(() => {
     dispatch(getProductById(id))
   }, [dispatch])
@@ -135,31 +137,19 @@ const ProductDetails = () => {
                 <div className="flex items-center gap-1">
                   <span className="font-[700] text-[#f6af15]">4</span>
                   <div className="flex">
-                    <img
-                      src="https://fbshop.vn/template/assets/images/Star.svg"
-                      alt=""
-                      className="w-[18px] h-[18px] max-w-full"
-                    />
-                    <img
-                      src="https://fbshop.vn/template/assets/images/Star.svg"
-                      alt=""
-                      className="w-[18px] h-[18px] max-w-full"
-                    />
-                    <img
-                      src="https://fbshop.vn/template/assets/images/Star.svg"
-                      alt=""
-                      className="w-[18px] h-[18px] max-w-full"
-                    />
-                    <img
-                      src="https://fbshop.vn/template/assets/images/Star.svg"
-                      alt=""
-                      className="w-[18px] h-[18px] max-w-full"
-                    />
-                    <img
-                      src="https://fbshop.vn/template/assets/images/Star.svg"
-                      alt=""
-                      className="w-[18px] h-[18px] max-w-full"
-                    />
+                    {
+                      Array.from({length: parseInt(rating)}, (_, index) => (
+                        <FaStar color="orange"/>
+                      ))
+                    }
+                    {
+                      (rating - parseInt(rating) >= 0.5 ? <FaStarHalfAlt color="orange"/> : '')
+                    }
+                    {
+                      Array.from({length: 5 - Math.round(rating)}, (_, index) => (
+                        <FaStar color="rgb(209,209,211)"/>
+                      ))
+                    }
                   </div>
                 </div>
                 <div className="flex items-center gap-1 relative">
