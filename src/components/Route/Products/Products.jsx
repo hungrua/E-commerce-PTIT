@@ -1,13 +1,13 @@
 import React from "react";
-import Rackets from "./Rackets.jsx";
-import Shoes from "./Shoes.jsx";
-import Backpack from "./Backpack.jsx";
+import Accessory from "./Accessory.jsx";
+import Laptop from "./Laptop.jsx";
+import Phone from "./Phone.jsx";
 const Products = () => {
   return (
     <div>
-      <Rackets />
-      <Shoes />
-      <Backpack />
+      <Laptop/>
+      <Phone />
+      <Accessory />
     </div>
   );
 };

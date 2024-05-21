@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus } from "react-icons/fa";
+
 import productDecor from "../../images/pd_decor.webp";
 import icon_hot from "../../images/icon-cate-hot.webp";
 import icon_new from "../../images/icon-cate-new.webp";
@@ -8,6 +9,7 @@ import icon_tag from "../../images/icon-cate-tag.webp";
 import ft_pay_icon from "../../images/ft-pay-icon.webp";
 import step_icon from "../../images/step-icon.webp";
 import cart_icon from "../../images/cart-icon.webp";
+import Reviews from "./Reviews";
 const ProductDetails = () => {
   const [select, setSelect] = useState(0);
   const [active, setActive] = useState(1);
@@ -252,53 +254,15 @@ const ProductDetails = () => {
                 <div className="absolute w-[15%] bottom-0 right-0">
                   <img
                     className="block w-full max-w-full h-auto"
-                    src={productDecor}
+                    src="/static/images/web-images/bot.png"
                     alt=""
                   />
                 </div>
-                <span className="inline-block py-1 px-5 text-[#f66315] font-[500] text-[14px] rounded-t-[12px] border border-solid border-[#f66315] border-b-0 relative z-1 bg-[#fff] translate-y-[1px]">
+                <span className="inline-block py-1 px-5 text-[#f66315] font-[500] text-[14px] rounded-t-[12px] border border-solid border-[rgb(11,116,229)] border-b-0 relative z-1 bg-[#fff] translate-y-[1px]">
                   Ưu đãi
                 </span>
-                <div className="flex flex-col gap-[10px] p-5 rounded-b-[12px] rounded-r-[12px] border border-solid border-[#f66315] relative overflow-hidden min-h-[100px]">
+                <div className="flex flex-col gap-[10px] p-5 rounded-b-[12px] rounded-r-[12px] border border-solid border-[rgb(11,116,229)] relative overflow-hidden min-h-[100px]">
                   <div className="absolute w-full pt-[55%] bottom-0 right-0 z-0 bg-6 translate-x-[42%] rotate-[328deg]"></div>
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src={icon_hot}
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Tặng cước và căng cước vợt cầu lông miễn phí
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src={icon_hot}
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Tặng bao nhung/bao đơn bảo vệ vợt cầu lông
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src={icon_hot}
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Tặng quấn cán vợt cầu lông khi mua vợt
-                    </span>
-                  </div>
 
                   <div className="flex items-center gap-[10px]">
                     <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
@@ -387,19 +351,6 @@ const ProductDetails = () => {
               )}
             </div>
             <div
-              onClick={() => setActive(2)}
-              className=" relative p-[20px] pt-[10px] duration-300 ease-in-out cursor-pointer rounded-t-[12px] text-[24px] font-[700]"
-            >
-              {active === 2 ? (
-                <div>
-                  <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#f66315]"></div>
-                  <span className="text-[#f66315]">Thông số kỹ thuật</span>
-                </div>
-              ) : (
-                <span className="text-[#031230]">Thông số kỹ thuật</span>
-              )}
-            </div>
-            <div
               onClick={() => setActive(3)}
               className="relative p-[20px] pt-[10px] duration-300 ease-in-out cursor-pointer rounded-t-[12px] text-[24px] font-[700]"
             >
@@ -449,137 +400,8 @@ const ProductDetails = () => {
               </div>
             </div>
           ) : null}
-          {active === 2 ? (
-            <div className="p-[30px] rounded-b-[12px] bg-[#feefe8] relative z-1">
-              <div className="px-[15px] w-full text-[#000]">
-                <h2 className="text-[30px] my-[10px] font-[700]">
-                  Vợt Yonex Astrox 99 Pro 2021 – Bản nâng cấp mới nhất cho dòng
-                  Yonex thiên công
-                </h2>
-                <table className="w-full mb-[10px] border-collapse border-spacing-0">
-                  <tbody>
-                    <tr>
-                      <td
-                        width="30%"
-                        className="text-left p-[15px] border border-solid border-[#444545]"
-                      >
-                        <b>Trình độ chơi:</b>
-                      </td>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        Trung bình
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        <b>Độ cứng đũa:</b>
-                      </td>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        Trung bình
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        <b>Phong cách chơi:</b>
-                      </td>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        Công thủ toàn diện
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        <b>Nội dung chơi:</b>
-                      </td>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        Cả đơn và đôi
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        <b>Trọng lượng:</b>
-                      </td>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        4U: 80-84g; 3U:85-89g
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        <b>Điểm cân bằng:</b>
-                      </td>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        Hơi nặng đầu
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        <b>Chiều dài vợt:</b>
-                      </td>
-                      <td className="text-left p-[15px] border border-solid border-[#444545]">
-                        675 mm
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ) : null}
           {active === 3 ? (
-            <div className="p-[30px] rounded-b-[12px] bg-[#feefe8] relative z-1">
-              <div className="mt-[24px]">
-                <div>
-                  <div className="flex justify-between items-center">
-                    <div className="mb-[20px] flex items-center max-[800px]:flex-col">
-                      <p className="text-[#f6af15] font-[700] text-[40px]">
-                        5 <span className="text-[24px]">/5</span>
-                      </p>
-                      <div className="flex ml-4">
-                        <img
-                          src="https://fbshop.vn/template/assets/images/Star.svg"
-                          alt=""
-                          className="w-[24px] h-[24px] max-w-full"
-                        />
-                        <img
-                          src="https://fbshop.vn/template/assets/images/Star.svg"
-                          alt=""
-                          className="w-[24px] h-[24px] max-w-full"
-                        />
-                        <img
-                          src="https://fbshop.vn/template/assets/images/Star.svg"
-                          alt=""
-                          className="w-[24px] h-[24px] max-w-full"
-                        />
-                        <img
-                          src="https://fbshop.vn/template/assets/images/Star.svg"
-                          alt=""
-                          className="w-[24px] h-[24px] max-w-full"
-                        />
-                        <img
-                          src="https://fbshop.vn/template/assets/images/Star.svg"
-                          alt=""
-                          className="w-[24px] h-[24px] max-w-full"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <span className="text-[16px]">
-                        Bạn đã mua sản phẩm này?{" "}
-                        <a
-                          href="/danh-gia"
-                          className="text-[#e10600] font-[700] no-underline"
-                        >
-                          Để lại đánh giá
-                        </a>
-                      </span>
-                    </div>
-                  </div>
-                  <div className="relative mt-[10px] mb-[50px]">
-                    <ul className="list-none">
-                      <li className="border-solid border-b-[1px] border-b-[#f6dacd] pb-[20px] relative"></li>
-                    </ul>
-                  </div>
-                </div>
-                <form action=""></form>
-              </div>
-            </div>
+            <Reviews/>
           ) : null}
         </div>
       </div>

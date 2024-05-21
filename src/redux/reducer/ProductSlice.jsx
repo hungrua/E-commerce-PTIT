@@ -5,6 +5,9 @@ const productSlice = createSlice({
   name: "product",
   initialState: {
     products: [],
+    laptop:[],
+    phone:[],
+    accessory:[],
     brand: [],
     currentSetProduct: {
       "id": null,
@@ -35,7 +38,7 @@ const productSlice = createSlice({
       }
     },
     currentSetProductDetails: {
-      "id": null,
+      "id": -1,
       "color": "",
       "isAvailable": "",
       "soldNumber": "",
@@ -58,6 +61,10 @@ const productSlice = createSlice({
       })
       .addCase(fetchProduct.fulfilled, (state, action) => {
         state.products = action.payload;
+        state.laptop = action.payload.filter(item => item.categoryDto.id==1)
+        state.phone = action.payload.filter(item => item.categoryDto.id==2)
+        state.accessory = action.payload.filter(item => item.categoryDto.id==3)
+
       })
       .addCase(getProductById.fulfilled, (state, action) => {
         state.currentSetProduct = action.payload;
@@ -133,8 +140,8 @@ const productSlice = createSlice({
 
 export const fetchProduct = createAsyncThunk(
   "product/fetchProduct",
-  async () => {
-    const res = await fetch(IP + "/customer/api/items?brandId=&categoryId=&key=", {
+  async ({brandId,categoryId,key}) => {
+    const res = await fetch(IP + `/customer/api/items?brandId=${brandId}&categoryId=${categoryId}&key=${key}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -148,7 +155,7 @@ export const getProductById = createAsyncThunk(
   async (id) => {
     if (id === -1)
       return {
-        "id": null,
+        "id": -1,
         "vendor": "",
         "name": "",
         "description": "",
@@ -206,6 +213,7 @@ export const addProduct = createAsyncThunk(
 export const editProduct = createAsyncThunk(
   "product/editProduct",
   async ({ newProduct, category, brand }) => {
+    console.log(newProduct)
     const options = {
       method: "PUT",
       headers: {

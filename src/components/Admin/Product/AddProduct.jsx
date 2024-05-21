@@ -42,8 +42,9 @@ const AddProduct = ({ setDisplayAddProduct }) => {
         dispatch(fetchBrand())
         setCurrentSetProduct(currentProduct)
         setCategory(currentProduct.categoryDto.id)
-        if(currentProduct) setFrequencyScreen(currentProduct.frequencyScreen)
-    }, [dispatch,currentProduct])
+        if (currentProduct) setFrequencyScreen(currentProduct.frequencyScreen)
+        console.log(currentSetProduct.images)
+    }, [dispatch, currentProduct])
 
     const handleCloseAddProduct = () => {
         setDisplayAddProduct(false)
@@ -88,15 +89,24 @@ const AddProduct = ({ setDisplayAddProduct }) => {
         let category = categoryId == 1 ? "laptop/" : categoryId == 2 ? "dienthoai/" : "phukien/"
         let prePath = imgProductUrl + category
         let productImages = []
+        console.log(addImages)
+        console.log(addImages[0].id)
         addImages.map((img) => {
-            productImages.push({
+            if (img.id === undefined) productImages.push({
+                "id": null,
                 "path": prePath + img.name
             })
+            else {
+                productImages.push({
+                    "id": img.id,
+                    "path": img.url
+                })
+            }
         })
-        console.log(productImages)
+        // console.log(productImages)
         return productImages
     }
-    
+
 
     const handleSaveProduct = () => {
         let product = currentSetProduct
@@ -104,8 +114,9 @@ const AddProduct = ({ setDisplayAddProduct }) => {
             ...product,
             images: handleImageData(category)
         }
-        if(currentSetProduct.id == -1 ) dispatch(addProduct({newProduct, category, brand}))
-        else dispatch(editProduct({newProduct, category, brand}))
+        console.log(newProduct)
+        if (currentSetProduct.id == -1 || currentSetProduct.id == null) dispatch(addProduct({ newProduct, category, brand }))
+        else dispatch(editProduct({ newProduct, category, brand }))
         handleCloseAddProduct()
     }
     return (
@@ -174,7 +185,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <Select
                                         sx={style.select}
                                         value={category}
-                                        disabled={currentSetProduct.id !== null}
+                                        disabled={currentSetProduct.id !== -1}
                                         onChange={handleChangeCategory}
                                     >
                                         {
@@ -196,7 +207,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     </FormLabel>
                                     <Select
                                         sx={style.select}
-                                        disabled={currentSetProduct.id !== null}
+                                        disabled={currentSetProduct.id !== -1}
                                         value={brand}
                                         onChange={handleChangeBrand}
                                     >
@@ -521,7 +532,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                         </Grid>
                     </form>
                     <Box style={{ display: 'flex', justifyContent: "flex-end" }}>
-                        <Button onClick={handleSaveProduct} variant='contained' color='success'>Save</Button>
+                        <Button onClick={() => handleSaveProduct()} variant='contained' color='success'>Save</Button>
                     </Box>
                 </Box>
             </Box>

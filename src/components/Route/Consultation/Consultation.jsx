@@ -68,7 +68,7 @@ const Consultation = () => {
             <div className="h-full relative">
               <div className="absolute w-[130%] pt-[130%] top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] rounded-[50%] -z-1 opacity-[0.5] bg-4"></div>
               <img
-                src="https://fbshop.vn/wp-content/uploads/2024/01/regis-img.webp"
+                src="/static/images/web-images/footer.png"
                 alt=""
                 width="606"
                 height="527"

@@ -8,7 +8,7 @@ const ProductCollapseTable = ({setDisplayAddProduct}) => {
     const dispatch = useDispatch()
     var products = useSelector((state)=> state.product.products)
     useEffect(()=>{
-        dispatch(fetchProduct())
+        dispatch(fetchProduct({brandId:"",categoryId:"",key:""}))
     },[])
     return (
         <Box mt={4}>

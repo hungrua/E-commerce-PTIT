@@ -23,7 +23,7 @@ const AddPromotion = ({ setDisplayAddPromotion }) => {
     const imgProductUrl = '/static/images/promotion/'
     useEffect(() => {
         setCurrentSetPromotion(currentPromotion)
-        dispatch(fetchProduct())
+        dispatch(fetchProduct({brandId:"",categoryId:"",key:""}))
     }, [dispatch, currentPromotion])
     const handleCloseAddPromotion = () => {
         dispatch(getPromtionById(-1))

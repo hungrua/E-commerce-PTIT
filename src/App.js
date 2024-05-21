@@ -6,13 +6,21 @@ import {
   SignupPage,
   ShopsPage,
   ProductDetailPage,
+  CartPage, 
+  ProductListPage,
+  UserAccountPage
 } from "./routes/Routes.js";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,BrowserRouter } from "react-router-dom";
 import AdminHomePage from "./pages/admin/AdminHomePage.jsx";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import Payment from "./components/Payment/Payment.jsx";
 import Supplier from "./pages/admin/Supplier.jsx";
+import Voucher from "./components/Route/Voucher/Voucher.jsx";
+import SearchProducts from "./pages/SearchProductsPage.jsx";
+import SearchProductsPage from "./pages/SearchProductsPage.jsx";
+import CheckoutPage from "./pages/CheckoutPage.jsx";
+
 const App = () => {
   
   return (
@@ -26,6 +34,12 @@ const App = () => {
         <Route path="/admin/*" element={<AdminHomePage />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/supplier" element={<Supplier />} />
+        <Route path="/loai-san-pham/:category" element={<ProductListPage/>}/>
+        <Route path="/cart" element={<CartPage/>}/>
+        <Route path="/account" element={<UserAccountPage/>}/>
+        <Route path="/search" element={<SearchProductsPage/>}/>
+        <Route path="/checkout" element={<CheckoutPage/>}/>
+        <Route path="/test" element={<Voucher/>}/>
       </Routes>
     </Provider>
   );
