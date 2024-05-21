@@ -26,6 +26,22 @@ const SignUp = () => {
                     for="name"
                     class="block mb-2 text-sm font-medium text-gray-900 "
                   >
+                    Username
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    class="bg-gray-50 border-[2px] border-orange-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 block w-full p-2.5 "
+                    placeholder="anguyenvan"
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    for="name"
+                    class="block mb-2 text-sm font-medium text-gray-900 "
+                  >
                     Tên
                   </label>
                   <input

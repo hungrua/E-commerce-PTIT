@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus } from "react-icons/fa";
 
@@ -10,15 +10,52 @@ import ft_pay_icon from "../../images/ft-pay-icon.webp";
 import step_icon from "../../images/step-icon.webp";
 import cart_icon from "../../images/cart-icon.webp";
 import Reviews from "./Reviews";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductById } from "../../redux/reducer/ProductSlice";
 const ProductDetails = () => {
+  const { id } = useParams()
+  const dispatch = useDispatch()
   const [select, setSelect] = useState(0);
   const [active, setActive] = useState(1);
-  const isStocking = true;
-  const images = [
-    "https://cdn.shopvnb.com//uploads/gallery/ao-cau-long-yonex-nu-den-ma-836_1703549899.webp",
-    "https://cdn.shopvnb.com/uploads/gallery/vot-cau-long-lining-axforce-90-do-dragon-max-ma-jp-5_1697394984.webp",
-    "https://cdn.shopvnb.com/uploads/gallery/vot-cau-long-lining-axforce-90-do-dragon-max-ma-jp-4_1697394989.webp",
-  ];
+  const [displayProduct, setDisplayProduct] = useState({})
+  const product = useSelector(state => state.product.currentSetProduct)
+  const images = product.images.map(img => img.path)
+  useEffect(() => {
+    dispatch(getProductById(id))
+  }, [dispatch])
+  useEffect(() => {
+    let priceArray = product.itemDetails.map(item => {
+      return item.price
+    })
+    let tmpProduct = {
+      ...product,
+      isAvailable: product.itemDetails.some(item => item.isAvailable == true),
+      minPrice: formatCurrency(Math.min(...priceArray)),
+      maxPrice: formatCurrency(Math.max(...priceArray))
+    }
+    console.log(tmpProduct)
+    setDisplayProduct(tmpProduct)
+  }, [product])
+  const formatCurrency = (value) => {
+    if (typeof value !== 'number') {
+      return value; // Trả về giá trị gốc nếu không phải là số
+    }
+
+    const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND'
+    });
+
+    const formattedValue = formatter.format(value);
+
+    return formattedValue.replace(/₫/g, 'đ');
+  }
+  // const images = [
+  //   "https://cdn.shopvnb.com//uploads/gallery/ao-cau-long-yonex-nu-den-ma-836_1703549899.webp",
+  //   "https://cdn.shopvnb.com/uploads/gallery/vot-cau-long-lining-axforce-90-do-dragon-max-ma-jp-5_1697394984.webp",
+  //   "https://cdn.shopvnb.com/uploads/gallery/vot-cau-long-lining-axforce-90-do-dragon-max-ma-jp-4_1697394989.webp",
+  // ];
   return (
     <div className="my-[100px]">
       <div className="w-full max-w-[1230px] h-full mx-auto px-[15px]">
@@ -47,12 +84,11 @@ const ProductDetails = () => {
                 <div className="w-full flex justify-center">
                   {images &&
                     images.map((i, index) => (
-                      <div
-                        className={`w-[100px] mr-[10px] border border-solid cursor-pointer bg-[#fff] h-full ${
-                          select === index
-                            ? "border-[#f66315]"
-                            : "border-[#ebebeb]"
-                        }`}
+                      <div key={index}
+                        className={`w-[100px] mr-[10px] border border-solid cursor-pointer bg-[#fff] h-full ${select === index
+                          ? "border-[#f66315]"
+                          : "border-[#ebebeb]"
+                          }`}
                       >
                         <div className={`pb-[100%] h-0 relative`}>
                           <img
@@ -73,7 +109,7 @@ const ProductDetails = () => {
             <div className="mt-[20px]">
               <div className="flex justify-between gap-2">
                 <div className="mb-0"></div>
-                {isStocking ? (
+                {displayProduct.isAvailable ? (
                   <div className="bg-[#dcf3d8] py-1 px-4 min-w-[120px] flex items-center justify-center gap-[6px] rounded-[36px] text-[#1d9d06] text-[14px]">
                     <FaCheck />
                     <div className="font-[500]">Còn hàng</div>
@@ -92,7 +128,7 @@ const ProductDetails = () => {
             <div>
               <div className="flex gap-2 items-center justify-between">
                 <h1 className="max-[1200px]:text-[35px] text-[40px] font-[700] text-[#031230]">
-                  Vợt cầu lông Yonex Astrox 77 Pro | Bản nâng cấp mới nhất
+                  {displayProduct.name}
                 </h1>
               </div>
               <div className="flex gap-[28px]">
@@ -144,10 +180,10 @@ const ProductDetails = () => {
                 <div className="flex gap-[20px] items-center">
                   <div className="leading-[1] flex items-center gap-[10px] p-1">
                     <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
-                      3.630.000đ
+                      {displayProduct.minPrice} 
                     </span>
-                    <span className="text-[#7f8080] line-through">
-                      4.000.000đ
+                    <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
+                      - {displayProduct.maxPrice}
                     </span>
                   </div>
                 </div>
@@ -382,26 +418,16 @@ const ProductDetails = () => {
             <div className="p-[30px] rounded-b-[12px] bg-[#feefe8] relative z-1">
               <div className="px-[15px] w-full text-[#000]">
                 <h2 className="text-[30px] my-[10px] font-[700]">
-                  Vợt Yonex Astrox 99 Pro 2021 – Bản nâng cấp mới nhất cho dòng
-                  Yonex thiên công
+                  {displayProduct.name}
                 </h2>
                 <p className="font-[400] text-[16px]">
-                  Có thể nói ở phiên bản 99 Pro cải tiến này khá giống với 88D
-                  Pro về công nghệ dũa thân vợt mỏng nhưng vẫn giữ được những bộ
-                  khung cũng như họa tiết đặc trưng của phiên bản cũ. Vợt cầu
-                  lông Yonex Astrox 99 Pro nổi bật với phối màu sự mạnh mẽ,
-                  quyết liệt trên sân đấu và hiện đang được tay vợt đơn nam trẻ
-                  top 1 của Malaysia Lee Zii Jia sử dụng thi đấu rất thành công
-                  trên đấu trường Quốc Tế. Yonex Astrox 99 Pro là cây vợt tấn
-                  công nặng đầu, có trọng lượng vung nặng nhất trong dòng ASTROX
-                  được đi kèm với khả năng giữ cầu trên mặt vợt để tăng cường
-                  khả năng phòng thủ.
+                  {displayProduct.description}
                 </p>
               </div>
             </div>
           ) : null}
           {active === 3 ? (
-            <Reviews/>
+            <Reviews />
           ) : null}
         </div>
       </div>

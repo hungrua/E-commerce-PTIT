@@ -36,7 +36,7 @@ const ProductCard = ({ details }) => {
     }
     return (
         <div className="relative group bg-white rounded-[10px] shadow-[0px_2px_10px_#00000014] transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-[0px_8px_16px_#0000002f]">
-            <Link to="/san-pham/id">
+            <Link to={`/san-pham/${details.id}`}>
                 <div className="relative">
                     <div className="p-2.5">
                         <img src={productInfo.img}

@@ -113,7 +113,7 @@ const CollapseRow = (props) => {
                                                 <TableCell align='center'>RAM</TableCell>
                                             </React.Fragment>
                                         }
-                                        {category == 2 && <TableCell align='center' >Kích thước màn hình</TableCell>}
+                                        {category == 1 && <TableCell align='center' >Kích thước màn hình</TableCell>}
                                         <TableCell align='center' >Tình trạng hàng</TableCell>
                                         <TableCell align='center' >Giá bán</TableCell>
                                         <TableCell align='center'>Đã bán</TableCell>
@@ -131,7 +131,7 @@ const CollapseRow = (props) => {
                                                     <TableCell align='center' >{items.ram}</TableCell>
                                                 </React.Fragment>
                                             }
-                                            {category == 2 && <TableCell>{items.screenSize}</TableCell>}
+                                            {category == 1 && <TableCell align='center'>{items.screenSize}</TableCell>}
                                             <TableCell align='center' >{items.isAvailable === true ? "Còn hàng" : "Hết hàng"}</TableCell>
                                             <TableCell align='center' >{items.price}</TableCell>
                                             <TableCell align='center'>{items.soldNumber}</TableCell>

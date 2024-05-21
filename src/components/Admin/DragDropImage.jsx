@@ -24,6 +24,7 @@ export default function DragDropImage({ setAddImages,initImages }) {
                 })
             }
             setImages(tmpImg)
+            setAddImages(tmpImg)
         }
     },[initImages])
     const selectFiles = () => {

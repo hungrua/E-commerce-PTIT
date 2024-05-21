@@ -1,93 +1,102 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../redux/reducer/UserSlice";
 
 const Login = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    navigate('/');
+  const [username,setUsername] = useState("")
+  const [password,setPassword] = useState("")
+  // useEffect(()=>{
+  //   dispatch(login)
+  // },[dispatch])
+  const alert = useSelector(state => state.user.alert)
+  const handleSubmit =  () => {
+    // e.preventDefault();
+    dispatch(login({username:username,password:password}))
+    // navigate('/');
   };
   return (
     <div className="overflow-hidden bg-cover bg-no-repeat h-[100vh] p-12 bg-[url('../public/static/images/web-images/bg-login.jpg')]">
       <section>
-        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-[90vh] lg:py-0">
-          <Link to="/" class="flex items-center mb-6 text-2xl font-semibold">
-            <img class="w-12 h-12 mr-2 mt-1" src="/static/images/web-images/logo.png" alt="logo" />
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-[90vh] lg:py-0">
+          <Link to="/" className="flex items-center mb-6 text-2xl font-semibold">
+            <img className="w-12 h-12 mr-2 mt-1" src="/static/images/web-images/logo.png" alt="logo" />
             <span className="text-black">Technology Shop</span>
           </Link>
-          <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
-            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 class="text-xl font-bold leading-tight tracking-tight text-[#e95221] md:text-2xl">
+          <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
+            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-[#e95221] md:text-2xl">
                 Đăng nhập tài khoản
               </h1>
-              <form class="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+              <form className="space-y-4 md:space-y-6" >
                 <div>
                   <label
-                    for="email"
-                    class="block mb-2 text-sm font-medium text-gray-900 "
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Username
                   </label>
                   <input
                     type="text"
-                    name="username"
                     id="username"
-                    class="bg-gray-50 border-[2px] border-orange-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 block w-full p-2.5 "
+                    className="bg-gray-50 border-[2px] border-orange-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 block w-full p-2.5 "
                     placeholder="hugenguyen"
                     required
+                    onChange={(e)=>{setUsername(e.target.value)}}
                   />
                 </div>
                 <div>
                   <label
-                    for="password"
-                    class="block mb-2 text-sm font-medium text-gray-900 "
+                    className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Mật khẩu
                   </label>
                   <input
                     type="password"
-                    name="password"
                     id="password"
                     placeholder="••••••••"
-                    class="bg-gray-50 border-[2px] border-orange-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 block w-full p-2.5"
+                    className="bg-gray-50 border-[2px] border-orange-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 block w-full p-2.5"
                     required
+                    onChange={(e)=>{setPassword(e.target.value)}}
                   />
                 </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-start">
-                    <div class="flex items-center h-5">
+                {/* <div className="flex items-center justify-between">
+                  <div className="flex items-start">
+                    <div className="flex items-center h-5">
                       <input
                         id="remember"
                         aria-describedby="remember"
                         type="checkbox"
-                        class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:outline-none"
+                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:outline-none"
                         required=""
                       />
                     </div>
-                    <div class="ml-3 text-sm">
-                      <label for="remember" class="text-gray-800 ">
+                    <div className="ml-3 text-sm">
+                      <label for="remember" className="text-gray-800 ">
                         Remember me
                       </label>
                     </div>
                   </div>
                   <Link
                     to="/forgot-password"
-                    class="text-sm font-medium text-primary-600 hover:underline"
+                    className="text-sm font-medium text-primary-600 hover:underline"
                   >
                     Quên mật khẩu?
                   </Link>
-                </div>
+                </div> */}
                 <button
-                  type="submit"
-                  class="w-full text-white bg-[#ff5a3d] focus:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="w-full text-white bg-[#ff5a3d] focus:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  onClick={handleSubmit}
+                  type="button"
                 >
                   Đăng nhập
                 </button>
-                <p class="text-sm font-[400] text-gray-700">
+                <p className="text-sm font-[400] text-gray-700">
                   Bạn chưa có tài khoản?{" "}
                   <Link
                     to="/sign-up"
-                    class="font-[600] text-primary-600 hover:underline"
+                    className="font-[600] text-primary-600 hover:underline"
                   >
                     Đăng ký
                   </Link>

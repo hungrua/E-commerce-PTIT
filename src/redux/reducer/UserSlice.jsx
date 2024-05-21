@@ -4,7 +4,7 @@ import { notify } from "../../components/Admin/notify";
 const userSlice = createSlice({
   name: "users",
   initialState: {
-    users:[],
+    users: [],
     currentSetUser: {
       id: "",
       username: "",
@@ -48,12 +48,12 @@ const userSlice = createSlice({
       })
       .addCase(addUser.fulfilled, (state, action) => {
         state.alert = action.payload
-        
+
       })
       .addCase(editUser.fulfilled, (state, action) => {
         state.alert = action.payload.data
-        state.users = state.users.map((user)=>{
-          if(user.id===action.payload.newUser.id){
+        state.users = state.users.map((user) => {
+          if (user.id === action.payload.newUser.id) {
             return action.payload.newUser
           }
           return user
@@ -61,7 +61,14 @@ const userSlice = createSlice({
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.alert = action.payload.data
-        state.users = state.users.filter((user)=> user.id!==action.payload.id) 
+        state.users = state.users.filter((user) => user.id !== action.payload.id)
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        const userLogin = action.payload
+        localStorage.setItem("authorization", JSON.stringify(userLogin))
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.alert = action.payload
       })
   },
 });
@@ -100,20 +107,20 @@ export const getUserById = createAsyncThunk("users/getUserById", async (id) => {
 });
 export const addUser = createAsyncThunk("user/addUser", async (newUser) => {
   // console.log(newUser)
-  newUser ={
+  newUser = {
     ...newUser,
     password: "Matkhaumacdinh1@",
-    roles: newUser.roles==="USER"?"USER":newUser.roles
+    roles: newUser.roles === "USER" ? "USER" : newUser.roles
   }
   const options = {
     method: "POST",
-    headers:{
-      "Content-Type":"application/json"
+    headers: {
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(newUser),
   };
-  let tmpRole = newUser.roles==='ADMIN'?1:newUser.roles==="EMPLOYEE"?0:3
-  const res = await fetch(IP+`/api/v1/signup?role=`+tmpRole, options);
+  let tmpRole = newUser.roles === 'ADMIN' ? 1 : newUser.roles === "EMPLOYEE" ? 0 : 3
+  const res = await fetch(IP + `/api/v1/signup?role=` + tmpRole, options);
   const data = await res.json();
   console.log(data)
   return data;
@@ -124,15 +131,15 @@ export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
     method: "PUT",
     body: JSON.stringify(newUser),
     headers: {
-      "Content-Type":"application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
     },
   };
-  const res = await fetch(IP+`/api/user`, options);
+  const res = await fetch(IP + `/api/user`, options);
   const data = await res.json();
   return {
     newUser: newUser,
-    data:data
+    data: data
   };
 });
 export const deleteUser = createAsyncThunk("user/deleteUser", async (id) => {
@@ -143,11 +150,31 @@ export const deleteUser = createAsyncThunk("user/deleteUser", async (id) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const res = await fetch(IP+`/admin/api/user?id=`+id, options);
+  const res = await fetch(IP + `/admin/api/user?id=` + id, options);
   const data = await res.json();
   return {
-    id:id,
-    data:data
+    id: id,
+    data: data
   };
 });
+export const login = createAsyncThunk("user/login", async ({ username, password }) => {
+  console.log({
+    username: username,
+    password: password
+  })
+  const options = {
+    method: "POST",
+    headers: {
+      'Content-Type': "application/json"
+    },
+    body: JSON.stringify({
+      username: username,
+      password: password
+    })
+  }
+  console.log(IP + `/api/v1/login`)
+  const res = await fetch(IP + `/api/v1/login`, options)
+  const data = await res.json()
+  return data
+})
 export default userSlice;

@@ -43,7 +43,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
         setCurrentSetProduct(currentProduct)
         setCategory(currentProduct.categoryDto.id)
         if (currentProduct) setFrequencyScreen(currentProduct.frequencyScreen)
-        console.log(currentSetProduct.images)
+        setAddImages(currentProduct.images)
     }, [dispatch, currentProduct])
 
     const handleCloseAddProduct = () => {
@@ -51,6 +51,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
         dispatch(getProductById(-1))
     }
     const handleChangeCategory = (e) => {
+        console.log(1)
         setCategory(e.target.value)
         setCurrentSetProduct((prev) => {
             return {
@@ -72,9 +73,11 @@ const AddProduct = ({ setDisplayAddProduct }) => {
         })
     }
     const handleChangeBrand = (e) => {
+        console.log(1)
         setBrand(e.target.value)
     }
     const handleChangeFrequencyScreen = (e) => {
+        console.log(1)
         setFrequencyScreen(e.target.value)
         handleOnChangeProperties("frequencyScreen", e.target.value)
     }
@@ -83,14 +86,13 @@ const AddProduct = ({ setDisplayAddProduct }) => {
             ...prev,
             [field]: value,
         }));
+        console.log(1)
     };
 
     const handleImageData = (categoryId) => {
         let category = categoryId == 1 ? "laptop/" : categoryId == 2 ? "dienthoai/" : "phukien/"
         let prePath = imgProductUrl + category
         let productImages = []
-        console.log(addImages)
-        console.log(addImages[0].id)
         addImages.map((img) => {
             if (img.id === undefined) productImages.push({
                 "id": null,
