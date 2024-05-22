@@ -1,93 +1,100 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IP, token } from "../../config/const";
+import { IP } from "../../config/const";
+const getUser = () => {
+  const user = JSON.parse(localStorage.getItem("authorization"))
+  return user
+}
 const voucherSlice = createSlice({
-    name: "voucher",
-    initialState: {
-        vouchers: [],
-        currentSetVoucher: {
-            id: "",
-            name: "",
-            description: "",
-            discount: 0,
-            discountConditions: 0,
-            numberVoucher: 0,
-            startDate: "2024-09-05",
-            endDate: "2024-11-05"
-        },
+  name: "voucher",
+  initialState: {
+    vouchers: [],
+    currentSetVoucher: {
+      id: "",
+      name: "",
+      description: "",
+      discount: 0,
+      discountConditions: 0,
+      numberVoucher: 0,
+      startDate: "2024-09-05",
+      endDate: "2024-11-05"
     },
-    reducers: {
-      resetAlert: (state, action) => {
-        state.alert = action.payload
-      },
+  },
+  reducers: {
+    resetAlert: (state, action) => {
+      state.alert = action.payload
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchVoucher.fulfilled, (state, action) => {
-                state.vouchers = action.payload;
-            })
-            .addCase(getVoucherById.fulfilled, (state, action) => {
-                state.currentSetVoucher = action.payload;
-            })
-            .addCase(addVoucher.fulfilled, (state, action) => {
-                state.alert = action.payload;
-                state.vouchers.push(action.payload.voucher)
-            })
-          .addCase(editVoucher.fulfilled, (state, action) => {
-            state.alert = action.payload.data;
-            state.vouchers = state.vouchers.map((voucher) => {
-              if (voucher.id === action.payload.newVoucher.id) {
-                return action.payload.newVoucher;
-              }
-              return voucher;
-            });
-          })
-          .addCase(deleteVoucher.fulfilled, (state, action) => {
-            state.alert = action.payload.data;
-            state.vouchers = state.vouchers.filter(
-              (voucher) => voucher.id !== action.payload.id
-            );
-          });
-    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchVoucher.fulfilled, (state, action) => {
+        state.vouchers = action.payload;
+      })
+      .addCase(getVoucherById.fulfilled, (state, action) => {
+        state.currentSetVoucher = action.payload;
+      })
+      .addCase(addVoucher.fulfilled, (state, action) => {
+        state.alert = action.payload;
+        state.vouchers.push(action.payload.voucher)
+      })
+      .addCase(editVoucher.fulfilled, (state, action) => {
+        state.alert = action.payload.data;
+        state.vouchers = state.vouchers.map((voucher) => {
+          if (voucher.id === action.payload.newVoucher.id) {
+            return action.payload.newVoucher;
+          }
+          return voucher;
+        });
+      })
+      .addCase(deleteVoucher.fulfilled, (state, action) => {
+        state.alert = action.payload.data;
+        state.vouchers = state.vouchers.filter(
+          (voucher) => voucher.id !== action.payload.id
+        );
+      });
+  },
 });
 
 export const fetchVoucher = createAsyncThunk(
-    "voucher/fetchVoucher",
-    async () => {
-        const res = await fetch(IP + "/customer/api/vouchers",{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          }
-        });
-        const data = await res.json();
-        return data;
-    }
+  "voucher/fetchVoucher",
+  async () => {
+    const token = getUser().token
+    const res = await fetch(IP + "/customer/api/vouchers", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    const data = await res.json();
+    return data;
+  }
 );
 export const getVoucherById = createAsyncThunk(
-    "voucher/getVoucherById",
-    async (id) => {
-        if (id === -1)
-            return {
-                "id": "",
-                "name": "",
-                "description": "",
-                "discount": 0,
-                "discountConditions": 0,
-                "numberVoucher": 0,
-                "startDate": "",
-                "endDate": ""
-            };
-        const res = await fetch(IP + `/admin/api/voucher?id=` + id, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        const data = await res.json();
-        return data.message;
-    }
+  "voucher/getVoucherById",
+  async (id) => {
+    const token = getUser().token
+    if (id === -1)
+      return {
+        "id": "",
+        "name": "",
+        "description": "",
+        "discount": 0,
+        "discountConditions": 0,
+        "numberVoucher": 0,
+        "startDate": "",
+        "endDate": ""
+      };
+    const res = await fetch(IP + `/admin/api/voucher?id=` + id, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    return data.message;
+  }
 );
 export const addVoucher = createAsyncThunk(
   "voucher/addCategory",
   async (newVoucher) => {
+    const token = getUser().token
     const options = {
       method: "POST",
       headers: {
@@ -104,6 +111,7 @@ export const addVoucher = createAsyncThunk(
 export const editVoucher = createAsyncThunk(
   "voucher/editVoucher",
   async (newVoucher) => {
+    const token = getUser().token
     const options = {
       method: "PUT",
       body: JSON.stringify(newVoucher),
@@ -123,6 +131,7 @@ export const editVoucher = createAsyncThunk(
 export const deleteVoucher = createAsyncThunk(
   "voucher/deleteVoucher",
   async (id) => {
+    const token = getUser().token
     console.log(id);
     const options = {
       method: "DELETE",

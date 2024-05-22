@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP, token } from "../../config/const";
-const getToken = ()=>{
-  const token = JSON.parse(localStorage.getItem("authorization")).token
-  return token
+const getUser = () => {
+  const user = JSON.parse(localStorage.getItem("authorization"))
+  return user
 }
 const userSlice = createSlice({
   name: "users",
@@ -74,7 +74,6 @@ const userSlice = createSlice({
         else {
           const userLogin = action.payload
           localStorage.setItem("authorization", JSON.stringify(userLogin))
-          
         }
 
       })
@@ -91,7 +90,7 @@ const userSlice = createSlice({
 });
 
 export const fetchUser = createAsyncThunk("users/fetchUser", async () => {
-  token = getToken()
+  const token = getUser().token
   const res = await fetch(IP + "/admin/api/users", {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -101,7 +100,7 @@ export const fetchUser = createAsyncThunk("users/fetchUser", async () => {
   return data;
 });
 export const getUserById = createAsyncThunk("users/getUserById", async (id) => {
-  token = getToken()
+  const token = getUser().token
   if (id === -1)
     return {
       id: null,
@@ -126,7 +125,7 @@ export const getUserById = createAsyncThunk("users/getUserById", async (id) => {
 });
 export const addUser = createAsyncThunk("user/addUser", async (newUser) => {
   // console.log(newUser)
-  token = getToken()
+  const token = getUser().token
   newUser = {
     ...newUser,
     password: "Matkhaumacdinh1@",
@@ -147,7 +146,7 @@ export const addUser = createAsyncThunk("user/addUser", async (newUser) => {
 });
 export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
   newUser.password = null
-  token = getToken()
+  const token = getUser().token
   const options = {
     method: "PUT",
     body: JSON.stringify(newUser),
@@ -165,7 +164,7 @@ export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
 });
 export const deleteUser = createAsyncThunk("user/deleteUser", async (id) => {
   console.log(id)
-  token = getToken()
+  const token = getUser().token
   const options = {
     method: "DELETE",
     headers: {

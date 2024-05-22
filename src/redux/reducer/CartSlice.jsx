@@ -54,6 +54,23 @@ const cartSlice = createSlice({
                 else state.cartItems[index] = cartItem
                 state.alert = action.payload.alert
             })
+            .addCase(updateCartItem.fulfilled, (state, action) => {
+
+                const cartItem = {
+                    cartItemId: action.payload.itemInfo.id,
+                    itemDetailsId: action.payload.itemInfo.itemDetail.id,
+                    quantity: action.payload.itemInfo.quantity,
+                    totalPrice: action.payload.itemInfo.price,
+                    name: action.payload.itemInfo.itemDto.name,
+                    categoryID: action.payload.itemInfo.itemDto.categoryDto.id,
+                    image: action.payload.itemInfo.itemDto.images[0].path,
+                    price: action.payload.itemInfo.itemDetail.price,
+                    details: action.payload.itemInfo.itemDetail,
+                    itemId: action.payload.itemInfo.itemDto.id
+                }
+                const index = state.cartItems.findIndex(item => item.cartItemId === cartItem.cartItemId)
+                state.cartItems[index] = cartItem
+            })
 
     }
 })
@@ -92,5 +109,24 @@ export const addItemToCart = createAsyncThunk("cart/addItemToCart", async (cartI
         itemInfo: data.item
     }
 })
-
+export const updateCartItem = createAsyncThunk("cart/updateCartItem", async (cartItem) => {
+    const token = getToken()
+    console.log(cartItem)
+    const options = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const res = await fetch(`${IP}/customer/api/cart?cartItemId=${cartItem.cartItemId}&quantity=${cartItem.quantity}`, options)
+    const data = await res.json()
+    return {
+        alert: {
+            code: data.code,
+            message: data.message
+        },
+        itemInfo: data.cartItem
+    }
+})
 export default cartSlice

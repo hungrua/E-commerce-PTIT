@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItemToCart, fetchCartItem } from '../../../redux/reducer/CartSlice'
+import { addItemToCart, fetchCartItem, updateCartItem } from '../../../redux/reducer/CartSlice'
 import {
     FaMinus,
     FaPlus
@@ -24,7 +24,11 @@ export const HeaderCartItem = (props) => {
         if(quantity<2 && value==1) return
         let afterCount  =quantity -value
         setQuantity(afterCount)
-        
+        let cartItem={
+            cartItemId:itemInfo.cartItemId,
+            quantity: afterCount
+        }
+        dispatch(updateCartItem(cartItem))
     }
 
     return (
@@ -64,8 +68,9 @@ export const HeaderCartItem = (props) => {
                         </div>
                     </div>
                 </div>
-                <div className="text-[16px] text-[#f66315] mt-auto ml-auto font-[700]">
-                    <span>{formatCurrency(quantity*itemInfo.details.price)}</span>
+                <div className="relative text-[16px] text-[#f66315] ml-auto font-[700] h-auto inline-grid">
+                    <div >x</div>
+                    <div >{formatCurrency(quantity*itemInfo.details.price)}</div>
                 </div>
             </div>
         </div>

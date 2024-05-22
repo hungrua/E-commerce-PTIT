@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP} from "../../config/const";
 import { notify } from "../../components/Admin/notify";
-import GetUser from "../../config/GetUser";
-const getToken = ()=>{
-  const token = JSON.parse(localStorage.getItem("authorization")).token
-  return token
+const getUser = () => {
+  const user = JSON.parse(localStorage.getItem("authorization"))
+  return user
 }
 const productSlice = createSlice({
   name: "product",
@@ -191,7 +190,7 @@ export const getProductById = createAsyncThunk(
 export const addProduct = createAsyncThunk(
   "product/addProduct",
   async ({ newProduct, category, brand }) => {
-    const token = getToken()
+    const token = getUser().token
     const options = {
       method: "POST",
       headers: {
@@ -208,7 +207,7 @@ export const addProduct = createAsyncThunk(
 export const editProduct = createAsyncThunk(
   "product/editProduct",
   async ({ newProduct, category, brand }) => {
-    const token = getToken()
+    const token = getUser().token
     const options = {
       method: "PUT",
       headers: {
@@ -228,7 +227,7 @@ export const editProduct = createAsyncThunk(
 export const deleteProduct = createAsyncThunk(
   "product/deleteProduct",
   async (id) => {
-    const token = getToken()
+    const token = getUser().token
     const options = {
       method: "DELETE",
       headers: {
@@ -246,7 +245,7 @@ export const deleteProduct = createAsyncThunk(
 export const getProductDetailsById = createAsyncThunk(
   "product/getProductDetailsById",
   async (id) => {
-    const token = getToken()
+    const token = getUser().token
     if (id === -1)
       return {
         "id": null,
@@ -271,7 +270,7 @@ export const getProductDetailsById = createAsyncThunk(
 export const addProductDetails = createAsyncThunk(
   "product/addProductDetails",
   async (newProductDetails) => {
-    const token = getToken()
+    const token = getUser().token
     const options = {
       method: "POST",
       headers: {
@@ -291,7 +290,7 @@ export const addProductDetails = createAsyncThunk(
 export const editProductDetails = createAsyncThunk(
   "product/editProductDetails",
   async (newProductDetails) => {
-    const token = getToken()
+    const token = getUser().token
     const options = {
       method: "PUT",
       headers: {
@@ -311,7 +310,7 @@ export const editProductDetails = createAsyncThunk(
 export const deleteProductDetails = createAsyncThunk(
   "product/deleteProductDetails",
   async ({productId,id}) => {
-    const token = getToken()
+    const token = getUser().token
     const options = {
       method: "DELETE",
       headers: {
@@ -328,7 +327,7 @@ export const deleteProductDetails = createAsyncThunk(
   }
 );
 export const fetchBrand = createAsyncThunk("/product/fetchBrand", async () => {
-  const token = getToken()
+  const token = getUser().token
   const res = await fetch(IP + "/api/brands", {
     
     headers: {

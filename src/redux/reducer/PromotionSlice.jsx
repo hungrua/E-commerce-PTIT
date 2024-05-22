@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IP, token } from "../../config/const";
+import { IP } from "../../config/const";
+const getUser = () => {
+    const user = JSON.parse(localStorage.getItem("authorization"))
+    return user
+}
 const promotionSlice = createSlice({
     name: "promotion",
     initialState: {
@@ -64,6 +68,7 @@ const promotionSlice = createSlice({
 export const fetchPromotion = createAsyncThunk(
     "promotion/fetchPromotion",
     async () => {
+        const token = getUser().token
         const res = await fetch(IP + "/admin/api/promotions", {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -76,6 +81,7 @@ export const fetchPromotion = createAsyncThunk(
 export const getPromtionById = createAsyncThunk(
     "promotion/getPromtionById",
     async (id) => {
+        const token = getUser().token
         if (id === -1)
             return {
                 "id": null,
@@ -101,6 +107,7 @@ export const getPromtionById = createAsyncThunk(
 export const addPromotion = createAsyncThunk(
     "promotion/addPromotion",
     async (newPromotion) => {
+        const token = getUser().token
         const options = {
             method: "POST",
             headers: {
@@ -117,6 +124,7 @@ export const addPromotion = createAsyncThunk(
 export const editPromotion = createAsyncThunk(
     "promotion/editPromotion",
     async (newPromotion) => {
+        const token = getUser().token
         const options = {
             method: "PUT",
             body: JSON.stringify(newPromotion),
@@ -134,6 +142,7 @@ export const deletePromotion = createAsyncThunk(
     "promotion/deletePromotion",
     async (id) => {
         console.log(id);
+        const token = getUser().token
         const options = {
             method: "DELETE",
             headers: {

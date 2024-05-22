@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IP, token } from "../../config/const";
+import { IP } from "../../config/const";
+const getUser = () => {
+  const user = JSON.parse(localStorage.getItem("authorization"))
+  return user
+}
 const supplierSlice = createSlice({
   name: "supplier",
   initialState: {
@@ -50,6 +54,7 @@ const supplierSlice = createSlice({
 export const fetchSupplier = createAsyncThunk(
   "supplier/fetchSupplier",
   async () => {
+    const token = getUser().token
     const res = await fetch(IP + "/api/suppliers", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -62,6 +67,7 @@ export const fetchSupplier = createAsyncThunk(
 export const getSupplierById = createAsyncThunk(
   "supplier/getSupplierById",
   async (id) => {
+    const token = getUser().token
     if (id === -1)
       return {
         id: "",
@@ -82,6 +88,7 @@ export const getSupplierById = createAsyncThunk(
 export const addSupplier = createAsyncThunk(
   "supplier/addSupplier",
   async (newSupplier) => {
+    const token = getUser().token
     const options = {
       method: "POST",
       headers: {
@@ -98,6 +105,7 @@ export const addSupplier = createAsyncThunk(
 export const editSupplier = createAsyncThunk(
   "supplier/editSupplier",
   async (newSupplier) => {
+    const token = getUser().token
     const options = {
       method: "PUT",
       body: JSON.stringify(newSupplier),
@@ -117,6 +125,7 @@ export const editSupplier = createAsyncThunk(
 export const deleteSupplier = createAsyncThunk(
   "supplier/deleteSupplier",
   async (id) => {
+    const token = getUser().token
     console.log(id);
     const options = {
       method: "DELETE",

@@ -16,7 +16,6 @@ const HeaderCart = (props) => {
     const cartItem = useSelector(state => state.cart.cartItems)
     const [total, setTotal] = useState(0)
     useEffect(() => {
-        dispatch(fetchCartItem())
         if (cartItem) {
             let total = cartItem.reduce((cucl, item) => {
                 return parseInt(cucl) + parseInt(item.totalPrice)
@@ -24,7 +23,7 @@ const HeaderCart = (props) => {
             setTotal(formatCurrency(total))
         }
 
-    }, [dispatch])
+    }, [dispatch,cartItem])
     return (
         <div className="fixed z-50 right-0 w-[550px] top-[58px] translate-x-0 translate-y-0 opacity-[1] max-w-[90%] bottom-0 overflow-y-auto bg-[#fff] transition-all shadow-headerShadow">
             <div className="h-full flex flex-col">

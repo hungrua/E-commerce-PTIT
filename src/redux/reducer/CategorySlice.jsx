@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP } from "../../config/const";
-const getToken = ()=>{
-  const token = JSON.parse(localStorage.getItem("authorization")).token
-  return token
+const getUser = () => {
+  const user = JSON.parse(localStorage.getItem("authorization"))
+  return user
 }
 const categorySlice = createSlice({
   name: "category",
@@ -12,7 +12,7 @@ const categorySlice = createSlice({
       id: "",
       name: "",
       description: "",
-      totalItem:0
+      totalItem: 0
     }
   },
   reducers: {
@@ -52,7 +52,7 @@ const categorySlice = createSlice({
 export const fetchCategory = createAsyncThunk(
   "category/fetchCategory",
   async () => {
-    const token = getToken()
+    const token = getUser().token
     const res = await fetch(IP + "/customer/api/categories", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -65,7 +65,7 @@ export const fetchCategory = createAsyncThunk(
 export const getCategoryById = createAsyncThunk(
   "users/getCategoryById",
   async (id) => {
-    const token = getToken()
+    const token = getUser().token
     if (id === -1)
       return {
         id: "",
@@ -84,7 +84,7 @@ export const getCategoryById = createAsyncThunk(
 export const addCategory = createAsyncThunk(
   "user/addCategory",
   async (newCategory) => {
-    const token = getToken()
+    const token = getUser().token
     const options = {
       method: "POST",
       headers: {
@@ -101,7 +101,7 @@ export const addCategory = createAsyncThunk(
 export const editCategory = createAsyncThunk(
   "user/editCategory",
   async (newCategory) => {
-    const token = getToken()
+    const token = getUser().token
     const options = {
       method: "PUT",
       body: JSON.stringify(newCategory),
@@ -121,7 +121,7 @@ export const editCategory = createAsyncThunk(
 export const deleteCategory = createAsyncThunk(
   "user/deleteCategory",
   async (id) => {
-    const token = getToken()
+    const token = getUser().token
     console.log(id);
     const options = {
       method: "DELETE",

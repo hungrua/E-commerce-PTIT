@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 const ProductCard = ({ details }) => {
     const [productInfo, setProductInfo] = useState(details)
-    const [rating,setRating] = useState(3)
     useEffect(() => {
         let priceArray = details.itemDetails.map(item => {
             return item.price
@@ -15,7 +14,9 @@ const ProductCard = ({ details }) => {
             name: details.name,
             img: details.images[0].path,
             minPrice: formatCurrency(Math.min(...priceArray)),
-            maxPrice: formatCurrency(Math.max(...priceArray))
+            maxPrice: formatCurrency(Math.max(...priceArray)),
+            rating: details.rating,
+            numberRating : details.numberRating
         }
         setProductInfo(productDetail)
     }, [])
@@ -65,20 +66,20 @@ const ProductCard = ({ details }) => {
                     <div className="flex justify-between flex-[2] flex-wrap">
                         <div className="flex justify-around gap-x-1">
                             {
-                                Array.from({ length: parseInt(rating) }, (_, index) => (
+                                Array.from({ length: parseInt(productInfo.rating) }, (_, index) => (
                                     <FaStar key={index} color="#ffa534" />
                                 ))
                             }
                             {
-                                (rating - parseInt(rating) >= 0.5 ? <FaStarHalfAlt color="#ffa534" /> : '')
+                                (productInfo.rating - parseInt(productInfo.rating) >= 0.5 ? <FaStarHalfAlt color="#ffa534" /> : '')
                             }
                             {
-                                Array.from({ length: 5 - Math.round(rating) }, (_, index) => (
+                                Array.from({ length: 5 - Math.round(productInfo.rating) }, (_, index) => (
                                     <FaStar key={index} color="rgb(209,209,211)" />
                                 ))
                             }
                         </div>
-                        <div className="pl-2 text-[13px]">(408 đánh giá)</div>
+                        <div className="pl-2 text-[13px]">( {productInfo.numberRating} đánh giá)</div>
                     </div>
                 </div>
             </Link>

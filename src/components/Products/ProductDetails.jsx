@@ -43,11 +43,14 @@ const ProductDetails = () => {
     let priceArray = product.itemDetails.map(item => {
       return item.price
     })
+    let totalSold = product.itemDetails.reduce((a,b)=> a+b.soldNumber,0)
     let tmpProduct = {
       ...product,
       isAvailable: product.itemDetails.some(item => item.isAvailable == true),
       minPrice: formatCurrency(Math.min(...priceArray)),
-      maxPrice: formatCurrency(Math.max(...priceArray))
+      maxPrice: formatCurrency(Math.max(...priceArray)),
+      totalSold: totalSold
+
     }
     // console.log(tmpProduct)
     setDisplayProduct(tmpProduct)
@@ -160,18 +163,18 @@ const ProductDetails = () => {
               </div>
               <div className="flex gap-[28px]">
                 <div className="flex items-center gap-1">
-                  <span className="font-[700] text-[#f6af15]">{rating}</span>
+                  <span className="font-[700] text-[#f6af15]">{displayProduct.rating}</span>
                   <div className="flex">
                     {
-                      Array.from({ length: parseInt(rating) }, (_, index) => (
+                      Array.from({ length: parseInt(displayProduct.rating) }, (_, index) => (
                         <FaStar key={index} color="orange" />
                       ))
                     }
                     {
-                      (rating - parseInt(rating) >= 0.5 ? <FaStarHalfAlt color="orange" /> : '')
+                      (displayProduct.rating - parseInt(displayProduct.rating) >= 0.5 ? <FaStarHalfAlt color="orange" /> : '')
                     }
                     {
-                      Array.from({ length: 5 - Math.round(rating) }, (_, index) => (
+                      Array.from({ length: 5 - Math.round(displayProduct.rating) }, (_, index) => (
                         <FaStar key={index} color="rgb(209,209,211)" />
                       ))
                     }
@@ -179,12 +182,12 @@ const ProductDetails = () => {
                 </div>
                 <div className="flex items-center gap-1 relative">
                   <div className="absolute h-4 w-[1px] bg-[#000] top-[50%] left-[-1rem] translate-x-[-50%] translate-y-[-50%]"></div>
-                  <span className="font-[700]">3</span>
+                  <span className="font-[700]">{displayProduct.numberRating}</span>
                   <span className="text-[14px] mt-[1px]"> đánh giá</span>
                 </div>
                 <div className="flex items-center gap-1 relative">
                   <div className="absolute h-4 w-[1px] bg-[#000] top-[50%] left-[-1rem] translate-x-[-50%] translate-y-[-50%]"></div>
-                  <span className="font-[700]">{selectItemDetail ? selectItemDetail.soldNumber : 492}</span>
+                  <span className="font-[700]">{selectItemDetail ? selectItemDetail.soldNumber : displayProduct.totalSold}</span>
                   <span className="text-[14px] mt-[1px]"> lượt mua</span>
                 </div>
                 <div className="w-[30px] h-[30px] relative rounded-[50%] flex items-center justify-center text-[#f66315] bg-[#feefe8] text-[13px] duration-300 cursor-pointer hover:text-white hover:bg-[#f66315]">

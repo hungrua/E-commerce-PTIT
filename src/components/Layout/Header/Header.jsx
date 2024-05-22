@@ -13,6 +13,7 @@ import HeaderCart from "./HeaderCart";
 import HeaderNotification from "./HeaderNotification";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategory } from "../../../redux/reducer/CategorySlice";
+import { fetchCartItem } from "../../../redux/reducer/CartSlice";
 
 const Header = () => {
   const navigate = useNavigate()
@@ -24,8 +25,12 @@ const Header = () => {
   const [openNotification, setOpenNotification] = useState(false);
   const [notifications, setNotifications] = useState([])
   const [searchValue, setSearchValue] = useState('')
-  const categories = (useSelector(state=> state.category.categories)).map(item=>({name:item.name,code:item.code.replace('-','')}))
-
+  const categories = (useSelector(state => state.category.categories)).map(item => ({ name: item.name, code: item.code.replace('-', '') }))
+  const cartItem = useSelector(state => state.cart.cartItems)
+  useEffect(() => {
+    dispatch(fetchCartItem())
+    console.log(1)
+  }, [dispatch])
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
@@ -49,7 +54,7 @@ const Header = () => {
   const handleOpenNotification = () => {
     setOpenNotification(!openNotification)
   }
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     localStorage.removeItem("authorization")
 
     navigate("/login")
@@ -126,7 +131,7 @@ const Header = () => {
                     </div>
                   </div>
                   <div className="absolute w-[20px] h-[20px] rounded-[50%] border border-solid border-[#feefe8] bg-[#e10600] text-[#fff] text-[10px] font-[500] flex items-center justify-center top-0 left-full translate-x-[-55%] translate-y-[-50%] z-1">
-                    <span>1</span>
+                    <span>{cartItem.length}</span>
                   </div>
                   {/* gio hang detail */}
                   {
@@ -256,7 +261,7 @@ const Header = () => {
                                 </span>
                               </li>
                               {
-                                categories.map((category,index) => (
+                                categories.map((category, index) => (
                                   <li key={index} className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
                                     <Link
                                       to={`/loai-san-pham/${category.code}`}
