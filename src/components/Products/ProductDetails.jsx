@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { FaCartShopping } from "react-icons/fa6";
-import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { FaBatteryHalf, FaCartShopping } from "react-icons/fa6";
+import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus, FaStar, FaStarHalfAlt, FaUsb, FaWeight, FaSimCard } from "react-icons/fa";
+import { MdWarehouse, MdOutlineFolderSpecial } from "react-icons/md";
+import { FiCpu } from "react-icons/fi";
+import { GiLightningFrequency } from "react-icons/gi";
+import { AiFillWindows } from "react-icons/ai";
+import { RiPhoneCameraLine, RiPhoneCameraFill } from "react-icons/ri";
+import { IoMdWifi } from "react-icons/io";
 
 
 import Reviews from "./Reviews";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../redux/reducer/ProductSlice";
+import ItemDetail from "./ItemDetail";
 const ProductDetails = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
-  const [select, setSelect] = useState(0);
+  const [selectImage, setSelectImage] = useState(0);
   const [active, setActive] = useState(1);
   const [displayProduct, setDisplayProduct] = useState({})
   const product = useSelector(state => state.product.currentSetProduct)
   const images = product.images.map(img => img.path)
   const [rating, setRating] = useState(3.5);
+  const [selectItemDetail, setSelectItemDetail] = useState(null);
 
-
+  // console.log(product)
   useEffect(() => {
     dispatch(getProductById(id))
   }, [dispatch,id])
@@ -31,7 +39,7 @@ const ProductDetails = () => {
       minPrice: formatCurrency(Math.min(...priceArray)),
       maxPrice: formatCurrency(Math.max(...priceArray))
     }
-    console.log(tmpProduct)
+    // console.log(tmpProduct)
     setDisplayProduct(tmpProduct)
   }, [product])
   const formatCurrency = (value) => {
@@ -48,11 +56,7 @@ const ProductDetails = () => {
 
     return formattedValue.replace(/₫/g, 'đ');
   }
-  // const images = [
-  //   "https://cdn.shopvnb.com//uploads/gallery/ao-cau-long-yonex-nu-den-ma-836_1703549899.webp",
-  //   "https://cdn.shopvnb.com/uploads/gallery/vot-cau-long-lining-axforce-90-do-dragon-max-ma-jp-5_1697394984.webp",
-  //   "https://cdn.shopvnb.com/uploads/gallery/vot-cau-long-lining-axforce-90-do-dragon-max-ma-jp-4_1697394989.webp",
-  // ];
+
   return (
     <div className="my-[100px]">
       <div className="w-full max-w-[1230px] h-full mx-auto px-[15px]">
@@ -65,7 +69,7 @@ const ProductDetails = () => {
                   <div className="w-full relative max-[850px]:w-[65%] max-[600px]:w-full mx-auto cursor-pointer duration-300 ease-in-out">
                     <img
                       className="w-full h-full object-cover max-w-full rounded-[5px]"
-                      src={`${images[select]}`}
+                      src={`${images[selectImage]}`}
                       alt=""
                     />
                     <div className="flex absolute min-w-[48px] top-[20px] left-[10px] z-1 items-center justify-center">
@@ -82,7 +86,7 @@ const ProductDetails = () => {
                   {images &&
                     images.map((i, index) => (
                       <div key={index}
-                        className={`w-[100px] mr-[10px] border border-solid cursor-pointer bg-[#fff] h-full ${select === index
+                        className={`w-[100px] mr-[10px] border border-solid cursor-pointer bg-[#fff] h-full ${selectImage === index
                           ? "border-[#f66315]"
                           : "border-[#ebebeb]"
                           }`}
@@ -93,7 +97,7 @@ const ProductDetails = () => {
                             alt=""
                             height="80"
                             width="80"
-                            onClick={() => setSelect(index)}
+                            onClick={() => setSelectImage(index)}
                             className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] max-w-full max-h-full w-auto h-auto"
                           />
                         </div>
@@ -130,19 +134,19 @@ const ProductDetails = () => {
               </div>
               <div className="flex gap-[28px]">
                 <div className="flex items-center gap-1">
-                  <span className="font-[700] text-[#f6af15]">4</span>
+                  <span className="font-[700] text-[#f6af15]">{rating}</span>
                   <div className="flex">
                     {
-                      Array.from({length: parseInt(rating)}, (_, index) => (
-                        <FaStar color="orange"/>
+                      Array.from({ length: parseInt(rating) }, (_, index) => (
+                        <FaStar key={index} color="orange" />
                       ))
                     }
                     {
-                      (rating - parseInt(rating) >= 0.5 ? <FaStarHalfAlt color="orange"/> : '')
+                      (rating - parseInt(rating) >= 0.5 ? <FaStarHalfAlt color="orange" /> : '')
                     }
                     {
-                      Array.from({length: 5 - Math.round(rating)}, (_, index) => (
-                        <FaStar color="rgb(209,209,211)"/>
+                      Array.from({ length: 5 - Math.round(rating) }, (_, index) => (
+                        <FaStar color="rgb(209,209,211)" />
                       ))
                     }
                   </div>
@@ -154,7 +158,7 @@ const ProductDetails = () => {
                 </div>
                 <div className="flex items-center gap-1 relative">
                   <div className="absolute h-4 w-[1px] bg-[#000] top-[50%] left-[-1rem] translate-x-[-50%] translate-y-[-50%]"></div>
-                  <span className="font-[700]">492</span>
+                  <span className="font-[700]">{selectItemDetail ? selectItemDetail.soldNumber : 492}</span>
                   <span className="text-[14px] mt-[1px]"> lượt mua</span>
                 </div>
                 <div className="w-[30px] h-[30px] relative rounded-[50%] flex items-center justify-center text-[#f66315] bg-[#feefe8] text-[13px] duration-300 cursor-pointer hover:text-white hover:bg-[#f66315]">
@@ -164,77 +168,39 @@ const ProductDetails = () => {
               <div className="mt-[10px]">
                 <div className="flex gap-[20px] items-center">
                   <div className="leading-[1] flex items-center gap-[10px] p-1">
-                    <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
-                      {displayProduct.minPrice} 
-                    </span>
-                    <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
-                      - {displayProduct.maxPrice}
-                    </span>
+                    {
+                      selectItemDetail ? (
+                        <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">{formatCurrency(selectItemDetail.price)}</span>
+                      ) : (
+                        <div>
+                          <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
+                            {displayProduct.minPrice}
+                          </span>
+                          <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
+                            - {displayProduct.maxPrice}
+                          </span>
+                        </div>
+                      )
+                    }
+
                   </div>
                 </div>
-                <div className="mt-0">
-                  <span className="inline-block text-[#f66315]">
-                    Chọn thuộc tính:
-                  </span>
-                  <div className="mt-[20px]">
-                    <div className="flex items-center gap-3">
-                      <span className="min-w-[80px] font-[500]">Màu sắc</span>
-                      <div className="flex mx-[-8px] flex-wrap">
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              Đen
-                            </span>
-                          </div>
-                        </div>
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              Trắng
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Nếu mà giày có kích cớ / áo*/}
-                  <div className="mt-[20px]">
-                    <div className="flex items-center gap-3">
-                      <span className="min-w-[80px] font-[500]">Size giày</span>
-                      <div className="flex mx-[-8px] flex-wrap">
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              37
-                            </span>
-                          </div>
-                        </div>
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              38
-                            </span>
-                          </div>
-                        </div>
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              39
-                            </span>
-                          </div>
-                        </div>
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              40
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="mt-4 flex gap-x-4 cursor-pointer">
+                  {
+                    product.itemDetails?.map((detail, index) => (
+                      <ItemDetail
+                        key={index}
+                        data={detail}
+                        selectItemDetail={selectItemDetail}
+                        setSelectImage={setSelectImage}
+                        setSelectItemDetail={setSelectItemDetail}
+                      />
+                    ))
+                  }
+
                 </div>
                 <div className="mt-[20px] flex items-center gap-[30px]">
+
                   <div className="flex items-center gap-[10px]">
                     <span className="min-w-[80px] font-[500]">Số lượng:</span>
                     <div className="flex mt-auto">
@@ -242,6 +208,7 @@ const ProductDetails = () => {
                         <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]">
                           <FaMinus className="text-[14px]" />
                         </div>
+
                         <p className="text-[14px] text-[#031230]">01</p>
                         <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]">
                           <FaPlus className="text-[14px]" />
@@ -272,7 +239,7 @@ const ProductDetails = () => {
             </div>
             <div className="mt-[15px]">
               <div className="relative">
-                <div className="absolute w-[15%] bottom-0 right-0">
+                <div className="absolute w-[15%] top-[15%] right-0">
                   <img
                     className="block w-full max-w-full h-auto"
                     src="/static/images/web-images/bot.png"
@@ -280,76 +247,135 @@ const ProductDetails = () => {
                   />
                 </div>
                 <span className="inline-block py-1 px-5 text-[#f66315] font-[500] text-[14px] rounded-t-[12px] border border-solid border-[rgb(11,116,229)] border-b-0 relative z-1 bg-[#fff] translate-y-[1px]">
-                  Ưu đãi
+                  Thông tin sản phẩm
                 </span>
                 <div className="flex flex-col gap-[10px] p-5 rounded-b-[12px] rounded-r-[12px] border border-solid border-[rgb(11,116,229)] relative overflow-hidden min-h-[100px]">
-                  <div className="absolute w-full pt-[55%] bottom-0 right-0 z-0 bg-6 translate-x-[42%] rotate-[328deg]"></div>
+                  <div className="absolute w-full pt-[55%] top-0 right-0 z-0 bg-6 translate-x-[42%] rotate-[220deg]"></div>
 
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src='/static/images/step-icon.webp'
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Freeship khi chuyển khoản trước với đơn hàng trên 1 triệu
-                    </span>
-                  </div>
+                  {
+                    displayProduct.vendor && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <MdWarehouse color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400]">
+                        Nhà cung cấp: <span className="font-bold">{displayProduct.vendor}</span>
+                      </span>
+                    </div>
+                  }
 
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src='/static/images/ft-pay-icon.webp'
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Yên tâm với quy trình nhận hàng kiểm tra trước thanh toán
-                      sau
-                    </span>
-                  </div>
+                  {
+                    displayProduct.cpu && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <FiCpu color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400]">
+                        CPU: <span className="font-bold">{displayProduct.cpu}</span>
+                      </span>
+                    </div>
+                  }
 
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src='/static/images/icon-cate-new.webp'
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Bảo hành 3 tháng lỗi 1 đổi 1 lỗi nhà sản xuất
-                    </span>
-                  </div>
+                  {
+                    displayProduct.frequencyScreen && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <GiLightningFrequency color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400]">
+                        Tần số quét: <span className="font-bold">{displayProduct.frequencyScreen}</span>
+                      </span>
+                    </div>
+                  }
 
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src='/static/images/icon-cate-tag.webp'
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Cơ hội nhân voucher cho các đơn hàng tiếp theo
-                    </span>
-                  </div>
+                  {
+                    displayProduct.os && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <AiFillWindows color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400]">
+                        Hệ điều hành: <span className="font-bold">{displayProduct.os}</span>
+                      </span>
+                    </div>
+                  }
 
-                  <div className="flex items-center gap-[10px]">
-                    <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                      <img
-                        src='/static/images/cart-icon.webp'
-                        alt=""
-                        className="max-w-full h-auto"
-                      />
-                    </span>
-                    <span className="text-[#444545] text-[16px] font-[400]">
-                      Vô vàn dịch vụ hỗ trơ miễn phí khác
-                    </span>
-                  </div>
+                  {
+                    displayProduct.weight && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <FaWeight color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                        Khối lượng: <span className="font-bold">{displayProduct.weight} kg</span>
+                      </span>
+                    </div>
+                  }
+                  {
+                    displayProduct.batteryCapacity && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <FaBatteryHalf color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                        Dung lượng pin: <span className="font-bold">{displayProduct.batteryCapacity}</span>
+                      </span>
+                    </div>
+                  }
+                  {
+                    displayProduct.frontCamera && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <RiPhoneCameraLine color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                        Camera trước: <span className="font-bold">{displayProduct.frontCamera}</span>
+                      </span>
+                    </div>
+                  }
+                  {
+                    displayProduct.rearCamera && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <RiPhoneCameraFill color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                        Camera sau: <span className="font-bold">{displayProduct.rearCamera}</span>
+                      </span>
+                    </div>
+                  }
+                  {
+                    displayProduct.usbNumber && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <FaUsb color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
+                        Cổng kết nối: <span className="font-bold">{displayProduct.usbNumber}</span>
+                      </span>
+                    </div>
+                  }
+                  {
+                    displayProduct.simNumber && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <FaSimCard color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                        Số lượng khe sim: <span className="font-bold">{displayProduct.simNumber}</span>
+                      </span>
+                    </div>
+                  }
+                  {
+                    displayProduct.connectType && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <IoMdWifi color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                        Loại kết nối: <span className="font-bold">{displayProduct.connectType}</span>
+                      </span>
+                    </div>
+                  }
+                  {
+                    displayProduct.specialProperties && <div className="flex items-center gap-[10px]">
+                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                        <MdOutlineFolderSpecial color="red" />
+                      </span>
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                        Thuộc tính đặc biệt: <span className="font-bold">{displayProduct.specialProperties}</span>
+                      </span>
+                    </div>
+                  }
                 </div>
               </div>
             </div>
@@ -360,9 +386,28 @@ const ProductDetails = () => {
           <div className="flex flex-nowrap gap-[30px] ">
             <div
               onClick={() => setActive(1)}
-              className=" relative p-[20px] pt-[10px] duration-300 ease-in-out cursor-pointer rounded-t-[12px] text-[24px] font-[700]"
+              className="relative p-[20px] pt-[10px] duration-300 ease-in-out cursor-pointer rounded-t-[12px] text-[24px] font-[700]"
             >
               {active === 1 ? (
+                <div>
+                  <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#f66315]"></div>
+                  <span className="text-[#f66315] flex items-center">
+                    Đánh giá {rating}{" "}
+                    <FaStar color="orange"/>
+                  </span>
+                </div>
+              ) : (
+                <span className="text-[#031230] flex items-center">
+                  Đánh giá {rating}{" "}
+                  <FaStar color="orange"/>
+                </span>
+              )}
+            </div>
+            <div
+              onClick={() => setActive(2)}
+              className=" relative p-[20px] pt-[10px] duration-300 ease-in-out cursor-pointer rounded-t-[12px] text-[24px] font-[700]"
+            >
+              {active === 2 ? (
                 <div>
                   <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#f66315]"></div>
                   <span className="text-[#f66315]">Mô tả sản phẩm</span>
@@ -371,35 +416,10 @@ const ProductDetails = () => {
                 <span className="text-[#031230]">Mô tả sản phẩm</span>
               )}
             </div>
-            <div
-              onClick={() => setActive(3)}
-              className="relative p-[20px] pt-[10px] duration-300 ease-in-out cursor-pointer rounded-t-[12px] text-[24px] font-[700]"
-            >
-              {active === 3 ? (
-                <div>
-                  <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#f66315]"></div>
-                  <span className="text-[#f66315] flex">
-                    Đánh giá 4{" "}
-                    <img
-                      src="https://fbshop.vn/template/assets/images/Star.svg"
-                      alt=""
-                      className="w-[18px] h-[18px] max-w-full mt-[8px]"
-                    />
-                  </span>
-                </div>
-              ) : (
-                <span className="text-[#031230] flex">
-                  Đánh giá 4{" "}
-                  <img
-                    src="https://fbshop.vn/template/assets/images/Star.svg"
-                    alt=""
-                    className="w-[18px] h-[18px] max-w-full mt-[8px]"
-                  />
-                </span>
-              )}
-            </div>
           </div>
-          {active === 1 ? (
+
+          {active === 2 ? (
+
             <div className="p-[30px] rounded-b-[12px] bg-[#feefe8] relative z-1">
               <div className="px-[15px] w-full text-[#000]">
                 <h2 className="text-[30px] my-[10px] font-[700]">
@@ -408,15 +428,16 @@ const ProductDetails = () => {
                 <p className="font-[400] text-[16px]">
                   {displayProduct.description}
                 </p>
+                
               </div>
             </div>
           ) : null}
-          {active === 3 ? (
+          {active === 1 ? (
             <Reviews />
           ) : null}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
