@@ -337,7 +337,7 @@ const ProductDetails = () => {
                       <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                         <FaWeight color="red" />
                       </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
                         Khối lượng: <span className="font-bold">{displayProduct.weight} kg</span>
                       </span>
                     </div>
@@ -347,7 +347,7 @@ const ProductDetails = () => {
                       <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                         <FaBatteryHalf color="red" />
                       </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
                         Dung lượng pin: <span className="font-bold">{displayProduct.batteryCapacity}</span>
                       </span>
                     </div>
@@ -357,7 +357,7 @@ const ProductDetails = () => {
                       <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                         <RiPhoneCameraLine color="red" />
                       </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
                         Camera trước: <span className="font-bold">{displayProduct.frontCamera}</span>
                       </span>
                     </div>
@@ -367,7 +367,7 @@ const ProductDetails = () => {
                       <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                         <RiPhoneCameraFill color="red" />
                       </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
                         Camera sau: <span className="font-bold">{displayProduct.rearCamera}</span>
                       </span>
                     </div>
@@ -377,7 +377,7 @@ const ProductDetails = () => {
                       <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                         <FaUsb color="red" />
                       </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden ">
                         Cổng kết nối: <span className="font-bold">{displayProduct.usbNumber}</span>
                       </span>
                     </div>
@@ -387,7 +387,7 @@ const ProductDetails = () => {
                       <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                         <FaSimCard color="red" />
                       </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
                         Số lượng khe sim: <span className="font-bold">{displayProduct.simNumber}</span>
                       </span>
                     </div>
@@ -397,7 +397,7 @@ const ProductDetails = () => {
                       <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                         <IoMdWifi color="red" />
                       </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
                         Loại kết nối: <span className="font-bold">{displayProduct.connectType}</span>
                       </span>
                     </div>
@@ -407,7 +407,7 @@ const ProductDetails = () => {
                       <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                         <MdOutlineFolderSpecial color="red" />
                       </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap">
+                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
                         Thuộc tính đặc biệt: <span className="font-bold">{displayProduct.specialProperties}</span>
                       </span>
                     </div>

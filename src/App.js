@@ -20,6 +20,7 @@ import Voucher from "./components/Route/Voucher/Voucher.jsx";
 import SearchProducts from "./pages/SearchProductsPage.jsx";
 import SearchProductsPage from "./pages/SearchProductsPage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 const App = () => {
   
@@ -40,7 +41,7 @@ const App = () => {
         <Route path="/order-status/:id" element={<UserAccountPage/>}/>
         <Route path="/search" element={<SearchProductsPage/>}/>
         <Route path="/checkout" element={<CheckoutPage/>}/>
-        <Route path="/test" element={<Voucher/>}/>
+        <Route path="/test" element={<NotFoundPage/>}/>
       </Routes>
     </Provider>
   );
