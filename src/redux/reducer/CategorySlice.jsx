@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IP, token } from "../../config/const";
+import { IP } from "../../config/const";
+const getToken = ()=>{
+  const token = JSON.parse(localStorage.getItem("authorization")).token
+  return token
+}
 const categorySlice = createSlice({
   name: "category",
   initialState: {
@@ -48,6 +52,7 @@ const categorySlice = createSlice({
 export const fetchCategory = createAsyncThunk(
   "category/fetchCategory",
   async () => {
+    const token = getToken()
     const res = await fetch(IP + "/customer/api/categories", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -60,6 +65,7 @@ export const fetchCategory = createAsyncThunk(
 export const getCategoryById = createAsyncThunk(
   "users/getCategoryById",
   async (id) => {
+    const token = getToken()
     if (id === -1)
       return {
         id: "",
@@ -78,6 +84,7 @@ export const getCategoryById = createAsyncThunk(
 export const addCategory = createAsyncThunk(
   "user/addCategory",
   async (newCategory) => {
+    const token = getToken()
     const options = {
       method: "POST",
       headers: {
@@ -94,6 +101,7 @@ export const addCategory = createAsyncThunk(
 export const editCategory = createAsyncThunk(
   "user/editCategory",
   async (newCategory) => {
+    const token = getToken()
     const options = {
       method: "PUT",
       body: JSON.stringify(newCategory),
@@ -113,6 +121,7 @@ export const editCategory = createAsyncThunk(
 export const deleteCategory = createAsyncThunk(
   "user/deleteCategory",
   async (id) => {
+    const token = getToken()
     console.log(id);
     const options = {
       method: "DELETE",

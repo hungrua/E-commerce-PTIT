@@ -20,7 +20,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(getProductById(id))
-  }, [dispatch])
+  }, [dispatch,id])
   useEffect(() => {
     let priceArray = product.itemDetails.map(item => {
       return item.price

@@ -5,6 +5,7 @@ import voucherSlice from "./reducer/VoucherSlice";
 import productSlice from "./reducer/ProductSlice";
 import promotionSlice from "./reducer/PromotionSlice";
 import supplierSlice from "./reducer/SupplierSlice";
+import cartSlice from "./reducer/CartSlice";
 
 const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
         voucher: voucherSlice.reducer,
         product: productSlice.reducer,
         promotion: promotionSlice.reducer,
-        supplier :supplierSlice.reducer
+        supplier :supplierSlice.reducer,
+        cart : cartSlice.reducer
     }
 })
 

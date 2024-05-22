@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     FaTimes,
     FaMinus,
     FaPlus
 } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
-
+import { fetchCartItem } from '../../../redux/reducer/CartSlice';
+import { HeaderCartItem } from './HeaderCartItem';
+import { formatCurrency } from '../../basicFunction';
 const HeaderCart = (props) => {
+    const dispatch = useDispatch()
+    const cartItem = useSelector(state => state.cart.cartItems)
+    const [total, setTotal] = useState(0)
+    useEffect(() => {
+        dispatch(fetchCartItem())
+        if (cartItem) {
+            let total = cartItem.reduce((cucl, item) => {
+                return parseInt(cucl) + parseInt(item.totalPrice)
+            }, 0)
+            setTotal(formatCurrency(total))
+        }
+
+    }, [dispatch])
     return (
         <div className="fixed z-50 right-0 w-[550px] top-[58px] translate-x-0 translate-y-0 opacity-[1] max-w-[90%] bottom-0 overflow-y-auto bg-[#fff] transition-all shadow-3">
             <div className="h-full flex flex-col">
@@ -22,47 +38,17 @@ const HeaderCart = (props) => {
                     <p className="text-center mb-[20px] md:text-[35px] font-[700] text-[#031230] text-[27px]">
                         Giỏ hàng
                     </p>
-                    <div className="pr-[12px] max-h-[400px] flex flex-col gap-y-[30px] overflow-y-auto overflow-x-hidden">
-                        <div className="flex gap-[12px]">
-                            <div className="w-[77px] h-[77px] shrink-0 rounded-[6px] overflow-hidden">
-                                <img
-                                    className="h-full object-cover max-w-[100%]"
-                                    src="https://cdn.shopvnb.com/img/300x300/uploads/san_pham/quan-cau-long-yonex-nam-trang-ma-038-1.webp"
-                                    alt=""
-                                    width="300"
-                                    height="372"
-                                />
-                            </div>
-                            <div className="flex flex-col">
-                                <Link
-                                    to="/san-pham/id"
-                                    className="no-underline text-[16px]"
-                                >
-                                    Quần Cầu Lông Yonex Nam Trắng
-                                </Link>
-                                <div className="flex mt-auto">
-                                    <div className="flex gap-[20px] p-[6px] rounded-[30px] border border-solid border-[#eee]">
-                                        <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]">
-                                            <FaMinus className="text-[14px]" />
-                                        </div>
-                                        <p className="text-[14px] text-[#031230]">
-                                            01
-                                        </p>
-                                        <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]">
-                                            <FaPlus className="text-[14px]" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="text-[16px] text-[#f66315] mt-auto ml-auto font-[700]">
-                                <span>5.150.000đ</span>
-                            </div>
-                        </div>
+                    <div className='h-[80%] overflow-y-scroll' >
+                        {
+                            cartItem.map(item => {
+                                return <HeaderCartItem key={item.id} itemInfo ={item} />
+                            })
+                        }
                     </div>
 
-                    <div className="flex justify-between gap-[12px] pr-[20px] mt-[50px] text-[16px] font-[700]">
+                    <div className="flex justify-between gap-[12px] pb-5 pr-[20px] mt-[50px] text-[16px] font-[700]">
                         <span className="text-[#000]">Tổng cộng</span>
-                        <span className="text-[#f66315]">5.150.000đ </span>
+                        <span className="text-[#f66315]">{total} </span>
                     </div>
 
                     <div className="mt-auto pr-[20px] flex gap-6">
@@ -88,16 +74,6 @@ const HeaderCart = (props) => {
                                 </span>
                             </span>
                         </Link>
-                    </div>
-
-                    <div className="absolute w-[40%] bottom-0 right-0 -z-1 translate-y-[15%]">
-                        <div className="opacity-100 transition-all">
-                            <img
-                                className="block w-full max-w-full h-auto"
-                                src="https://fbshop.vn/template/assets/images/cart-dcor.webp"
-                                alt=""
-                            />
-                        </div>
                     </div>
                 </div>
             </div>
