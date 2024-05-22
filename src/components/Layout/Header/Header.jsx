@@ -11,8 +11,9 @@ import { FaCartShopping } from "react-icons/fa6";
 import { IoLogOutOutline } from "react-icons/io5";
 import HeaderCart from "./HeaderCart";
 import HeaderNotification from "./HeaderNotification";
-import { useDispatch } from "react-redux";
-import userSlice from "../../../redux/reducer/UserSlice";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategory } from '../../../redux/reducer/CategorySlice';
+import { fetchProduct } from "../../../redux/reducer/ProductSlice";
 
 const Header = () => {
   const navigate = useNavigate()
@@ -20,10 +21,17 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openProductList, setOpenProductList] = useState(false);
   const [openCartList, setOpenCartList] = useState(false);
-  const [categories, setCategories] = useState(['Laptop', 'Dien thoai', 'Phu kien'])
+
   const [openNotification, setOpenNotification] = useState(false);
   const [notifications, setNotifications] = useState([])
   const [searchValue, setSearchValue] = useState('')
+
+  const categories = useSelector(state=> state.category.categories)
+  useEffect(()=>{
+      dispatch(fetchCategory())
+      console.log(categories)
+  },[dispatch])
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
