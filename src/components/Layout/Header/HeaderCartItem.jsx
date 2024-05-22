@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItemToCart, fetchCartItem, updateCartItem } from '../../../redux/reducer/CartSlice'
+import { addItemToCart, deleteCartItem, fetchCartItem, updateCartItem } from '../../../redux/reducer/CartSlice'
 import {
     FaMinus,
     FaPlus
@@ -29,6 +29,9 @@ export const HeaderCartItem = (props) => {
             quantity: afterCount
         }
         dispatch(updateCartItem(cartItem))
+    }
+    const handleRemoveCartItem = ()=>{
+        dispatch(deleteCartItem(itemInfo.cartItemId))
     }
 
     return (
@@ -69,8 +72,12 @@ export const HeaderCartItem = (props) => {
                     </div>
                 </div>
                 <div className="relative text-[16px] text-[#f66315] ml-auto font-[700] h-auto inline-grid">
-                    <div >x</div>
-                    <div >{formatCurrency(quantity*itemInfo.details.price)}</div>
+                    <div className='text-end cursor-pointer'
+                    onClick={()=>handleRemoveCartItem()}
+                    
+                    
+                    >x</div>
+                    <div className='flex items-end' >{formatCurrency(quantity*itemInfo.details.price)}</div>
                 </div>
             </div>
         </div>

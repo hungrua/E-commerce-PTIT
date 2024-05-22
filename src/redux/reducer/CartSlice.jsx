@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP } from "../../config/const";
 
-const getToken = () => {
-    const token = JSON.parse(localStorage.getItem("authorization")).token
-    return token
+const getUser = () => {
+    const user = JSON.parse(localStorage.getItem("authorization"))
+    return user
 }
 const cartSlice = createSlice({
     name: "cart",
@@ -71,13 +71,16 @@ const cartSlice = createSlice({
                 const index = state.cartItems.findIndex(item => item.cartItemId === cartItem.cartItemId)
                 state.cartItems[index] = cartItem
             })
+            .addCase(deleteCartItem.fulfilled, (state, action) => {
+                state.cartItems = state.cartItems.filter(item => item.cartItemId !== action.payload.id)
+            })
 
     }
 })
 
 export const fetchCartItem = createAsyncThunk("cart/fetchCartItem", async () => {
     console.log("do Fetch")
-    const token = getToken()
+    const token = getUser().token
     const options = {
         method: "GET",
         headers: {
@@ -89,7 +92,7 @@ export const fetchCartItem = createAsyncThunk("cart/fetchCartItem", async () => 
     return data
 })
 export const addItemToCart = createAsyncThunk("cart/addItemToCart", async (cartItem) => {
-    const token = getToken()
+    const token = getUser().token
     console.log(cartItem)
     const options = {
         method: "POST",
@@ -110,7 +113,7 @@ export const addItemToCart = createAsyncThunk("cart/addItemToCart", async (cartI
     }
 })
 export const updateCartItem = createAsyncThunk("cart/updateCartItem", async (cartItem) => {
-    const token = getToken()
+    const token = getUser().token
     console.log(cartItem)
     const options = {
         method: "PUT",
@@ -127,6 +130,22 @@ export const updateCartItem = createAsyncThunk("cart/updateCartItem", async (car
             message: data.message
         },
         itemInfo: data.cartItem
+    }
+})
+export const deleteCartItem = createAsyncThunk("cart/deleteCartItem", async (id) => {
+    const token = getUser().token
+    const options = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    }
+    const res = await fetch(`${IP}/customer/api/cart?cartItemId=${id}`, options)
+    const data = await res.json()
+    return {
+        alert: data,
+        id: id
     }
 })
 export default cartSlice

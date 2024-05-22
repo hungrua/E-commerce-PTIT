@@ -5,14 +5,28 @@ import { fetchProduct } from "../../../redux/reducer/ProductSlice";
 
 
 const ProductsGrid = (props) => {
-    const {categoryId} = props
+    const { categoryId } = props
     const dispatch = useDispatch()
-    var products = useSelector(state => state.product.products)
-    useEffect(()=>{
-        dispatch(fetchProduct({ brandId: "", categoryId: categoryId, key: "" }))
-    },[dispatch,categoryId])
-    
-    const handleFunction =()=>{
+    const useProductsByCategory = (categoryId) => {
+        const products = useSelector(state => {
+            switch (categoryId) {
+                case 1:
+                    return state.product.laptop;
+                case 2:
+                    return state.product.phone;
+                default:
+                    return state.product.accessory;
+            }
+        });
+
+        return products;
+    };
+    const products = useProductsByCategory(categoryId)
+    // useEffect(()=>{
+    //     dispatch(fetchProduct({ brandId: "", categoryId: categoryId, key: "" }))
+    // },[dispatch,categoryId])
+
+    const handleFunction = () => {
 
     }
     return (
@@ -32,10 +46,10 @@ const ProductsGrid = (props) => {
 
             </div>
             <div className="grid grid-cols-4 gap-5 relative pt-5">
-                { products.map(item=>{
-                    return <ProductCard details={item} key={item.id}/>
-                }) 
-               }
+                {products.map(item => {
+                    return <ProductCard details={item} key={item.id} />
+                })
+                }
             </div>
         </div>
     )
