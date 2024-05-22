@@ -7,17 +7,19 @@ import Reviews from "./Reviews";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../redux/reducer/ProductSlice";
+import ItemDetail from "./ItemDetail";
 const ProductDetails = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
-  const [select, setSelect] = useState(0);
+  const [selectImage, setSelectImage] = useState(0);
   const [active, setActive] = useState(1);
   const [displayProduct, setDisplayProduct] = useState({})
   const product = useSelector(state => state.product.currentSetProduct)
   const images = product.images.map(img => img.path)
   const [rating, setRating] = useState(3.5);
+  const [selectItemDetail, setSelectItemDetail] = useState(null);
 
-
+  // console.log(product)
   useEffect(() => {
     dispatch(getProductById(id))
   }, [dispatch])
@@ -31,7 +33,7 @@ const ProductDetails = () => {
       minPrice: formatCurrency(Math.min(...priceArray)),
       maxPrice: formatCurrency(Math.max(...priceArray))
     }
-    console.log(tmpProduct)
+    // console.log(tmpProduct)
     setDisplayProduct(tmpProduct)
   }, [product])
   const formatCurrency = (value) => {
@@ -48,11 +50,7 @@ const ProductDetails = () => {
 
     return formattedValue.replace(/₫/g, 'đ');
   }
-  // const images = [
-  //   "https://cdn.shopvnb.com//uploads/gallery/ao-cau-long-yonex-nu-den-ma-836_1703549899.webp",
-  //   "https://cdn.shopvnb.com/uploads/gallery/vot-cau-long-lining-axforce-90-do-dragon-max-ma-jp-5_1697394984.webp",
-  //   "https://cdn.shopvnb.com/uploads/gallery/vot-cau-long-lining-axforce-90-do-dragon-max-ma-jp-4_1697394989.webp",
-  // ];
+
   return (
     <div className="my-[100px]">
       <div className="w-full max-w-[1230px] h-full mx-auto px-[15px]">
@@ -65,7 +63,7 @@ const ProductDetails = () => {
                   <div className="w-full relative max-[850px]:w-[65%] max-[600px]:w-full mx-auto cursor-pointer duration-300 ease-in-out">
                     <img
                       className="w-full h-full object-cover max-w-full rounded-[5px]"
-                      src={`${images[select]}`}
+                      src={`${images[selectImage]}`}
                       alt=""
                     />
                     <div className="flex absolute min-w-[48px] top-[20px] left-[10px] z-1 items-center justify-center">
@@ -82,7 +80,7 @@ const ProductDetails = () => {
                   {images &&
                     images.map((i, index) => (
                       <div key={index}
-                        className={`w-[100px] mr-[10px] border border-solid cursor-pointer bg-[#fff] h-full ${select === index
+                        className={`w-[100px] mr-[10px] border border-solid cursor-pointer bg-[#fff] h-full ${selectImage === index
                           ? "border-[#f66315]"
                           : "border-[#ebebeb]"
                           }`}
@@ -93,7 +91,7 @@ const ProductDetails = () => {
                             alt=""
                             height="80"
                             width="80"
-                            onClick={() => setSelect(index)}
+                            onClick={() => setSelectImage(index)}
                             className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] max-w-full max-h-full w-auto h-auto"
                           />
                         </div>
@@ -133,16 +131,16 @@ const ProductDetails = () => {
                   <span className="font-[700] text-[#f6af15]">4</span>
                   <div className="flex">
                     {
-                      Array.from({length: parseInt(rating)}, (_, index) => (
-                        <FaStar color="orange"/>
+                      Array.from({ length: parseInt(rating) }, (_, index) => (
+                        <FaStar key={index} color="orange" />
                       ))
                     }
                     {
-                      (rating - parseInt(rating) >= 0.5 ? <FaStarHalfAlt color="orange"/> : '')
+                      (rating - parseInt(rating) >= 0.5 ? <FaStarHalfAlt color="orange" /> : '')
                     }
                     {
-                      Array.from({length: 5 - Math.round(rating)}, (_, index) => (
-                        <FaStar color="rgb(209,209,211)"/>
+                      Array.from({ length: 5 - Math.round(rating) }, (_, index) => (
+                        <FaStar color="rgb(209,209,211)" />
                       ))
                     }
                   </div>
@@ -154,7 +152,7 @@ const ProductDetails = () => {
                 </div>
                 <div className="flex items-center gap-1 relative">
                   <div className="absolute h-4 w-[1px] bg-[#000] top-[50%] left-[-1rem] translate-x-[-50%] translate-y-[-50%]"></div>
-                  <span className="font-[700]">492</span>
+                  <span className="font-[700]">{selectItemDetail ? selectItemDetail.soldNumber : 492}</span>
                   <span className="text-[14px] mt-[1px]"> lượt mua</span>
                 </div>
                 <div className="w-[30px] h-[30px] relative rounded-[50%] flex items-center justify-center text-[#f66315] bg-[#feefe8] text-[13px] duration-300 cursor-pointer hover:text-white hover:bg-[#f66315]">
@@ -164,75 +162,36 @@ const ProductDetails = () => {
               <div className="mt-[10px]">
                 <div className="flex gap-[20px] items-center">
                   <div className="leading-[1] flex items-center gap-[10px] p-1">
-                    <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
-                      {displayProduct.minPrice} 
-                    </span>
-                    <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
-                      - {displayProduct.maxPrice}
-                    </span>
+                    {
+                      selectItemDetail ? (
+                        <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">{formatCurrency(selectItemDetail.price)}</span>
+                      ) : (
+                        <div>
+                          <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
+                            {displayProduct.minPrice}
+                          </span>
+                          <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
+                            - {displayProduct.maxPrice}
+                          </span>
+                        </div>
+                      )
+                    }
+
                   </div>
                 </div>
-                <div className="mt-0">
-                  <span className="inline-block text-[#f66315]">
-                    Chọn thuộc tính:
-                  </span>
-                  <div className="mt-[20px]">
-                    <div className="flex items-center gap-3">
-                      <span className="min-w-[80px] font-[500]">Màu sắc</span>
-                      <div className="flex mx-[-8px] flex-wrap">
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              Đen
-                            </span>
-                          </div>
-                        </div>
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              Trắng
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Nếu mà giày có kích cớ / áo*/}
-                  <div className="mt-[20px]">
-                    <div className="flex items-center gap-3">
-                      <span className="min-w-[80px] font-[500]">Size giày</span>
-                      <div className="flex mx-[-8px] flex-wrap">
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              37
-                            </span>
-                          </div>
-                        </div>
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              38
-                            </span>
-                          </div>
-                        </div>
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              39
-                            </span>
-                          </div>
-                        </div>
-                        <div className="px-[5px]">
-                          <div className="min-w-[32px] h-[32px] rounded-[6px] border-[2px] border-solid border-[#fbc1a1] flex items-center justify-center font-[500] duration-300 ease-in-out text-[#444545] cursor-pointer flex-col gap-[6px]">
-                            <span className="p-[7px] text-[#031230] text-[14px] duration-300 ease-in-out">
-                              40
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="mt-4 flex gap-x-4 cursor-pointer">
+                  {
+                    product.itemDetails?.map((detail, index) => (
+                      <ItemDetail 
+                        key={index} 
+                        data={detail} 
+                        selectItemDetail={selectItemDetail} 
+                        setSelectImage={setSelectImage}
+                        setSelectItemDetail={setSelectItemDetail}
+                      />
+                    ))
+                  }
+                  
                 </div>
                 <div className="mt-[20px] flex items-center gap-[30px]">
                   <div className="flex items-center gap-[10px]">

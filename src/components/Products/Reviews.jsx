@@ -5,12 +5,6 @@ const Reviews = (props) => {
 
     const [reviews, setReviews] = useState([])
 
-    const convertToPercentages = (arr) => {
-        const sum = arr.reduce((acc, curr) => acc + curr, 0);
-        const percentages = arr.map(item => (item / sum) * 100);
-        console.log(percentages);
-        return percentages;
-    }
     const [statistics, setStatstics] = useState([]);
     const [percentages, setPercentages] = useState([]);
 
@@ -82,7 +76,7 @@ const Reviews = (props) => {
 
                         </div>
 
-                        <span>(190 đánh giá)</span>
+                        <span>({statistics.reduce((a, b) => a + b, 0)} đánh giá)</span>
                     </div>
 
                     <div>
