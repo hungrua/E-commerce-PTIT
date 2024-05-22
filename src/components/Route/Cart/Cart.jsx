@@ -6,8 +6,10 @@ import CartItem from "./CartItem";
 import DeliveryAddress from "../../Delivery/DeliveryAddress";
 import CartVoucher from "./CartVoucher";
 import CartBill from "./CartBill";
+import { useSelector } from "react-redux";
 
 const Cart = () => {
+    const cartItem = useSelector(state => state.cart.cartItems)
     return (
         <div className="p-5 bg-[#efefef] mt-11">
             <div className="font-Roboto font-bold mb-5">
@@ -31,21 +33,11 @@ const Cart = () => {
                             </span>
                         </div>
                         <div className="bg-white rounded mt-[15px] [&>*:not(:last-child)]:border-b-[1px]">
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
-                            <CartItem/>
+                            {
+                                cartItem.map(item=>
+                                    (<CartItem key={item.cartItemId} itemInfo = {item} />)
+                                )
+                            }
                         </div>
                     </div>
                 </div>

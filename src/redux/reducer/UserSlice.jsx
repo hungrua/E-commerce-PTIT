@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IP, token } from "../../config/const";
+import { IP } from "../../config/const";
 const getUser = () => {
   const user = JSON.parse(localStorage.getItem("authorization"))
   return user
