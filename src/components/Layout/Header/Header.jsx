@@ -57,7 +57,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("authorization")
 
-    navigate("/login")
+    window.location.href = "/login"
   }
 
   const handleSearch = (e) => {
