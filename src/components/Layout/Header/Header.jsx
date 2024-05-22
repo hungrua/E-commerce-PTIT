@@ -11,9 +11,8 @@ import { FaCartShopping } from "react-icons/fa6";
 import { IoLogOutOutline } from "react-icons/io5";
 import HeaderCart from "./HeaderCart";
 import HeaderNotification from "./HeaderNotification";
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategory } from '../../../redux/reducer/CategorySlice';
-import { fetchProduct } from "../../../redux/reducer/ProductSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategory } from "../../../redux/reducer/CategorySlice";
 
 const Header = () => {
   const navigate = useNavigate()
@@ -21,16 +20,11 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [openProductList, setOpenProductList] = useState(false);
   const [openCartList, setOpenCartList] = useState(false);
-
+  const [categorieList, setCategorieList] = useState(['Laptop', 'Dien thoai', 'Phu kien'])
   const [openNotification, setOpenNotification] = useState(false);
   const [notifications, setNotifications] = useState([])
   const [searchValue, setSearchValue] = useState('')
-
-  const categories = useSelector(state=> state.category.categories)
-  useEffect(()=>{
-      dispatch(fetchCategory())
-      console.log(categories)
-  },[dispatch])
+  const categories = (useSelector(state=> state.category.categories)).map(item=>({name:item.name,code:item.code.replace('-','')}))
 
   useEffect(() => {
     const handleResize = () => {
@@ -262,13 +256,13 @@ const Header = () => {
                                 </span>
                               </li>
                               {
-                                categories.map(category => (
-                                  <li className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
+                                categories.map((category,index) => (
+                                  <li key={index} className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
                                     <Link
-                                      to="/"
+                                      to={`/loai-san-pham/${category.code}`}
                                       className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
                                     >
-                                      {category}
+                                      {category.name}
                                     </Link>
                                   </li>
                                 ))
