@@ -10,7 +10,12 @@ import Consultation from "../components/Route/Consultation/Consultation";
 import Vouchers from "../components/Route/Vouchers/Vouchers";
 import { useDispatch } from "react-redux";
 import { fetchProduct } from "../redux/reducer/ProductSlice";
+import { fetchCategory } from "../redux/reducer/CategorySlice";
 const HomePage = () => {  
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(fetchCategory())
+},[dispatch])
   return (
     <div className="font-Roboto">
       <Header />

@@ -170,7 +170,7 @@ const Reviews = (props) => {
                 <div className='flex flex-col gap-y-3 mt-3npm sd flex-1'>
                     {
                         reviews.map((review) => (
-                            <Comment data={review} />
+                            <Comment key={review.id} data={review} />
                         ))
                     }
                 </div>

@@ -14,6 +14,10 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../../redux/reducer/ProductSlice";
 import ItemDetail from "./ItemDetail";
+import cartSlice, { addItemToCart } from "../../redux/reducer/CartSlice";
+import { notify } from "../Admin/notify";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const ProductDetails = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
@@ -24,11 +28,17 @@ const ProductDetails = () => {
   const images = product.images.map(img => img.path)
   const [rating, setRating] = useState(3.5);
   const [selectItemDetail, setSelectItemDetail] = useState(null);
-
-  // console.log(product)
+  const [quantity, setQuantity] = useState(1)
+  const message = useSelector((state)=> state.cart.alert)
   useEffect(() => {
     dispatch(getProductById(id))
-  }, [dispatch,id])
+  }, [dispatch, id])
+  useEffect(() => {
+    if (message !== undefined) notify(message.message, message.code)
+    return () => {
+      dispatch(cartSlice.actions.resetAlert(undefined))
+    }
+  }, [message, dispatch])
   useEffect(() => {
     let priceArray = product.itemDetails.map(item => {
       return item.price
@@ -55,6 +65,22 @@ const ProductDetails = () => {
     const formattedValue = formatter.format(value);
 
     return formattedValue.replace(/₫/g, 'đ');
+  }
+  const changeQuantity = (value) => {
+    if (quantity < 2 && value === 1) return
+    setQuantity((pre) => pre - value)
+  }
+  const handleAddToCart = () => {
+    if (selectItemDetail) {
+      let cartItem = {
+        quantity: quantity,
+        itemDetail: {
+          id: selectItemDetail.id
+        }
+      }
+      dispatch(addItemToCart(cartItem))
+    }
+    else notify("Bạn chưa chọn loại sản phẩm", 0)
   }
 
   return (
@@ -146,7 +172,7 @@ const ProductDetails = () => {
                     }
                     {
                       Array.from({ length: 5 - Math.round(rating) }, (_, index) => (
-                        <FaStar color="rgb(209,209,211)" />
+                        <FaStar key={index} color="rgb(209,209,211)" />
                       ))
                     }
                   </div>
@@ -205,12 +231,16 @@ const ProductDetails = () => {
                     <span className="min-w-[80px] font-[500]">Số lượng:</span>
                     <div className="flex mt-auto">
                       <div className="flex gap-[20px] p-[6px] rounded-[30px] border border-solid border-[#eee]">
-                        <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]">
+                        <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]"
+                          onClick={() => changeQuantity(1)}
+                        >
                           <FaMinus className="text-[14px]" />
                         </div>
 
-                        <p className="text-[14px] text-[#031230]">01</p>
-                        <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]">
+                        <p className="text-[14px] text-[#031230]">{quantity}</p>
+                        <div className="w-6 h-6 flex items-center justify-center cursor-pointer text-[#444545]"
+                          onClick={() => changeQuantity(-1)}
+                        >
                           <FaPlus className="text-[14px]" />
                         </div>
                       </div>
@@ -218,9 +248,12 @@ const ProductDetails = () => {
                   </div>
                 </div>
                 <div className="mt-[20px] pr-[20px] flex gap-[10px]">
-                  <div className="bg-[#fff] hover:bg-[#f66315] text-[#031230]  hover:text-[white] border border-solid border-[#f66315] min-w-[180px] cursor-pointer relative overflow-hidden transition-all my-0  rounded-[40px] flex items-center justify-center">
+                  <div className="bg-[#fff] hover:bg-[#f66315] text-[#031230]  hover:text-[white] border border-solid border-[#f66315] min-w-[180px] cursor-pointer relative overflow-hidden transition-all my-0  rounded-[40px] flex items-center justify-center"
+                    onClick={handleAddToCart}
+                  >
                     <span className="flex items-center justify-center py-[10px] px-[20px]">
-                      <span className="leading-[1.2] text-[16px] font-[700] ">
+                      <span className="leading-[1.2] text-[16px] font-[700] "
+                      >
                         Thêm vào giỏ
                       </span>
                     </span>
@@ -393,13 +426,13 @@ const ProductDetails = () => {
                   <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#f66315]"></div>
                   <span className="text-[#f66315] flex items-center">
                     Đánh giá {rating}{" "}
-                    <FaStar color="orange"/>
+                    <FaStar color="orange" />
                   </span>
                 </div>
               ) : (
                 <span className="text-[#031230] flex items-center">
                   Đánh giá {rating}{" "}
-                  <FaStar color="orange"/>
+                  <FaStar color="orange" />
                 </span>
               )}
             </div>
@@ -428,7 +461,7 @@ const ProductDetails = () => {
                 <p className="font-[400] text-[16px]">
                   {displayProduct.description}
                 </p>
-                
+
               </div>
             </div>
           ) : null}
@@ -437,6 +470,7 @@ const ProductDetails = () => {
           ) : null}
         </div>
       </div>
+      <ToastContainer></ToastContainer>
     </div >
   );
 };

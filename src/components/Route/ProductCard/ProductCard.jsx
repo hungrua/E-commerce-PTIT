@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FaHeart, FaStar } from "react-icons/fa";
+import { FaHeart, FaStar,FaStarHalfAlt } from "react-icons/fa";
 import { FaCartPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-
 const ProductCard = ({ details }) => {
     const [productInfo, setProductInfo] = useState(details)
+    const [rating,setRating] = useState(3)
     useEffect(() => {
         let priceArray = details.itemDetails.map(item => {
             return item.price
@@ -58,26 +58,36 @@ const ProductCard = ({ details }) => {
                         <div className="inline-block font-medium text-green-600">
                             {productInfo.minPrice}
                         </div>
-                        {(productInfo.minPrice!==productInfo.maxPrice) && <div className="inline-block font-medium text-green-600">
+                        {(productInfo.minPrice !== productInfo.maxPrice) && <div className="inline-block font-medium text-green-600">
                             - {productInfo.maxPrice}
                         </div>}
                     </div>
                     <div className="flex justify-between flex-[2] flex-wrap">
                         <div className="flex justify-around gap-x-1">
-                            <FaStar style={{ color: "#ffa534" }} />
-                            <FaStar style={{ color: "#ffa534" }} />
-                            <FaStar style={{ color: "#ffa534" }} />
-                            <FaStar style={{ color: "#ffa534" }} />
-                            <FaStar style={{ color: "#ffa534" }} />
+                            {
+                                Array.from({ length: parseInt(rating) }, (_, index) => (
+                                    <FaStar key={index} color="#ffa534" />
+                                ))
+                            }
+                            {
+                                (rating - parseInt(rating) >= 0.5 ? <FaStarHalfAlt color="#ffa534" /> : '')
+                            }
+                            {
+                                Array.from({ length: 5 - Math.round(rating) }, (_, index) => (
+                                    <FaStar key={index} color="rgb(209,209,211)" />
+                                ))
+                            }
                         </div>
                         <div className="pl-2 text-[13px]">(408 đánh giá)</div>
                     </div>
                 </div>
             </Link>
             <div className="absolute top-1/3 right-0 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-300">
-                <div className="mr-2 p-1.5 rounded-full border-2 border-solid border-red cursor-pointer text-[#f66315] hover:text-white hover:bg-[#f66315] transition-all duration-300 ease-in-out">
-                    <FaCartPlus size={20} />
-                </div>
+                <Link to={`/san-pham/${details.id}`}>
+                    <div className="mr-2 p-1.5 rounded-full border-2 border-solid border-red cursor-pointer text-[#f66315] hover:text-white hover:bg-[#f66315] transition-all duration-300 ease-in-out">
+                        <FaCartPlus size={20} />
+                    </div>
+                </Link>
                 <div className="mt-2 mr-2 p-1.5 rounded-full border-2 border-solid border-red cursor-pointer text-[#f66315] hover:text-red-600 hover:bg-gray-200 transition-all duration-300 ease-in-out">
                     <FaHeart size={20} />
                 </div>

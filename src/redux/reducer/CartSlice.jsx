@@ -11,7 +11,9 @@ const cartSlice = createSlice({
         cartItems: []
     },
     reducers: {
-
+        resetAlert: (state, action) => {
+            state.alert = action.payload
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -34,6 +36,7 @@ const cartSlice = createSlice({
                 })
             })
             .addCase(addItemToCart.fulfilled, (state, action) => {
+
                 const cartItem = {
                     cartItemId: action.payload.itemInfo.id,
                     itemDetailsId: action.payload.itemInfo.itemDetail.id,
@@ -49,6 +52,7 @@ const cartSlice = createSlice({
                 const index = state.cartItems.findIndex(item => item.itemDetailsId === cartItem.itemDetailsId)
                 if (index === -1) state.cartItems.push(cartItem)
                 else state.cartItems[index] = cartItem
+                state.alert = action.payload.alert
             })
 
     }
@@ -58,7 +62,7 @@ export const fetchCartItem = createAsyncThunk("cart/fetchCartItem", async () => 
     console.log("do Fetch")
     const token = getToken()
     const options = {
-        method:"GET",
+        method: "GET",
         headers: {
             Authorization: `Bearer ${token}`,
         }
@@ -69,6 +73,7 @@ export const fetchCartItem = createAsyncThunk("cart/fetchCartItem", async () => 
 })
 export const addItemToCart = createAsyncThunk("cart/addItemToCart", async (cartItem) => {
     const token = getToken()
+    console.log(cartItem)
     const options = {
         method: "POST",
         headers: {

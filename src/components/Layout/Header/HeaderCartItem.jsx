@@ -8,6 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 import { formatCurrency } from '../../basicFunction';
 export const HeaderCartItem = (props) => {
+    const dispatch = useDispatch()
     const { itemInfo } = props
     const [quantity, setQuantity] = useState(itemInfo.quantity)
     const renderName = (name, categoryId) => {
@@ -21,11 +22,13 @@ export const HeaderCartItem = (props) => {
     }
     const handleChangeQuantity =(value)=>{
         if(quantity<2 && value==1) return
-        setQuantity((prev)=> prev - value )
+        let afterCount  =quantity -value
+        setQuantity(afterCount)
+        
     }
 
     return (
-        <div className="pb-5 pr-[12px] max-h-[400px] flex flex-col gap-y-[30px] overflow-y-auto overflow-x-hidden">
+        <div className="pb-5 pr-[12px] shadow-[0px_2px_10px_#00000014] max-h-[400px] flex flex-col gap-y-[30px] overflow-y-auto overflow-x-hidden">
             <div className="flex gap-[12px]">
                 <div className="w-[77px] h-[77px] shrink-0 rounded-[6px] overflow-hidden">
                     <img
@@ -62,7 +65,7 @@ export const HeaderCartItem = (props) => {
                     </div>
                 </div>
                 <div className="text-[16px] text-[#f66315] mt-auto ml-auto font-[700]">
-                    <span>{formatCurrency(quantity*itemInfo.totalPrice)}</span>
+                    <span>{formatCurrency(quantity*itemInfo.details.price)}</span>
                 </div>
             </div>
         </div>

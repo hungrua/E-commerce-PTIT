@@ -26,7 +26,7 @@ const HeaderCart = (props) => {
 
     }, [dispatch])
     return (
-        <div className="fixed z-50 right-0 w-[550px] top-[58px] translate-x-0 translate-y-0 opacity-[1] max-w-[90%] bottom-0 overflow-y-auto bg-[#fff] transition-all shadow-3">
+        <div className="fixed z-50 right-0 w-[550px] top-[58px] translate-x-0 translate-y-0 opacity-[1] max-w-[90%] bottom-0 overflow-y-auto bg-[#fff] transition-all shadow-headerShadow">
             <div className="h-full flex flex-col">
                 <div className="py-[40px] pl-[40px] pr-[30px] flex flex-col h-full relative overflow-hidden">
                     <div
@@ -40,8 +40,8 @@ const HeaderCart = (props) => {
                     </p>
                     <div className='h-[80%] overflow-y-scroll' >
                         {
-                            cartItem.map(item => {
-                                return <HeaderCartItem key={item.id} itemInfo ={item} />
+                            cartItem.map((item,index) => {
+                                return <HeaderCartItem key={index}  itemInfo ={item} />
                             })
                         }
                     </div>
