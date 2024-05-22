@@ -4,14 +4,8 @@ import {
   FormHelperText,
   FormLabel,
   IconButton,
-  Input,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormGroup,
   Grid,
   TextField,
-  NativeSelect,
   Button,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -19,9 +13,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import AbcIcon from "@mui/icons-material/Abc";
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import RecentActorsOutlinedIcon from '@mui/icons-material/RecentActorsOutlined';
-import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory, editCategory, getCategoryById } from "../../../redux/reducer/CategorySlice";
 import { addSupplier, editSupplier, getSupplierById } from "../../../redux/reducer/SupplierSlice";
 const AddSupplier = ({ setDisplayAddSupplier }) => {
   const dispatch = useDispatch();

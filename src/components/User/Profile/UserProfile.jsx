@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import Avatar from "../../../images/user/avatar.png"
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { IoIosLock } from "react-icons/io";
@@ -93,7 +92,7 @@ const UserProfile = (props) => {
                 </div>
                 <div className="flex gap-x-5 mt-4">
                     <div className="flex w-28 h-28 rounded-full overflow-hidden items-center justify-center border-solid border-4 border-[rgb(194_225_255)] bg-[rgb(240_248_255)]">
-                        <img className="w-[50px]" src={Avatar} alt="" srcset="" />
+                        <img className="w-[50px]" src="/static/images/user/avatar.png" alt="" srcset="" />
                     </div>
                     <div className="flex-1">
                         <div className="flex mb-8 gap-x-8 items-center">

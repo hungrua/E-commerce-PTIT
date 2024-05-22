@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import ShoesImg from "../../../images/shoes.png";
-import ShoesImg1 from "../../../images/shoes_1.png";
 import { Link } from "react-router-dom";
 import ProductCard from "../ProductCard/ProductCard.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +19,7 @@ const Accessory = () => {
           <div className="border border-solid border-[#f66315] w-fit mr-6 min-w-[120px] rounded-[4rem] relative">
             <div className="text-[#fff] cursor-pointer relative bg-[#f66315] hover:bg-[#fff] hover:text-[#031230] duration-300 mx-auto rounded-[4rem] items-center justify-center flex">
               <Link
-                href="/vot-cau-long"
+                to="/loai-san-pham/phukien"
                 className="py-[10px] px-[10px] flex items-center justify-center gap-[6px]"
               >
                 <span className="text-[16px] font-[500] leading-[1.2]">
@@ -52,7 +50,7 @@ const Accessory = () => {
                     className="hover:scale-105 h-full w-full duration-300 max-w-full"
                     height="780"
                     width="380"
-                    src={ShoesImg}
+                    src="/static/images/shoes.png"
                     alt=""
                   />
                 </div>
@@ -61,7 +59,7 @@ const Accessory = () => {
                     className="hover:scale-105 h-full w-full duration-300 max-w-full"
                     height="730"
                     width="1524"
-                    src={ShoesImg1}
+                    src="/static/images/shoes_1.png"
                     alt=""
                   />
                 </div>

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import voucher1 from '../../../images/voucher1.jpg'
 import { CiCircleInfo } from "react-icons/ci";
 
 const Voucher = (props) => {
@@ -21,7 +20,7 @@ const Voucher = (props) => {
             onMouseLeave={() => setDisplayButton(false)}>
             <div className='relative w-1/3 flex flex-col items-center'>
                 <div className='w-[75%] flex justify-center mr-[7.5px]'>
-                    <img src={voucher1}  className='max-w-[70%]' alt="" />
+                    <img src='/static/images/voucher1.jpg'  className='max-w-[70%]' alt="" />
                 </div>
                 <div className='text-sm text-ellipsis whitespace-nowrap overflow-hidden w-full'>Đây là voucher1</div>
                 {/* <div className='absolute top-[-18px] right-[-10px] w-5 h-5 rounded-full bg-white' ></div>

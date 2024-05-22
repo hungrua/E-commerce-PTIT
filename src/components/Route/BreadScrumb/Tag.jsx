@@ -6,7 +6,7 @@ const Tag = (props) => {
             <div className="relative flex items-center w-full z-3">
                 <img 
                 className="max-w-full max-h-full"
-                src={require('../../../images/tags/maytinh-all-in-one.webp')} alt="" 
+                src='/static/images/tags/maytinh-all-in-one.webp' alt="" 
                 />
             </div>
         </a>

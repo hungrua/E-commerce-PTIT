@@ -4,7 +4,6 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import AddCategory from '../../components/Admin/Category/AddCategory';
 import { useDispatch, useSelector } from 'react-redux';
 import AddSupplier from '../../components/Admin/Supplier/AddSupplier';
 import supplierSlice, { deleteSupplier, fetchSupplier, getSupplierById } from '../../redux/reducer/SupplierSlice';

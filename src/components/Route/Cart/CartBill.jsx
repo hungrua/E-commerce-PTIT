@@ -1,6 +1,5 @@
 import React from 'react';
 
-import slider1 from '../../../images/cart/slider.webp'
 import { useNavigate } from 'react-router-dom';
 
 const CartBill = (props) => {
@@ -46,7 +45,7 @@ const CartBill = (props) => {
             </button>
             <div className="mt-[10px]">
                 <div className="overflow-hidden rounded-[5px] hidden lg:block">
-                    <img className="w-full" src={slider1} alt="" />
+                    <img className="w-full" src="/static/images/cart/slider.webp" alt="" />
                 </div>
             </div>
         </div>

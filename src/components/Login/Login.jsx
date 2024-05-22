@@ -1,21 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../redux/reducer/UserSlice";
-
+import userSlice, { login } from "../../redux/reducer/UserSlice";
+import { notify } from "../Admin/notify";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [username,setUsername] = useState("")
-  const [password,setPassword] = useState("")
-  // useEffect(()=>{
-  //   dispatch(login)
-  // },[dispatch])
-  const alert = useSelector(state => state.user.alert)
-  const handleSubmit =  () => {
-    // e.preventDefault();
-    dispatch(login({username:username,password:password}))
-    // navigate('/');
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const alert = useSelector(state => state.users.alert)
+  useEffect(() => {
+
+    if (alert !== undefined) {
+      notify(alert.token, alert.code)
+    }
+    return () => {
+      dispatch(userSlice.actions.resetAlert(undefined))
+    }
+  }, [alert, dispatch])
+  const handleSubmit = async () => {
+    const res =  await dispatch(login({ username: username, password: password })).unwrap()
+    if (res) {
+      let role = res.role
+      if (role === "ADMIN") navigate('/admin')
+      else navigate('/')
+    }
   };
   return (
     <div className="overflow-hidden bg-cover bg-no-repeat h-[100vh] p-12 bg-[url('../public/static/images/web-images/bg-login.jpg')]">
@@ -43,7 +54,7 @@ const Login = () => {
                     className="bg-gray-50 border-[2px] border-orange-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 block w-full p-2.5 "
                     placeholder="hugenguyen"
                     required
-                    onChange={(e)=>{setUsername(e.target.value)}}
+                    onChange={(e) => { setUsername(e.target.value) }}
                   />
                 </div>
                 <div>
@@ -58,7 +69,7 @@ const Login = () => {
                     placeholder="••••••••"
                     className="bg-gray-50 border-[2px] border-orange-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 block w-full p-2.5"
                     required
-                    onChange={(e)=>{setPassword(e.target.value)}}
+                    onChange={(e) => { setPassword(e.target.value) }}
                   />
                 </div>
                 {/* <div className="flex items-center justify-between">
@@ -106,7 +117,7 @@ const Login = () => {
           </div>
         </div>
       </section>
-      {/* </div> */}
+      <ToastContainer></ToastContainer>
     </div>
   );
 };

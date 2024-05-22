@@ -7,7 +7,6 @@ import { FaTruckFast } from "react-icons/fa6";
 import { FaTruck } from "react-icons/fa";
 import { TfiReload } from "react-icons/tfi";
 
-import ProductImage from "../../../images/products/basic/may-tinh-asrock-mini-pc-deskmini-x300-1.webp"
 
 const OrderList = (props) => {
     const [search, setSearch] = useState('')
@@ -36,7 +35,7 @@ const OrderList = (props) => {
                         <div className='flex justify-between py-4 border-b-[1px] border-solid border-[rgb(235_235_240)]'>
                             <div className='flex gap-x-3'>
                                 <div className='flex items-center shadow-[0px_2px_10px_#00000014] relative w-20'>
-                                    <img src={ProductImage} alt="" />
+                                    <img src="/static/images/products/basic/may-tinh-asrock-mini-pc-deskmini-x300-1.webp" alt="" />
                                     <span className='absolute bottom-[-2px] text-right right-[-2px] text-sm p-1 bg-[rgb(235_235_240)] rounded-tl-full'>x1</span>
                                 </div>
                                 <div className='flex flex-col justify-evenly'>
@@ -77,7 +76,7 @@ const OrderList = (props) => {
                         <div className='flex justify-between py-4 border-b-[1px] border-solid border-[rgb(235_235_240)]'>
                             <div className='flex gap-x-3'>
                                 <div className='flex items-center shadow-[0px_2px_10px_#00000014] relative w-20'>
-                                    <img src={ProductImage} alt="" />
+                                    <img src="/static/images/products/basic/may-tinh-asrock-mini-pc-deskmini-x300-1.webp" alt="" />
                                     <span className='absolute bottom-[-2px] text-right right-[-2px] text-sm p-1 bg-[rgb(235_235_240)] rounded-tl-full'>x1</span>
                                 </div>
                                 <div className='flex flex-col justify-evenly'>
@@ -118,7 +117,7 @@ const OrderList = (props) => {
                         <div className='flex justify-between py-4 border-b-[1px] border-solid border-[rgb(235_235_240)]'>
                             <div className='flex gap-x-3'>
                                 <div className='flex items-center shadow-[0px_2px_10px_#00000014] relative w-20'>
-                                    <img src={ProductImage} alt="" />
+                                    <img src="/static/images/products/basic/may-tinh-asrock-mini-pc-deskmini-x300-1.webp" alt="" />
                                     <span className='absolute bottom-[-2px] text-right right-[-2px] text-sm p-1 bg-[rgb(235_235_240)] rounded-tl-full'>x1</span>
                                 </div>
                                 <div className='flex flex-col justify-evenly'>
@@ -159,7 +158,7 @@ const OrderList = (props) => {
                         <div className='flex justify-between py-4 border-b-[1px] border-solid border-[rgb(235_235_240)]'>
                             <div className='flex gap-x-3'>
                                 <div className='flex items-center shadow-[0px_2px_10px_#00000014] relative w-20'>
-                                    <img src={ProductImage} alt="" />
+                                    <img src="/static/images/products/basic/may-tinh-asrock-mini-pc-deskmini-x300-1.webp" alt="" />
                                     <span className='absolute bottom-[-2px] text-right right-[-2px] text-sm p-1 bg-[rgb(235_235_240)] rounded-tl-full'>x1</span>
                                 </div>
                                 <div className='flex flex-col justify-evenly'>

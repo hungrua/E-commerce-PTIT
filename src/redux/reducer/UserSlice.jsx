@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP, token } from "../../config/const";
-import { notify } from "../../components/Admin/notify";
+const getToken = ()=>{
+  const token = JSON.parse(localStorage.getItem("authorization")).token
+  return token
+}
 const userSlice = createSlice({
   name: "users",
   initialState: {
@@ -36,6 +39,9 @@ const userSlice = createSlice({
       );
       state.customers = deletedArray;
     },
+    resetAlert: (state, action) => {
+      state.alert = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -64,16 +70,28 @@ const userSlice = createSlice({
         state.users = state.users.filter((user) => user.id !== action.payload.id)
       })
       .addCase(login.fulfilled, (state, action) => {
-        const userLogin = action.payload
-        localStorage.setItem("authorization", JSON.stringify(userLogin))
+        if (action.payload.code !== undefined) state.alert = action.payload
+        else {
+          const userLogin = action.payload
+          localStorage.setItem("authorization", JSON.stringify(userLogin))
+          
+        }
+
       })
       .addCase(login.rejected, (state, action) => {
         state.alert = action.payload
+      })
+      .addCase(signupForUser.fulfilled, (state, action) => {
+        state.alert = {
+          code: action.payload.code,
+          message: action.payload.message
+        }
       })
   },
 });
 
 export const fetchUser = createAsyncThunk("users/fetchUser", async () => {
+  token = getToken()
   const res = await fetch(IP + "/admin/api/users", {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -83,6 +101,7 @@ export const fetchUser = createAsyncThunk("users/fetchUser", async () => {
   return data;
 });
 export const getUserById = createAsyncThunk("users/getUserById", async (id) => {
+  token = getToken()
   if (id === -1)
     return {
       id: null,
@@ -107,6 +126,7 @@ export const getUserById = createAsyncThunk("users/getUserById", async (id) => {
 });
 export const addUser = createAsyncThunk("user/addUser", async (newUser) => {
   // console.log(newUser)
+  token = getToken()
   newUser = {
     ...newUser,
     password: "Matkhaumacdinh1@",
@@ -127,6 +147,7 @@ export const addUser = createAsyncThunk("user/addUser", async (newUser) => {
 });
 export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
   newUser.password = null
+  token = getToken()
   const options = {
     method: "PUT",
     body: JSON.stringify(newUser),
@@ -144,6 +165,7 @@ export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
 });
 export const deleteUser = createAsyncThunk("user/deleteUser", async (id) => {
   console.log(id)
+  token = getToken()
   const options = {
     method: "DELETE",
     headers: {
@@ -158,10 +180,6 @@ export const deleteUser = createAsyncThunk("user/deleteUser", async (id) => {
   };
 });
 export const login = createAsyncThunk("user/login", async ({ username, password }) => {
-  console.log({
-    username: username,
-    password: password
-  })
   const options = {
     method: "POST",
     headers: {
@@ -172,9 +190,21 @@ export const login = createAsyncThunk("user/login", async ({ username, password 
       password: password
     })
   }
-  console.log(IP + `/api/v1/login`)
   const res = await fetch(IP + `/api/v1/login`, options)
   const data = await res.json()
+  return data
+})
+export const signupForUser = createAsyncThunk("user/signupForUser", async (newUser) => {
+  const options = {
+    method: "POST",
+    headers: {
+      'Content-Type': "application/json"
+    },
+    body: JSON.stringify(newUser)
+  }
+  const res = await fetch(IP + `/api/v1/signup?role=3`, options)
+  const data = await res.json()
+  console.log(data)
   return data
 })
 export default userSlice;

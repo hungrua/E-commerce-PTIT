@@ -11,7 +11,7 @@ const CartItem = (props) => {
             <div className="block md:grid col-span-2 grid-cols-[18px_1fr_2fr] lg:col-span-1 lg:grid-cols-[18px_80px_1fr] items-center gap-x-3">
                 <input type="checkbox" />
                 <div className="aspect-square max-w-20">
-                    <img className="w-full h-full" src={require("../../../images/cart/amsieutoc.webp")} alt="" />
+                    <img className="w-full h-full" src="/static/images/cart/amsieutoc.webp" alt="" />
                 </div>
                 <div className="item">
                     <div className="text-[rgb(10_104_255)] text-sm flex items-center">

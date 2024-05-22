@@ -3,11 +3,6 @@ import { FaCartShopping } from "react-icons/fa6";
 import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus, FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 
-import icon_new from "../../images/icon-cate-new.webp";
-import icon_tag from "../../images/icon-cate-tag.webp";
-import ft_pay_icon from "../../images/ft-pay-icon.webp";
-import step_icon from "../../images/step-icon.webp";
-import cart_icon from "../../images/cart-icon.webp";
 import Reviews from "./Reviews";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -293,7 +288,7 @@ const ProductDetails = () => {
                   <div className="flex items-center gap-[10px]">
                     <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                       <img
-                        src={step_icon}
+                        src='/static/images/step-icon.webp'
                         alt=""
                         className="max-w-full h-auto"
                       />
@@ -306,7 +301,7 @@ const ProductDetails = () => {
                   <div className="flex items-center gap-[10px]">
                     <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                       <img
-                        src={ft_pay_icon}
+                        src='/static/images/ft-pay-icon.webp'
                         alt=""
                         className="max-w-full h-auto"
                       />
@@ -320,7 +315,7 @@ const ProductDetails = () => {
                   <div className="flex items-center gap-[10px]">
                     <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                       <img
-                        src={icon_new}
+                        src='/static/images/icon-cate-new.webp'
                         alt=""
                         className="max-w-full h-auto"
                       />
@@ -333,7 +328,7 @@ const ProductDetails = () => {
                   <div className="flex items-center gap-[10px]">
                     <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                       <img
-                        src={icon_tag}
+                        src='/static/images/icon-cate-tag.webp'
                         alt=""
                         className="max-w-full h-auto"
                       />
@@ -346,7 +341,7 @@ const ProductDetails = () => {
                   <div className="flex items-center gap-[10px]">
                     <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                       <img
-                        src={cart_icon}
+                        src='/static/images/cart-icon.webp'
                         alt=""
                         className="max-w-full h-auto"
                       />

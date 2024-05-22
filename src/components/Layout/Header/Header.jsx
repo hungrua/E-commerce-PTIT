@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../../../images/logo2.jpg";
+
 import {
   FaAngleDown,
   FaRegBell,
@@ -8,11 +8,15 @@ import {
 } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
+import { IoLogOutOutline } from "react-icons/io5";
 import HeaderCart from "./HeaderCart";
 import HeaderNotification from "./HeaderNotification";
+import { useDispatch } from "react-redux";
+import userSlice from "../../../redux/reducer/UserSlice";
 
 const Header = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [openMenu, setOpenMenu] = useState(false);
   const [openProductList, setOpenProductList] = useState(false);
   const [openCartList, setOpenCartList] = useState(false);
@@ -43,11 +47,16 @@ const Header = () => {
   const handleOpenNotification = () => {
     setOpenNotification(!openNotification)
   }
+  const handleLogout = ()=>{
+    localStorage.removeItem("authorization")
+
+    navigate("/login")
+  }
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if(searchValue.length !== 0) {
-      navigate("/search?query="+searchValue)
+    if (searchValue.length !== 0) {
+      navigate("/search?query=" + searchValue)
     }
   }
 
@@ -56,10 +65,10 @@ const Header = () => {
     <>
       <header className=" w-full fixed top-0 z-10">
         <nav className="bg-[#fff] shadow-headerShadow border-b-[0.1rem] border-b-solid border-[#fff] py-2">
-          <div className="flex items-center justify-between max-w-screen-xl px-4 mx-auto relative">
+          <div className="flex items-center justify-between px-4 mx-auto relative">
             <Link to="/" className="flex items-center">
               <img
-                src={logo}
+                src='/static/images/logo2.jpg'
                 className="w-11 mx-3 h-auto"
                 alt="BadmintonShop Logo"
               />
@@ -67,9 +76,9 @@ const Header = () => {
             <div className="flex items-center lg:order-2">
               <div className="flex gap-[0.8rem] items-center">
                 <div className="flex gap-[0.8rem] items-center">
-                  <form className="flex items-center w-80 justify-end">
-                    <input type="text" placeholder="Search..." className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500" 
-                      onChange={(e) => setSearchValue(e.target.value)} value={searchValue}/>
+                  <form className="flex items-center w-96 justify-end">
+                    <input type="text" placeholder="Search..." className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500"
+                      onChange={(e) => setSearchValue(e.target.value)} value={searchValue} />
                     <button type="submit" className="bg-[#00B4CC] text-white w-10 h-10 flex items-center justify-center rounded-r-md"
                       onClick={handleSearch}>
                       <FaSearch />
@@ -84,7 +93,7 @@ const Header = () => {
                       <FaRegBell className="text-[16px] hover:text-[#f66315]" />
                     </button>
                     {
-                      openNotification && <HeaderNotification/>
+                      openNotification && <HeaderNotification />
                     }
                   </div>
                   <div>
@@ -94,6 +103,12 @@ const Header = () => {
                     >
                       <FaUser className="text-[16px] hover:text-[#f66315]" />
                     </Link>
+                  </div>
+                  <div>
+                    <button className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
+                      onClick={handleLogout}>
+                      <IoLogOutOutline className="text-[16px] hover:text-[#f66315]" />
+                    </button>
                   </div>
                 </div>
                 <div className="border border-solid border-[#f66315] rounded-[4rem] relative">
@@ -113,7 +128,7 @@ const Header = () => {
                   </div>
                   {/* gio hang detail */}
                   {
-                    openCartList && <HeaderCart openCartList={openCartList} setOpenCartList={setOpenCartList}/>
+                    openCartList && <HeaderCart openCartList={openCartList} setOpenCartList={setOpenCartList} />
                   }
                 </div>
               </div>
@@ -181,7 +196,7 @@ const Header = () => {
                   </li>
                   <li>
                     <Link
-                      to="/tra-don-hang"
+                      to="/order-status/2"
                       className="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Tra đơn hàng
@@ -268,7 +283,7 @@ const Header = () => {
                   </li>
                   <li>
                     <Link
-                      to="/tra-don-hang"
+                      to="/order-status/2"
                       className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Tra đơn hàng

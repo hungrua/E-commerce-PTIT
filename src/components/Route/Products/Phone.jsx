@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import RacketsImg from "../../../images/rackets_1.png";
-import RacketsImg2 from "../../../images/rackets_2.png";
 import ProductCard from "../ProductCard/ProductCard.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProduct } from "../../../redux/reducer/ProductSlice.jsx";
+import { Link } from "react-router-dom";
 const Phone = () => {
   const dispatch = useDispatch()
-  var phone = useSelector(state => state.product.phone)
+  const phone = useSelector(state => state.product.phone)
   useEffect(() => {
     dispatch(fetchProduct({ brandId: "", categoryId: "", key: "" }))
+    console.log(1)
   }, [dispatch])
   return (
     <div className="relative mt-[100px]">
@@ -19,14 +19,14 @@ const Phone = () => {
           </h2>
           <div className="border border-solid border-[#f66315] w-fit mr-6 min-w-[120px] rounded-[4rem] relative">
             <div className="text-[#fff] cursor-pointer relative bg-[#f66315] hover:bg-[#fff] hover:text-[#031230] duration-300 mx-auto rounded-[4rem] items-center justify-center flex">
-              <a
-                href="/vot-cau-long"
+              <Link
+                to="/loai-san-pham/dienthoai"
                 className="py-[10px] px-[10px] flex items-center justify-center gap-[6px]"
               >
                 <span className="text-[16px] font-[500] leading-[1.2]">
                   Xem tất cả
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@ const Phone = () => {
                     className="hover:scale-105 h-full w-full duration-300 max-w-full"
                     height="780"
                     width="380"
-                    src={RacketsImg}
+                    src="/static/images/rackets_1.png"
                     alt=""
                   />
                 </div>
@@ -50,7 +50,7 @@ const Phone = () => {
                     className="hover:scale-105 h-full w-full duration-300 max-w-full"
                     height="730"
                     width="1524"
-                    src={RacketsImg2}
+                    src='/static/images/rackets_2.png'
                     alt=""
                   />
                 </div>

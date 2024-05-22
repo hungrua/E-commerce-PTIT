@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import { FaBell } from "react-icons/fa";
 import { IoReceipt } from "react-icons/io5";
@@ -17,8 +17,13 @@ import ChangePassword from "../components/User/Profile/ChangePassword";
 
 
 const UserAccountPage = () => {
+    const {id} = useParams()
     const [activeTab, setActiveTab] = useState(0)
-
+    useEffect(()=>{
+        console.log(id)
+        if(id!==undefined) setActiveTab(id)
+        else setActiveTab(0)
+    },[])
     const tabs = {
         0: {
             name: 'Thông tin tài khoản',

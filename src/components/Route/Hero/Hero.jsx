@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
-import webImage1 from '../../../images/banner-2.png'
-import promotion1 from '../../../images/promotion1.jpg'
-import promotion2 from '../../../images/promotion2.jpg'
 
 const Hero = () => {
   const slides = [
@@ -41,7 +38,7 @@ const Hero = () => {
           <div className="hidden group-hover:block absolute top-[50%] left-5 transform -translate-y-1/2 text-xl rounded-full p-2 bg-[#f66315] text-white cursor-pointer">
             <BsChevronCompactLeft onClick={prevSlide} size={25} />
           </div>
-          <img src={webImage1} alt="" />
+          <img src='/static/images/banner-2.png' alt="" />
           <div className="hidden group-hover:block absolute top-[50%] right-5 transform -translate-y-1/2 text-xl rounded-full p-2 bg-[#f66315] text-white cursor-pointer">
             <BsChevronCompactRight onClick={nextSlide} size={25} />
           </div>
@@ -50,10 +47,10 @@ const Hero = () => {
       </div>
       <div className="lg:flex flex-col justify-between hidden gap-y-[5px]">
         <div className="overflow-hidden rounded hidden lg:block lg:col-span-2 items-center justify-center">
-          <img src={promotion1} alt="" />
+          <img src='/static/images/promotion1.jpg' alt="" />
         </div>
         <div className="overflow-hidden rounded hidden lg:block lg:col-span-2 items-center justify-center">
-          <img src={promotion2} alt="" />
+          <img src='/static/images/promotion2.jpg' alt="" />
 
         </div>
       </div>

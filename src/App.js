@@ -37,6 +37,7 @@ const App = () => {
         <Route path="/loai-san-pham/:category" element={<ProductListPage/>}/>
         <Route path="/cart" element={<CartPage/>}/>
         <Route path="/account" element={<UserAccountPage/>}/>
+        <Route path="/order-status/:id" element={<UserAccountPage/>}/>
         <Route path="/search" element={<SearchProductsPage/>}/>
         <Route path="/checkout" element={<CheckoutPage/>}/>
         <Route path="/test" element={<Voucher/>}/>

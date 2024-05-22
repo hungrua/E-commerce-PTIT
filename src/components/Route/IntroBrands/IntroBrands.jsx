@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../../../images/logo-removebg.png";
 const IntroBrands = () => {
   return (
     <div className="relative py-[100px] z-1 mb-[80px]">
