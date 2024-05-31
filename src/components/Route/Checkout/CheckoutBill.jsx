@@ -1,9 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import { formatCurrency } from '../../basicFunction';
+import { notify } from '../../Admin/notify';
+import paymentSlice, { getVNPay } from '../../../redux/reducer/PaymentSlice';
 const CheckoutBill = (props) => {
+    const dispatch = useDispatch()
+    const cartItem = useSelector(state => state.cart.preOrder)
+    const discountVoucher = useSelector(state => state.voucher.usingVoucher)
+    const shipment = useSelector(state => state.shipment.choosenShipment)
+    const [discount, setDiscount] = useState(0)
+    const [shipmentFee,setShipmentFee] = useState(0)
+    const [total, setTotal] = useState(0)
+    useEffect(() => {
+        if (cartItem) {
+            console.log(cartItem)
+            let total = cartItem.reduce((cucl, item) => {
+                return parseInt(cucl) + parseInt(item.totalPrice)
+            }, 0)
+            setTotal(total)
+            if (discountVoucher) {
+                let tmp = (total * discountVoucher.discount) / 100
+                tmp = tmp > discountVoucher.discountConditions ? discountVoucher.discountConditions : tmp
+                setDiscount(tmp)
+                console.log(tmp)
+            }
+            console.log(1)
+            if(shipment){
+                setShipmentFee(shipment.price)
+            }
+        }
+    }, [dispatch, cartItem, discountVoucher,shipment])
     const handlePay = () => {
-
+        const payment = JSON.parse(sessionStorage.getItem("choosenPayment"))
+        const shipment = JSON.parse(sessionStorage.getItem("choosenShipment"))
+        if(!payment) {
+            notify("Bạn chưa chọn phương thức thanh toán",2)
+            return;
+        }
+        if(!shipment) {
+            notify("Bạn chưa chọn phương thức giao hàng",2)
+            return;
+        }
+        if(payment.name.includes("VNPay")){
+            let body = {
+                totalPrice: total - discount +  shipmentFee
+            }
+            dispatch(getVNPay(body))
+        }
     }
     return (
         <div className="sticky top-[77px]">
@@ -24,7 +68,7 @@ const CheckoutBill = (props) => {
                         Tạm tính
                     </div>
                     <div className="font-medium">
-                        1.380.000đ
+                        {formatCurrency(total)}
                     </div>
                 </div>
 
@@ -33,15 +77,7 @@ const CheckoutBill = (props) => {
                         Phí vận chuyển
                     </div>
                     <div className="font-medium">
-                        40.000đ
-                    </div>
-                </div>
-                <div className="flex justify-between">
-                    <div className="font-normal text-[rgb(51_51_51)] mb-3">
-                        Khuyến mãi vận chuyển
-                    </div>
-                    <div className="font-medium">
-                        -40.000đ
+                        {formatCurrency(shipmentFee)}
                     </div>
                 </div>
                 <div className="flex justify-between">
@@ -49,7 +85,7 @@ const CheckoutBill = (props) => {
                         Giảm giá
                     </div>
                     <div className="font-medium">
-                        -40.000đ
+                        -{formatCurrency(discount)}
                     </div>
                 </div>
                 <div className="flex justify-between pt-5 border-solid border-t-[1px] border-t-[rgb(235,235,240)]">
@@ -57,7 +93,7 @@ const CheckoutBill = (props) => {
                         Tổng tiền
                     </div>
                     <div className="font-medium text-2xl text-[rgb(254_56_52)]">
-                        1.380.000đ
+                        {formatCurrency(total - discount +shipmentFee)}
                     </div>
                 </div>
                 <div className="text-right text-sm text-[rgb(120_120_120)]">
@@ -67,7 +103,7 @@ const CheckoutBill = (props) => {
 
             <button className="w-full bg-[rgb(254_56_52)] py-[13px] px-[10px] text-white text-base mt-[10px] rounded outline-none"
                 onClick={handlePay}>
-                Đặt hàng <span>(2)</span>
+                Đặt hàng <span>({cartItem.length})</span>
             </button>
         </div>
     );

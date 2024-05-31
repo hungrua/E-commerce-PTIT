@@ -14,7 +14,6 @@ const OrderList = (props) => {
 
     return (
         <div className='mt-3'>
-            {/* {props.orderActiveTab} */}
             {/* search bar */}
             <div className='flex w-full items-center rounded border-[1px] border-solid border-[rgb(196_196_207)] overflow-hidden bg-white'>
                 <FaSearch className='ml-2' />

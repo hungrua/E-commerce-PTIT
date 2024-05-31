@@ -29,14 +29,16 @@ const AddProduct = ({ setDisplayAddProduct }) => {
     const dispatch = useDispatch()
     const [currentSetProduct, setCurrentSetProduct] = useState({})
     const [category, setCategory] = useState(1)
+    const [vendor,setVendor] = useState("")
     const [brand, setBrand] = useState(1)
     const [frequencyScreen, setFrequencyScreen] = useState("60 Hz");
     const [addImages, setAddImages] = useState([])
 
     const imgProductUrl = '/static/images/product/'
-    var categories = useSelector((state) => state.category.categories)
-    var brands = useSelector((state) => state.product.brand)
-    var currentProduct = useSelector((state) => state.product.currentSetProduct)
+    const categories = useSelector((state) => state.category.categories)
+    const brands = useSelector((state) => state.product.brand)
+    const currentProduct = useSelector((state) => state.product.currentSetProduct)
+    const supplier = useSelector((state)=> state.supplier.suppliers)
     useEffect(() => {
         dispatch(fetchCategory())
         dispatch(fetchBrand())
@@ -50,6 +52,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
         setDisplayAddProduct(false)
         dispatch(getProductById(-1))
     }
+    
     const handleChangeCategory = (e) => {
         console.log(1)
         setCategory(e.target.value)
@@ -75,6 +78,12 @@ const AddProduct = ({ setDisplayAddProduct }) => {
     const handleChangeBrand = (e) => {
         console.log(1)
         setBrand(e.target.value)
+        handleOnChangeProperties("brand", e.target.value)
+    }
+    const handleChangeVendor = (e) => {
+        console.log(1)
+        setVendor(e.target.value)
+        handleOnChangeProperties("vendor", e.target.value)
     }
     const handleChangeFrequencyScreen = (e) => {
         console.log(1)
@@ -168,12 +177,19 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                         <WarehouseOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                         <Box>Nhà cung cấp</Box>
                                     </FormLabel>
-                                    <TextField fullWidth={true} variant='outlined'
-                                        value={currentSetProduct.vendor}
-                                        onChange={(e) => {
-                                            handleOnChangeProperties("vendor", e.target.value)
-                                        }}
-                                    />
+                                    <Select
+                                        sx={style.select}
+                                        value={vendor}
+                                        disabled={currentSetProduct.id !== -1}
+                                        onChange={handleChangeVendor}
+                                    >
+                                        {
+                                            supplier.map((supplier) => {
+                                                return <MenuItem key={supplier.id} value={supplier.id} >{supplier.name}</MenuItem>
+
+                                            })
+                                        }
+                                    </Select>
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>

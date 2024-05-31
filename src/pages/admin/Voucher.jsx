@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddVoucher from '../../components/Admin/Voucher/AddVoucher';
 import { useDispatch, useSelector } from 'react-redux';
-import voucherSlice, { deleteVoucher, fetchVoucher, getVoucherById } from '../../redux/reducer/VoucherSlice';
+import voucherSlice, { deleteVoucher, fetchVoucherForAdmin, fetchVoucherForUser, getVoucherById } from '../../redux/reducer/VoucherSlice';
 import { notify } from '../../components/Admin/notify';
 import { Confirm } from '../../components/Admin/Confirm';
 const Voucher = () => {
@@ -17,7 +17,7 @@ const Voucher = () => {
   const [deleteId,setDeleteId] = useState(0)
   var vouchers = useSelector((state) => state.voucher.vouchers)
   useEffect(() => {
-    dispatch(fetchVoucher())
+    dispatch(fetchVoucherForAdmin())
   }, [dispatch])
   useEffect(() => {
     console.log(vouchers)

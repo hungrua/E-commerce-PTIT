@@ -40,7 +40,7 @@ const ProductCard = ({ details }) => {
             <Link to={`/san-pham/${details.id}`}>
                 <div className="relative">
                     <div className="p-2.5">
-                        <img src={productInfo.img}
+                        <img src={productInfo.img} 
                             alt="" />
                     </div>
                     <div className="absolute top-0 h-[31px] w-20 left-[-5px]"

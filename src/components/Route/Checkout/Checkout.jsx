@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 
 import ViewedProduct from "../ViewedProducts/ViewedProducts";
 import DeliveryAddress from "../../Delivery/DeliveryAddress";
 import CheckoutItems from "./CheckoutItems";
 import CheckoutBill from "./CheckoutBill";
+import { useDispatch } from "react-redux";
+import { fetchShipment } from "../../../redux/reducer/ShipmentSlice";
+import { fetchPayment } from "../../../redux/reducer/PaymentSlice";
 
 
 const Checkout = (props) => {
+    const dispatch = useDispatch()
+    useEffect(()=>{
+        dispatch(fetchShipment())
+        dispatch(fetchPayment())
+    },[])
     return (
         <div className="p-5 bg-[#efefef] mt-[53px]">
             <div className="font-Roboto font-bold mb-5">

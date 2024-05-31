@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { IP } from "../../config/const";
 
 const getUser = () => {
@@ -8,12 +8,38 @@ const getUser = () => {
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
-        cartItems: []
+        cartItems: [],
+        preOrder: JSON.parse(sessionStorage.getItem("preOrder"))??[]
     },
     reducers: {
         resetAlert: (state, action) => {
             state.alert = action.payload
         },
+        updatePreOrder: (state,action) =>{
+            const cartItemId = action.payload.cartItemId
+            let order = [...state.preOrder]
+            const check = order.find((item)=> item.cartItemId === cartItemId)
+            if(check){
+                order = order.filter((item) => item.cartItemId!==cartItemId)
+            }
+            else order.push(action.payload)
+            state.preOrder = order
+            sessionStorage.setItem("preOrder",JSON.stringify(order))
+        },
+        updateQuantityPreOrder:(state,action)=>{
+            const cartItemId = action.payload.cartItemId
+            console.log(action.payload)
+            let order = [...current(state.preOrder)]
+            order = order.map((item)=>{
+                if(item.cartItemId===cartItemId) {
+                    console.log(item)
+                    return {...item,quantity:action.payload.quantity,totalPrice:action.payload.price * action.payload.quantity}
+                }
+                else return item
+            })
+            state.preOrder = order
+            sessionStorage.setItem("preOrder",JSON.stringify(order))
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -49,9 +75,15 @@ const cartSlice = createSlice({
                     details: action.payload.itemInfo.itemDetail,
                     itemId: action.payload.itemInfo.itemDto.id
                 }
-                const index = state.cartItems.findIndex(item => item.itemDetailsId === cartItem.itemDetailsId)
-                if (index === -1) state.cartItems.push(cartItem)
-                else state.cartItems[index] = cartItem
+                const cartItems = current(state.cartItems)
+                const index =cartItems.find(item => item.itemDetailsId === cartItem.itemDetailsId)
+                if (!index) state.cartItems.push(cartItem)
+                else {
+                    state.cartItems = cartItems.map(item => {
+                        if (item.cartItemId === cartItem.cartItemId) return cartItem
+                        return item
+                    })
+                }
                 state.alert = action.payload.alert
             })
             .addCase(updateCartItem.fulfilled, (state, action) => {
@@ -68,8 +100,10 @@ const cartSlice = createSlice({
                     details: action.payload.itemInfo.itemDetail,
                     itemId: action.payload.itemInfo.itemDto.id
                 }
-                const index = state.cartItems.findIndex(item => item.cartItemId === cartItem.cartItemId)
-                state.cartItems[index] = cartItem
+                state.cartItems= state.cartItems.map(item => {
+                    if (item.cartItemId === cartItem.cartItemId) return cartItem
+                    return item
+                })
             })
             .addCase(deleteCartItem.fulfilled, (state, action) => {
                 state.cartItems = state.cartItems.filter(item => item.cartItemId !== action.payload.id)
@@ -79,7 +113,6 @@ const cartSlice = createSlice({
 })
 
 export const fetchCartItem = createAsyncThunk("cart/fetchCartItem", async () => {
-    console.log("do Fetch")
     const token = getUser().token
     const options = {
         method: "GET",
@@ -93,7 +126,6 @@ export const fetchCartItem = createAsyncThunk("cart/fetchCartItem", async () => 
 })
 export const addItemToCart = createAsyncThunk("cart/addItemToCart", async (cartItem) => {
     const token = getUser().token
-    console.log(cartItem)
     const options = {
         method: "POST",
         headers: {
@@ -114,7 +146,6 @@ export const addItemToCart = createAsyncThunk("cart/addItemToCart", async (cartI
 })
 export const updateCartItem = createAsyncThunk("cart/updateCartItem", async (cartItem) => {
     const token = getUser().token
-    console.log(cartItem)
     const options = {
         method: "PUT",
         headers: {

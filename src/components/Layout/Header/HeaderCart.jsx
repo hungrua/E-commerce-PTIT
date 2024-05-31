@@ -4,26 +4,28 @@ import {
     FaMinus,
     FaPlus
 } from "react-icons/fa";
-import { FaCartShopping } from "react-icons/fa6";
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Link } from 'react-router-dom';
-import { fetchCartItem } from '../../../redux/reducer/CartSlice';
 import { HeaderCartItem } from './HeaderCartItem';
 import { formatCurrency } from '../../basicFunction';
 const HeaderCart = (props) => {
     const dispatch = useDispatch()
-    const cartItem = useSelector(state => state.cart.cartItems)
+    let cartItem = useSelector(state => state.cart.cartItems)
+    const [items,setItems] = useState([])
     const [total, setTotal] = useState(0)
     useEffect(() => {
+        console.log(cartItem)
         if (cartItem) {
             let total = cartItem.reduce((cucl, item) => {
                 return parseInt(cucl) + parseInt(item.totalPrice)
             }, 0)
             setTotal(formatCurrency(total))
+            setItems(cartItem)
+            console.log(items)
         }
-
-    }, [dispatch,cartItem])
+    }, [cartItem])
     return (
         <div className="fixed z-50 right-0 w-[550px] top-[58px] translate-x-0 translate-y-0 opacity-[1] max-w-[90%] bottom-0 overflow-y-auto bg-[#fff] transition-all shadow-headerShadow">
             <div className="h-full flex flex-col">
@@ -37,11 +39,15 @@ const HeaderCart = (props) => {
                     <p className="text-center mb-[20px] md:text-[35px] font-[700] text-[#031230] text-[27px]">
                         Giỏ hàng
                     </p>
-                    <div className='h-[80%] overflow-y-scroll' >
+                    <div className='h-[80%] overflow-y-scroll relative' >
                         {
-                            cartItem.map((item,index) => {
+                            items.length!==0?(items.map((item,index) => {
                                 return <HeaderCartItem key={index}  itemInfo ={item} />
-                            })
+                            })):
+                            (<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                <img src='/static/images/web-images/emptyCart.png' style={{height:"200px"}}></img>
+                                <div className='text-center text-[rgb(120_120_120)]'>Giỏ hàng trống</div>
+                            </div>)
                         }
                     </div>
 
@@ -62,17 +68,6 @@ const HeaderCart = (props) => {
                             </span>
                         </Link>
 
-                        <Link
-                            to="/thanh-toan"
-                            className="hover:bg-[#fff] bg-[#f66315] hover:text-[#031230] text-white border border-solid border-[#f66315] w-full cursor-pointer relative overflow-hidden transition-all my-0 mx-auto rounded-[40px] flex items-center justify-center"
-                        >
-                            <span className="flex items-center justify-center py-[10px] px-[20px] gap-[6px]">
-                                <FaCartShopping className="text-[16px]" />
-                                <span className="leading-[1.2] text-[16px] font-[700] ">
-                                    Đặt mua
-                                </span>
-                            </span>
-                        </Link>
                     </div>
                 </div>
             </div>

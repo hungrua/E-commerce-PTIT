@@ -7,18 +7,25 @@ import { formatCurrency } from '../../basicFunction';
 const CartBill = (props) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const cartItem = useSelector(state => state.cart.cartItems)
-    const [discount,setDiscount] = useState(250000)
+    const cartItem = useSelector(state => state.cart.preOrder)
+    const discountVoucher = useSelector(state => state.voucher.usingVoucher)
+    const [discount,setDiscount] = useState(0)
     const [total, setTotal] = useState(0)
     useEffect(() => {
         if (cartItem) {
+            console.log(cartItem)
             let total = cartItem.reduce((cucl, item) => {
                 return parseInt(cucl) + parseInt(item.totalPrice)
             }, 0)
             setTotal(total)
+            if(discountVoucher) {
+                let tmp = (total*discountVoucher.discount)/100
+                tmp = tmp>discountVoucher.discountConditions?discountVoucher.discountConditions:tmp
+                setDiscount(tmp)
+                console.log(tmp)
+            }
         }
-
-    }, [dispatch,cartItem])
+    }, [dispatch,cartItem,discountVoucher])
     const handleCheckout = (e) => {
         navigate('/checkout')
     }
@@ -38,7 +45,7 @@ const CartBill = (props) => {
                         Giảm giá
                     </div>
                     <div className="font-medium">
-                        {formatCurrency(discount)}
+                        - {formatCurrency(discount)}
                     </div>
                 </div>
                 <div className="flex justify-between pt-5 border-solid border-t-[1px] border-t-black">

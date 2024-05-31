@@ -6,18 +6,22 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import logo from '../../assets/logo.png'
 function AppHeader(props) {
-    const {sideNavExpanded,setSideNavExpanded} = props
+    const handleLogout = () => {
+        localStorage.removeItem("authorization")
+        window.location.href = "/login"
+    }
+    const { sideNavExpanded, setSideNavExpanded } = props
     return (
         <AppBar position='sticky' sx={style.appBar}>
             <Toolbar>
-                <IconButton onClick={() => sideNavExpanded ? setSideNavExpanded(false) : setSideNavExpanded(true)}  color='secondary'>
+                <IconButton onClick={() => sideNavExpanded ? setSideNavExpanded(false) : setSideNavExpanded(true)} color='secondary'>
                     <MenuTwoToneIcon></MenuTwoToneIcon>
                 </IconButton>
                 <Box
                     component='img'
                     sx={style.appLogo}
                     src={logo} />
-                <Box sx={{flexGrow: 1}} />
+                <Box sx={{ flexGrow: 1 }} />
                 <IconButton title='Notification' color='secondary'>
                     <Badge badgeContent={14} color='error'>
                         <NotificationsIcon />
@@ -26,8 +30,8 @@ function AppHeader(props) {
                 <IconButton title='Setting' color='secondary'>
                     <SettingsIcon />
                 </IconButton>
-                <IconButton title='Logout' color='secondary'>
-                    <LogoutIcon/>
+                <IconButton onClick={handleLogout} title='Logout' color='secondary'>
+                    <LogoutIcon />
                 </IconButton>
             </Toolbar>
         </AppBar>
@@ -38,11 +42,11 @@ const style = {
     appBar: {
         bgcolor: 'neutral.main'
     },
-    appLogo:{
-       borderRadius: 2,
-       width: 50,
-       ml:2, 
-       cursor: 'pointer'
+    appLogo: {
+        borderRadius: 2,
+        width: 50,
+        ml: 2,
+        cursor: 'pointer'
     }
 }
 export default AppHeader

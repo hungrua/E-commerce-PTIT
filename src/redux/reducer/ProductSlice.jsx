@@ -78,6 +78,8 @@ const productSlice = createSlice({
           "code": action.payload.code,
           "message": action.payload.message
         };
+        console.log(action.payload)
+        state.products.push(action.payload.item)
       })
       .addCase(editProduct.fulfilled, (state, action) => {
         state.alert = action.payload.alert;

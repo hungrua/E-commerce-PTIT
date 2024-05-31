@@ -18,7 +18,7 @@ export const HeaderCartItem = (props) => {
         else if (categoryId === 2) {
             return `${name} ( ${itemInfo.details.color} - ${itemInfo.details.ram} - ${itemInfo.details.diskSize} )`
         }
-        return `${name} ( ${itemInfo.details.color} )`
+        else return `${name} ( ${itemInfo.details.color} )`
     }
     const handleChangeQuantity =(value)=>{
         if(quantity<2 && value==1) return

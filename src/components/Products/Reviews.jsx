@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { FaStar } from "react-icons/fa";
 import Comment from './Review';
+import StarRating from './StarRating';
 const Reviews = (props) => {
 
     const [reviews, setReviews] = useState([])
 
     const [statistics, setStatstics] = useState([]);
     const [percentages, setPercentages] = useState([]);
+    const [currentStarRating,setCurrentStarRating] = useState(0)
+    const [comment,setComment] = useState("")
 
     useEffect(() => {
         setReviews([
@@ -64,14 +67,10 @@ const Reviews = (props) => {
                     <div className="mb-[20px]">
                         <div className='flex max-[800px]:flex-col items-center'>
                             <p className="text-[#f6af15] font-[700] text-[40px]">
-                                5 <span className="text-[24px]">/5</span>
+                                {currentStarRating} <span className="text-[24px]">/5</span>
                             </p>
                             <div className="flex ml-4 gap-2 text-lg">
-                                <FaStar />
-                                <FaStar />
-                                <FaStar />
-                                <FaStar />
-                                <FaStar />
+                                <StarRating setCurrentStarRating={setCurrentStarRating} />
                             </div>
 
                         </div>
@@ -160,7 +159,11 @@ const Reviews = (props) => {
 
                     </div>
                     <div className="flex-1 flex flex-col items-end gap-2">
-                        <textarea name="" id="" className="w-full rounded-lg p-4" rows="5"></textarea>
+                        <textarea name="" id="" className="w-full rounded-lg p-4" rows="5" 
+                        value={comment}
+                        onChange={(e)=>setComment(e.target.value)}
+                        
+                        ></textarea>
                         <button className="px-2 py-0.5 border-solid border-[#6c757d] text-[#6c757d] border-[1px] rounded hover:bg-[#6c757d] hover:text-white">Gửi</button>
                     </div>
                 </div>

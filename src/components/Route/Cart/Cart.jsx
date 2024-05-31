@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 
 import ViewedProduct from "../ViewedProducts/ViewedProducts";
@@ -6,10 +6,17 @@ import CartItem from "./CartItem";
 import DeliveryAddress from "../../Delivery/DeliveryAddress";
 import CartVoucher from "./CartVoucher";
 import CartBill from "./CartBill";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import voucherSlice, { fetchUserVoucher } from "../../../redux/reducer/VoucherSlice";
+import { getOwnInformation } from "../../../redux/reducer/UserSlice";
 
 const Cart = () => {
+    const dispatch = useDispatch()
     const cartItem = useSelector(state => state.cart.cartItems)
+    useEffect(() => {
+        dispatch(fetchUserVoucher())
+        dispatch(getOwnInformation())
+    }, [])
     return (
         <div className="p-5 bg-[#efefef] mt-11">
             <div className="font-Roboto font-bold mb-5">
@@ -32,22 +39,23 @@ const Cart = () => {
                                 <FaTrash />
                             </span>
                         </div>
-                        <div className="bg-white rounded mt-[15px] [&>*:not(:last-child)]:border-b-[1px]">
-                            {
-                                cartItem.map(item=>
-                                    (<CartItem key={item.cartItemId} itemInfo = {item} />)
-                                )
-                            }
-                        </div>
+                        {cartItem.length !== 0 ? (
+                            <div className="bg-white rounded mt-6 border-b border-gray-200">
+                                {cartItem.length !== 0 &&
+                                    cartItem.map((item) => <CartItem key={item.cartItemId} itemInfo={item} />)}
+                            </div>
+                        ) : (
+                            <div className="mt-2 text-center">Chưa có sản phẩm nào trong giỏ hàng</div>
+                        )}
                     </div>
                 </div>
                 <div className="col-span-1">
-                    <DeliveryAddress/>
-                    <CartVoucher/>
-                    <CartBill/>
+                    <DeliveryAddress />
+                    <CartVoucher />
+                    <CartBill />
                 </div>
                 <div className="col-span-1 lg:col-span-3">
-                    <ViewedProduct  quantity={4}/>
+                    <ViewedProduct quantity={4} />
                 </div>
             </div>
 

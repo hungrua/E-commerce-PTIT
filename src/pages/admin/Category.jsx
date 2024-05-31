@@ -42,12 +42,7 @@ function Category() {
     {
       field: 'categoryDescription',
       headerName: "Mô tả danh mục",
-      minWidth: '500'
-    },
-    {
-      field: 'categoryItemTotal',
-      headerName: "Số sản phẩm",
-      minWidth: '300'
+      minWidth: '800'
     },
     {
       field: 'action',
@@ -75,8 +70,7 @@ function Category() {
       id: category.id,
       categoryName: category.name,
       categoryCode: category.code,
-      categoryDescription: category.description,
-      categoryItemTotal:category.items.length
+      categoryDescription: category.description
     };
   });
   const [displayAddCategory, setDisplayAddCategory] = useState(false)

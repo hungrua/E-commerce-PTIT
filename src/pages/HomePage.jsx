@@ -11,17 +11,27 @@ import Vouchers from "../components/Route/Vouchers/Vouchers";
 import { useDispatch } from "react-redux";
 import { fetchProduct } from "../redux/reducer/ProductSlice";
 import { fetchCategory } from "../redux/reducer/CategorySlice";
-const HomePage = () => {  
+import voucherSlice, { fetchVoucherForUser } from "../redux/reducer/VoucherSlice";
+import { getOwnInformation } from "../redux/reducer/UserSlice";
+import { fetchOrderOfUser } from "../redux/reducer/OrderSlice";
+const HomePage = () => {
   const dispatch = useDispatch()
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(fetchCategory())
-},[dispatch])
+  }, [dispatch])
+  useEffect(()=>{
+    dispatch(fetchVoucherForUser())
+    dispatch(fetchOrderOfUser())
+    dispatch(voucherSlice.actions.setUsingVoucher(null))
+    sessionStorage.clear()
+  },[dispatch])
+
   return (
     <div className="font-Roboto">
       <Header />
       <div className="bg-[#f6f6f6]">
         <Hero />
-        <Vouchers/>
+        <Vouchers />
         <Services />
         <ProductCategories />
         <Products />

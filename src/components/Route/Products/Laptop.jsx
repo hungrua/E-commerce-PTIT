@@ -55,6 +55,7 @@ const Laptop = () => {
               <div className="h-full max-[800px]:h-auto">
                 <div className="h-full rounded-[12px] overflow-hidden max-sm:hidden">
                   <img
+                    loading="lazy"
                     className="hover:scale-105 h-full w-full duration-300 max-w-full"
                     height="780"
                     width="380"

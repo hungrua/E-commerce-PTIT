@@ -6,6 +6,10 @@ import productSlice from "./reducer/ProductSlice";
 import promotionSlice from "./reducer/PromotionSlice";
 import supplierSlice from "./reducer/SupplierSlice";
 import cartSlice from "./reducer/CartSlice";
+import reviewSlice from "./reducer/ReviewSlice";
+import shipmentSlice from "./reducer/ShipmentSlice";
+import paymentSlice from "./reducer/PaymentSlice";
+import orderSlice from "./reducer/OrderSlice";
 
 const store = configureStore({
     reducer: {
@@ -15,7 +19,11 @@ const store = configureStore({
         product: productSlice.reducer,
         promotion: promotionSlice.reducer,
         supplier :supplierSlice.reducer,
-        cart : cartSlice.reducer
+        cart : cartSlice.reducer,
+        review: reviewSlice.reducer,
+        shipment: shipmentSlice.reducer,
+        payment: paymentSlice.reducer,
+        order: orderSlice.reducer
     }
 })
 

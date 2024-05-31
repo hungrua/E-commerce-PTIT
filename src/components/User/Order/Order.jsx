@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderNav from './OrderNav';
 import OrderList from './OrderList';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchOrderOfUser } from '../../../redux/reducer/OrderSlice';
 
 const Order = () => {
+    const dispatch = useDispatch()
+    const orders = useSelector(state => state.order.orders)
+    useEffect(()=>{
+
+        console.log(orders)
+    },[orders])
     const orderTabs = {
         0: {
             name: 'Tất cả đơn',

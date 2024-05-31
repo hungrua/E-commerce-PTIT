@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP } from "../../config/const";
-const getUser = () => {
+export const getUser = () => {
   const user = JSON.parse(localStorage.getItem("authorization"))
   return user
 }
@@ -85,6 +85,9 @@ const userSlice = createSlice({
           code: action.payload.code,
           message: action.payload.message
         }
+      })
+      .addCase(getOwnInformation.fulfilled, (state, action) => {
+        state.loginUser = action.payload
       })
   },
 });
@@ -205,5 +208,19 @@ export const signupForUser = createAsyncThunk("user/signupForUser", async (newUs
   const data = await res.json()
   console.log(data)
   return data
+})
+export const getOwnInformation = createAsyncThunk("user/getOwnInformation",async()=>{
+  const token = getUser().token
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  }
+  const res = await fetch(IP + `/api/user`, options)
+  const data = await res.json()
+  console.log(data.message)
+  return data.message
+
 })
 export default userSlice;

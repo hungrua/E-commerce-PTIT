@@ -10,6 +10,7 @@ import ProductCollapseTable from '../../components/Admin/Product/ProductCollapse
 import { useDispatch, useSelector } from 'react-redux';
 import productSlice, {  getProductById } from '../../redux/reducer/ProductSlice';
 import { notify } from '../../components/Admin/notify';
+import { fetchSupplier } from '../../redux/reducer/SupplierSlice';
 const ProductManager = () => {
   const dispatch = useDispatch()
   const [displayAddProduct, setDisplayAddProduct] = useState(false)
@@ -18,6 +19,7 @@ const ProductManager = () => {
     if(message!==undefined) notify(message.message,message.code)
 
     return ()=>{
+      dispatch(fetchSupplier())
       dispatch(productSlice.actions.resetAlert(undefined))
     }
   },[message,dispatch])

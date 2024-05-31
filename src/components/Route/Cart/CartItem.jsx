@@ -3,8 +3,8 @@ import { TiTick } from "react-icons/ti";
 import { FaTruckFast } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { deleteCartItem, updateCartItem } from '../../../redux/reducer/CartSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import cartSlice, { deleteCartItem, updateCartItem } from '../../../redux/reducer/CartSlice';
 import { formatCurrency } from '../../basicFunction';
 
 
@@ -12,6 +12,10 @@ const CartItem = (props) => {
     const { itemInfo } = props
     const dispatch = useDispatch()
     const [quantity, setQuantity] = useState(itemInfo.quantity)
+    const preOrder = useSelector(state => state.cart.preOrder)
+    const [checked, setChecked] = useState(() => {
+        return preOrder.find(item => item.cartItemId === itemInfo.cartItemId)?true:false
+    })
     const renderName = (name, categoryId) => {
         if (categoryId === 1) {
             return `${name} ( ${itemInfo.details.ram} - ${itemInfo.details.diskSize} - ${itemInfo.details.screenSize} )`
@@ -27,17 +31,25 @@ const CartItem = (props) => {
         setQuantity(afterCount)
         let cartItem = {
             cartItemId: itemInfo.cartItemId,
-            quantity: afterCount
+            quantity: afterCount,
+            price: itemInfo.details.price
         }
+        dispatch(cartSlice.actions.updateQuantityPreOrder(cartItem))
         dispatch(updateCartItem(cartItem))
     }
     const handleRemoveCartItem = () => {
+        dispatch(cartSlice.actions.updatePreOrder(itemInfo))
         dispatch(deleteCartItem(itemInfo.cartItemId))
     }
+    const handleAddToPreOdrder = () => {
+        setChecked(!checked)
+        dispatch(cartSlice.actions.updatePreOrder(itemInfo))
+    }
+
     return (
         <div className="text-sm md:text-base grid grid-cols-[repeat(5,1fr)_0.5fr] lg:grid-cols-[auto_180px_120px_120px_20px] gap-x-6 items-center p-4">
             <div className="block md:grid col-span-2 grid-cols-[18px_1fr_2fr] lg:col-span-1 lg:grid-cols-[18px_80px_1fr] items-center gap-x-3">
-                <input type="checkbox" />
+                <input type="checkbox" onChange={() => handleAddToPreOdrder()} checked={checked} />
                 <div className="aspect-square max-w-20">
                     <img className="w-full h-full" src={itemInfo.image} alt="" />
                 </div>

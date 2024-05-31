@@ -1,36 +1,59 @@
 import { Box, Grid, Tooltip, Tab, RadioGroup, Typography, Radio } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SiNow } from "react-icons/si";
 import { BiSolidPackage } from "react-icons/bi";
 import { FaShippingFast } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { MdOutlinePayments } from "react-icons/md";
 import { MdPayment } from "react-icons/md";
+import { CheckoutItemsDetails } from './CheckoutItemsDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import { formatCurrency } from '../../basicFunction';
+import shipmentSlice from '../../../redux/reducer/ShipmentSlice';
+import paymentSlice from '../../../redux/reducer/PaymentSlice';
 const CheckoutItems = () => {
+    const dispatch = useDispatch()
+    const cartItems = useSelector(state => state.cart.preOrder)
+    const shipmentType = useSelector(state => state.shipment.shipments)
+    const paymentType = useSelector(state => state.payment.payments)
+    const [shipment, setShipment] = useState(JSON.parse(sessionStorage.getItem("choosenShipment")))
+    const [payment, setPayment] = useState(JSON.parse(sessionStorage.getItem("choosenPayment")))
+    const [total, setTotal] = useState(0)
+    useEffect(() => {
+        console.log(cartItems)
+        if (cartItems) {
+            let total = cartItems.reduce((cucl, item) => {
+                return parseInt(cucl) + parseInt(item.totalPrice)
+            }, 0)
+            setTotal(total)
+        }
+    }, [cartItems,shipmentType,paymentType])
+    const handleSetShipment = (item)=>{
+        dispatch(shipmentSlice.actions.updateShipment(item))
+        setShipment(item)
+    }
+    const handleSetPayment = (item)=>{
+        dispatch(paymentSlice.actions.updatePayment(item))
+        setPayment(item)
+    }
     return (
         <Box sx={style.paymentContainer}>
             <Typography fontWeight={500} >Chọn hình thức giao hàng</Typography>
             <RadioGroup defaultValue="save" >
                 <Box sx={style.shipmentType}>
-                    <Box sx={style.shipmentType.shipment}>
-                        <Radio size='small' value="fast" />
-                        <Box sx={style.shipmentType.shipment.name} >
-                            <SiNow
-                                style={{
-                                    color: "#fc0303",
-                                    fontSize: "xx-large",
-                                    marginRight: "7px"
-                                }}
-                            />
-                            Giao siêu tốc 2h
-                        </Box>
-                    </Box>
-                    <Box sx={style.shipmentType.shipment}>
-                        <Radio size='small' value="save" />
-                        <Box sx={style.shipmentType.shipment.name} >
-                            Giao hàng tiết kiệm
-                        </Box>
-                    </Box>
+                    {
+                        shipmentType.map(item => (
+                            <Box sx={style.shipmentType.shipment}>
+                                <Radio size='small' value={item.id} checked={shipment!==null?item.id===shipment.id:false} onClick={() => handleSetShipment(item)} />
+                                <Box sx={style.shipmentType.shipment.name} >
+                                    {item.description}
+                                </Box>
+                                <Box
+                                    style={{ marginLeft: "5px", color: "#009800" }}
+                                >{`- Phí ship: ${formatCurrency(item.price)}`}</Box>
+                            </Box>
+                        ))
+                    }
                 </Box>
             </RadioGroup>
             <Box sx={style.supplyContainer}>
@@ -40,109 +63,57 @@ const CheckoutItems = () => {
                             style={{ marginRight: "5px" }}
                         />
                     </Box>
-                    <Box> Gói : Giao siêu tốc 2h, trước 10h ngày mai</Box>
+                    {shipment && <Box> Gói : {shipment.name + " " + shipment.description}</Box>}
                 </Box>
                 <Box sx={style.supplyContainer.shipInfo}>
                     <Box sx={style.supplyContainer.shipInfo.shipment}>
                         <Box sx={style.supplyContainer.shipInfo.shipment.shipmentType}>
-                            <SiNow
-                                style={{
-                                    color: "#fc0303",
-                                    fontSize: "xx-large",
-                                    marginRight: "7px"
-                                }}
-                            />
-                            <Box>Giao siêu tốc 2h</Box>
+                            <Box>{shipment && shipment.description}</Box>
                         </Box>
-                        <Box>25.000 vnd</Box>
+                        <Box>{formatCurrency(total)}</Box>
                     </Box>
-                    <Box sx={style.supplyContainer.shipInfo.shipper} >
+                    {shipment && <Box sx={style.supplyContainer.shipInfo.shipper} >
                         <FaShippingFast
                             style={{
                                 fontSize: "x-large",
                                 marginRight: "5px"
                             }} />
-                        <Box sx={style.supplyContainer.shipInfo.shipper.text} >Được giao bởi TIKINOW SMART Logistics</Box>
-                    </Box>
+                        <Box sx={style.supplyContainer.shipInfo.shipper.text} >Được giao bởi {shipment.shippingUnit}</Box>
+                    </Box>}
                 </Box>
                 <Box sx={style.supplyContainer.supplyBox}>
-                    <Box sx={style.supplyContainer.supplyBox.supplyHolder}>
-                        <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply}>
-                            <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.image}>
-                                <img src='\static\images\avatars\uan.jpg'></img>
-                            </Box>
-                            <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.info} >
-                                <Tooltip title="Chế độ ăn trườnasdasdasdasdasdasdasdasdasdasdaasdasg thọ">
-                                    <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.name}>Chế độ ăn trườnasdasdasdasdasdasdasdasdasdasdaasdasg thọ</Box>
-                                </Tooltip>
-                                <Box>SL : 1</Box>
-                            </Box>
-                        </Box>
-                        <Box>25.000 vnd</Box>
-                    </Box>
-                    <Box sx={style.supplyContainer.supplyBox.supplyHolder}>
-                        <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply}>
-                            <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.image}>
-                                <img src='\static\images\avatars\uan.jpg'></img>
-                            </Box>
-                            <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.info} >
-                                <Tooltip title="Chế độ ăn trườnasdasdasdasdasdasdasdasdasdasdaasdasg thọ">
-                                    <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.name}>Chế độ ăn trườnasdasdasdasdasdasdasdasdasdasdaasdasg thọ</Box>
-                                </Tooltip>
-                                <Box>SL : 1</Box>
-                            </Box>
-                        </Box>
-                        <Box>25.000 vnd</Box>
-                    </Box>
-                    <Box sx={style.supplyContainer.supplyBox.supplyHolder}>
-                        <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply}>
-                            <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.image}>
-                                <img src='\static\images\avatars\uan.jpg'></img>
-                            </Box>
-                            <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.info} >
-                                <Tooltip title="Chế độ ăn trườnasdasdasdasdasdasdasdasdasdasdaasdasg thọ">
-                                    <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.name}>Chế độ ăn trườnasdasdasdasdasdasdasdasdasdasdaasdasg thọ</Box>
-                                </Tooltip>
-                                <Box>SL : 1</Box>
-                            </Box>
-                        </Box>
-                        <Box>25.000 vnd</Box>
-                    </Box>
+                    {cartItems.map(item => (
+                        <CheckoutItemsDetails item={item} key={item.id} />
+                    ))}
                 </Box>
-            </Box>
-            <Box sx={style.voucher}>
-                <Box>Shop khuyến mãi</Box>
-                <Box sx={style.voucher.chooseVoucher} >Nhập hoặc chọn mã <IoIosArrowForward /></Box>
             </Box>
             <Typography fontWeight={500} >Chọn hình thức thanh toán</Typography>
             <RadioGroup defaultValue="save" >
                 <Box sx={style.paymentType}>
-                    <Box sx={style.paymentType.payment}>
-                        <Radio size='small' value="fast" />
-                        <Box sx={style.paymentType.payment.name} >
-                            <MdOutlinePayments
-                                style={{
-                                    color: "#009800",
-                                    fontSize: "x-large",
-                                    marginRight: "7px"
-                                }}
-                            />
-                            Thanh toán khi nhận hàng
-                        </Box>
-                    </Box>
-                    <Box sx={style.paymentType.payment}>
-                        <Radio size='small' value="save" />
-                        <Box sx={style.paymentType.payment.name} >
-                            <MdPayment
-                                style={{
-                                    color: "#000000",
-                                    fontSize: "x-large",
-                                    marginRight: "7px"
-                                }}
-                            />
-                            Thanh toán qua thẻ ngân hàng
-                        </Box>
-                    </Box>
+                    {
+                        paymentType.map(item => (
+                            <Box sx={style.paymentType.payment}>
+                                <Radio size='small' value={item.id} checked={payment!==null?item.id===payment.id:false} onClick={() => handleSetPayment(item)} />
+                                <Box sx={style.paymentType.payment.name} >
+                                    {item.name.includes("VNPay") ? (<MdPayment
+                                        style={{
+                                            color: "#000000",
+                                            fontSize: "x-large",
+                                            marginRight: "7px"
+                                        }}
+                                    />) : (<MdOutlinePayments
+                                        style={{
+                                            color: "#009800",
+                                            fontSize: "x-large",
+                                            marginRight: "7px"
+                                        }}
+                                    />)}
+                                    {item.description}
+                                </Box>
+                            </Box>
+
+                        ))
+                    }
                 </Box>
             </RadioGroup>
         </Box>
@@ -169,7 +140,7 @@ const style = {
         shipment: {
             display: "flex",
             alignItems: "center",
-            mb:1,
+            mb: 1,
             name: {
                 display: "flex",
                 alignItems: "center"
@@ -280,7 +251,7 @@ const style = {
         payment: {
             display: "flex",
             alignItems: "center",
-            mb:1,
+            mb: 1,
             name: {
                 display: "flex",
                 alignItems: "center"
