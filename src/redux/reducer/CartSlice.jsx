@@ -45,60 +45,56 @@ const cartSlice = createSlice({
         builder
             .addCase(fetchCartItem.fulfilled, (state, action) => {
                 const cartItems = action.payload
+                
                 state.cartItems = cartItems.map(item => {
                     let tmpStructure = {
                         cartItemId: item.id,
-                        itemDetailsId: item.itemDetail.id,
                         quantity: item.quantity,
-                        totalPrice: item.price,
-                        name: item.itemDto.name,
-                        categoryId: item.itemDto.categoryDto.id,
-                        image: item.itemDto.images[0].path,
-                        price: item.itemDetail.price,
-                        details: item.itemDetail,
-                        itemId: item.itemDto.id
+                        totalPrice: item.totalPrice,
+                        name: item.productName,
+                        image: item.images[0].path,
+                        price: item.productItemDetail.at(-1).price,
+                        details: item.productItemDetail,
+                        itemId: item.productItemDetail.at(-1).productItemId
                     }
                     return tmpStructure
                 })
             })
             .addCase(addItemToCart.fulfilled, (state, action) => {
-
-                const cartItem = {
-                    cartItemId: action.payload.itemInfo.id,
-                    itemDetailsId: action.payload.itemInfo.itemDetail.id,
-                    quantity: action.payload.itemInfo.quantity,
-                    totalPrice: action.payload.itemInfo.price,
-                    name: action.payload.itemInfo.itemDto.name,
-                    categoryID: action.payload.itemInfo.itemDto.categoryDto.id,
-                    image: action.payload.itemInfo.itemDto.images[0].path,
-                    price: action.payload.itemInfo.itemDetail.price,
-                    details: action.payload.itemInfo.itemDetail,
-                    itemId: action.payload.itemInfo.itemDto.id
+                const item = action.payload.itemInfo
+                console.log(item)
+                let cartItem = {
+                    cartItemId: item.id,
+                    quantity: item.quantity,
+                    totalPrice: item.totalPrice,
+                    name: item.productName,
+                    image: item.images[0].path,
+                    price: item.productItemDetail.at(-1).price,
+                    details: item.productItemDetail,
+                    itemId: item.productItemDetail.at(-1).productItemId
                 }
                 const cartItems = current(state.cartItems)
-                const index =cartItems.find(item => item.itemDetailsId === cartItem.itemDetailsId)
+                const index =cartItems.find(item => item.itemId === cartItem.itemId)
                 if (!index) state.cartItems.push(cartItem)
                 else {
                     state.cartItems = cartItems.map(item => {
-                        if (item.cartItemId === cartItem.cartItemId) return cartItem
+                        if (item.itemId === cartItem.itemId) return cartItem
                         return item
                     })
                 }
                 state.alert = action.payload.alert
             })
             .addCase(updateCartItem.fulfilled, (state, action) => {
-
-                const cartItem = {
-                    cartItemId: action.payload.itemInfo.id,
-                    itemDetailsId: action.payload.itemInfo.itemDetail.id,
-                    quantity: action.payload.itemInfo.quantity,
-                    totalPrice: action.payload.itemInfo.price,
-                    name: action.payload.itemInfo.itemDto.name,
-                    categoryID: action.payload.itemInfo.itemDto.categoryDto.id,
-                    image: action.payload.itemInfo.itemDto.images[0].path,
-                    price: action.payload.itemInfo.itemDetail.price,
-                    details: action.payload.itemInfo.itemDetail,
-                    itemId: action.payload.itemInfo.itemDto.id
+                const item = action.payload.itemInfo
+                let cartItem = {
+                    cartItemId: item.id,
+                    quantity: item.quantity,
+                    totalPrice: item.totalPrice,
+                    name: item.productName,
+                    image: item.images[0].path,
+                    price: item.productItemDetail.at(-1).price,
+                    details: item.productItemDetail,
+                    itemId: item.productItemDetail.at(-1).productItemId
                 }
                 state.cartItems= state.cartItems.map(item => {
                     if (item.cartItemId === cartItem.cartItemId) return cartItem
@@ -120,7 +116,7 @@ export const fetchCartItem = createAsyncThunk("cart/fetchCartItem", async () => 
             Authorization: `Bearer ${token}`,
         }
     }
-    const res = await fetch(`${IP}/customer/api/carts`, options)
+    const res = await fetch(`${IP}/api/carts`, options)
     const data = await res.json()
     return data
 })
@@ -141,7 +137,7 @@ export const addItemToCart = createAsyncThunk("cart/addItemToCart", async (cartI
             code: data.code,
             message: data.message
         },
-        itemInfo: data.item
+        itemInfo: data.cartItem
     }
 })
 export const updateCartItem = createAsyncThunk("cart/updateCartItem", async (cartItem) => {

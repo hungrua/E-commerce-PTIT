@@ -24,7 +24,9 @@ const PaymentSuccess = () => {
             itemOrders: orderItemList
         }
         if(!status) dispatch(createOrder({orderParams:orderParams,orderBody:orderBody}))
-        
+        return ()=>{
+            sessionStorage.clear()
+        }
     }, [])
     useEffect(()=>{
         if(orderStatus){

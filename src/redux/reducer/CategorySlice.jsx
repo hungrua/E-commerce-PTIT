@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { IP } from "../../config/const";
 const getUser = () => {
   const user = JSON.parse(localStorage.getItem("authorization"))
@@ -8,17 +8,38 @@ const categorySlice = createSlice({
   name: "category",
   initialState: {
     categories: [],
+    variations: [],
     currentSetCategory: {
       id: "",
       name: "",
       description: "",
       totalItem: 0
+    },
+    currentSetVariation: {
+      id: null,
+      name: "",
+      nameVie: "",
     }
   },
   reducers: {
     resetAlert: (state, action) => {
       state.alert = action.payload
     },
+    getVariationById: (state, action) => {
+      if (action.payload.id === null) {
+        state.currentSetVariation = {
+          id: null,
+          name: "",
+          nameVie: "",
+        }
+        return
+      }
+      const categories = current(state.categories)
+      const category = categories.find((item) => item.id === action.payload.category)
+      // state.currentSetVariation =
+      const variation = category.variations.find((item) => item.id === action.payload.id)
+      state.currentSetVariation = variation
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -45,7 +66,73 @@ const categorySlice = createSlice({
         state.categories = state.categories.filter(
           (category) => category.id !== action.payload.id
         );
-      });
+      })
+      .addCase(getVariationByCategory.fulfilled, (state, action) => {
+        const data = action.payload
+        let variationsObjArr = []
+        variationsObjArr = data.map((item)=>{
+            return {
+                id: item.id,
+                variationOptionValue:""
+            }
+        })
+        state.variations = data
+      })
+      .addCase(addVariation.fulfilled, (state, action) => {
+        const data = action.payload
+        state.alert = data.alert
+        let categoriesList = current(state.categories)
+        categoriesList = categoriesList.map((category) => {
+          if (category.id === data.categoryId) {
+            if (category.variations === null) {
+              let tmpArray = []
+              tmpArray.push(data.variation)
+              category = { ...category, variations: tmpArray }
+            }
+            else {
+              let tmpArray = [...category.variations]
+              tmpArray.push(data.variation)
+              category = { ...category, variations: tmpArray }
+            }
+            return category
+          }
+          return category
+        })
+        state.categories = categoriesList
+      })
+      .addCase(editVariation.fulfilled, (state, action) => {
+        const data = action.payload
+        state.alert = data.alert
+        let categoriesList = current(state.categories)
+        categoriesList = categoriesList.map((category) => {
+          if (category.id === data.categoryId) {
+            let tmpArray = [...category.variations]
+            tmpArray = tmpArray.map((item) => {
+              if (item.id === data.variation.id) return data.variation
+              return item
+            })
+            category = { ...category, variations: tmpArray }
+            return category
+          }
+          return category
+        })
+        state.categories = categoriesList
+      })
+      .addCase(removeVariation.fulfilled, (state, action) => {
+        const data = action.payload
+        state.alert = data.alert
+        let categoriesList = current(state.categories)
+        let tmpCategoriesList = categoriesList.map((category) => {
+          if (category.id === data.categoryId) {
+            let tmpArr = [...category.variations]
+            tmpArr = tmpArr.filter((item) => item.id !== data.variationId)
+            category = { ...category, variations: tmpArr }
+            return category
+          }
+          return category
+        })
+        state.categories = tmpCategoriesList
+      })
   },
 });
 
@@ -59,7 +146,6 @@ export const fetchCategory = createAsyncThunk(
       },
     });
     const data = await res.json();
-    console.log(data)
     return data;
   }
 );
@@ -123,7 +209,6 @@ export const deleteCategory = createAsyncThunk(
   "user/deleteCategory",
   async (id) => {
     const token = getUser().token
-    console.log(id);
     const options = {
       method: "DELETE",
       headers: {
@@ -138,4 +223,89 @@ export const deleteCategory = createAsyncThunk(
     };
   }
 );
+export const getVariationByCategory = createAsyncThunk(
+  "category/getVariationByCategory",
+  async (category) => {
+    if(category===null) return []
+    const token = getUser().token
+    const res = await fetch(IP + `/admin/api/variations?categoryId=${category}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await res.json();
+    return data;
+  }
+)
+export const addVariation = createAsyncThunk(
+  "category/addVariation",
+  async (newVariation) => {
+    const token = getUser().token
+    const options = {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newVariation.variation),
+    };
+    const res = await fetch(IP + `/admin/api/variation?categoryId=${newVariation.categoryId}`, options);
+    const data = await res.json();
+    return {
+      alert: {
+        code: data.code,
+        message: data.message
+      },
+      variation: data.variation,
+      categoryId: newVariation.categoryId
+    };
+  }
+)
+export const editVariation = createAsyncThunk(
+  "category/editVariation",
+  async (newVariation) => {
+    const token = getUser().token
+    const options = {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newVariation.variation),
+    };
+    const res = await fetch(IP + `/admin/api/variation?categoryId=${newVariation.categoryId}`, options);
+    const data = await res.json();
+    return {
+      alert: {
+        code: data.code,
+        message: data.message
+      },
+      variation: data.variation,
+      categoryId: newVariation.categoryId
+    };
+  }
+)
+export const removeVariation = createAsyncThunk(
+  "category/removeVariation",
+  async ({ variationId, category }) => {
+    const token = getUser().token
+    const options = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      }
+    };
+    const res = await fetch(IP + `/admin/api/variation?variationId=${variationId}`, options);
+    const data = await res.json();
+    return {
+      alert: {
+        code: data.code,
+        message: data.message
+      },
+      variationId: variationId,
+      categoryId: category
+    };
+  }
+)
 export default categorySlice;

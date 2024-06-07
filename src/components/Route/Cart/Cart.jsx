@@ -9,7 +9,8 @@ import CartBill from "./CartBill";
 import { useDispatch, useSelector } from "react-redux";
 import voucherSlice, { fetchUserVoucher } from "../../../redux/reducer/VoucherSlice";
 import { getOwnInformation } from "../../../redux/reducer/UserSlice";
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const Cart = () => {
     const dispatch = useDispatch()
     const cartItem = useSelector(state => state.cart.cartItems)
@@ -58,7 +59,7 @@ const Cart = () => {
                     <ViewedProduct quantity={4} />
                 </div>
             </div>
-
+            <ToastContainer></ToastContainer>     
         </div>
     )
 

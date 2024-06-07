@@ -6,102 +6,68 @@ import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import NotesOutlinedIcon from '@mui/icons-material/NotesOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-import CameraRearOutlinedIcon from '@mui/icons-material/CameraRearOutlined';
 import WarehouseOutlinedIcon from '@mui/icons-material/WarehouseOutlined';
-import SimCardOutlinedIcon from '@mui/icons-material/SimCardOutlined';
-import MemoryIcon from '@mui/icons-material/Memory';
-import GraphicEqIcon from '@mui/icons-material/GraphicEq';
-import AutofpsSelectIcon from '@mui/icons-material/AutofpsSelect';
-import WysiwygIcon from '@mui/icons-material/Wysiwyg';
-import CameraFrontOutlinedIcon from '@mui/icons-material/CameraFrontOutlined';
-import UsbIcon from '@mui/icons-material/Usb';
-import StorageOutlinedIcon from '@mui/icons-material/StorageOutlined';
-import ScaleOutlinedIcon from '@mui/icons-material/ScaleOutlined';
-import BatteryChargingFullOutlinedIcon from '@mui/icons-material/BatteryChargingFullOutlined';
-import SensorsOutlinedIcon from '@mui/icons-material/SensorsOutlined';
-import SmartButtonOutlinedIcon from '@mui/icons-material/SmartButtonOutlined';
 import DragDropImage from '../DragDropImage';
 import { useDispatch, useSelector } from 'react-redux';
-import { addProduct, editProduct, fetchBrand, getProdcutById, getProductById } from '../../../redux/reducer/ProductSlice';
-import { fetchCategory } from '../../../redux/reducer/CategorySlice';
+import { addProduct, editProduct, fetchBrand, getProdcutById, getProductById, getVariationByCategory } from '../../../redux/reducer/ProductSlice';
+import { Variations } from './Variations';
 
 const AddProduct = ({ setDisplayAddProduct }) => {
     const dispatch = useDispatch()
-    const [currentSetProduct, setCurrentSetProduct] = useState({})
+    const [currentSetProduct, setCurrentSetProduct] = useState(null)
     const [category, setCategory] = useState(1)
-    const [vendor,setVendor] = useState("")
     const [brand, setBrand] = useState(1)
-    const [frequencyScreen, setFrequencyScreen] = useState("60 Hz");
     const [addImages, setAddImages] = useState([])
-
     const imgProductUrl = '/static/images/product/'
     const categories = useSelector((state) => state.category.categories)
-    const brands = useSelector((state) => state.product.brand)
     const currentProduct = useSelector((state) => state.product.currentSetProduct)
-    const supplier = useSelector((state)=> state.supplier.suppliers)
+    const variations = useSelector((state) => state.product.variations)
+    const variationsObjArr = useSelector((state) => state.product.variationsObjArr)
+    const [productName, setProductName] = useState("")
+    const [description,setDesciption] = useState("")
     useEffect(() => {
-        dispatch(fetchCategory())
-        dispatch(fetchBrand())
-        setCurrentSetProduct(currentProduct)
-        setCategory(currentProduct.categoryDto.id)
-        if (currentProduct) setFrequencyScreen(currentProduct.frequencyScreen)
-        setAddImages(currentProduct.images)
+        if (currentProduct !== undefined) {
+            dispatch(fetchBrand)
+            setCurrentSetProduct(currentProduct)
+            setCategory(currentProduct.category.id)
+            if (currentProduct.brand) setBrand(currentProduct.brand.id)
+            setProductName(currentProduct.name)
+            setDesciption(currentProduct.description)
+            currentProduct.productId !== -1 ? setAddImages(currentProduct.images) : setAddImages(currentProduct.product.images)
+        }
     }, [dispatch, currentProduct])
-
+    const brands = useSelector((state) => state.product.brand)
+    useEffect(() => {
+        dispatch(fetchBrand())
+    }, [])
+    useEffect(() => {
+        dispatch(getVariationByCategory(category))
+    }, [category])
     const handleCloseAddProduct = () => {
         setDisplayAddProduct(false)
         dispatch(getProductById(-1))
     }
-    
     const handleChangeCategory = (e) => {
-        console.log(1)
         setCategory(e.target.value)
-        setCurrentSetProduct((prev) => {
-            return {
-                ...prev,
-                "cpu": "",
-                "card": "",
-                "frequencyScreen": "",
-                "os": "",
-                "usbNumber": "",
-                "typeDisk": "",
-                "weight": "",
-                "batteryCapacity": "",
-                "frontCamera": "",
-                "rearCamera": "",
-                "simNumber": "",
-                "connectType": "",
-                "specialProperties": "",
-            }
-        })
     }
     const handleChangeBrand = (e) => {
-        console.log(1)
         setBrand(e.target.value)
         handleOnChangeProperties("brand", e.target.value)
-    }
-    const handleChangeVendor = (e) => {
-        console.log(1)
-        setVendor(e.target.value)
-        handleOnChangeProperties("vendor", e.target.value)
-    }
-    const handleChangeFrequencyScreen = (e) => {
-        console.log(1)
-        setFrequencyScreen(e.target.value)
-        handleOnChangeProperties("frequencyScreen", e.target.value)
     }
     const handleOnChangeProperties = (field, value) => {
         setCurrentSetProduct((prev) => ({
             ...prev,
-            [field]: value,
+            product: {
+                ...prev.product,
+                [field]: value
+            }
         }));
-        console.log(1)
     };
-
     const handleImageData = (categoryId) => {
         let category = categoryId == 1 ? "laptop/" : categoryId == 2 ? "dienthoai/" : "phukien/"
         let prePath = imgProductUrl + category
         let productImages = []
+
         addImages.map((img) => {
             if (img.id === undefined) productImages.push({
                 "id": null,
@@ -114,20 +80,38 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                 })
             }
         })
-        // console.log(productImages)
         return productImages
     }
 
 
     const handleSaveProduct = () => {
         let product = currentSetProduct
-        let newProduct = {
-            ...product,
-            images: handleImageData(category)
+        let newProduct ={}
+        if (currentSetProduct.productId === -1) {
+            newProduct = {
+                category: {
+                    id: category,
+                    variations: variationsObjArr
+                },
+                product: {
+                    ...product.product,
+                    name: productName,
+                    images: handleImageData(category),
+                    description:description
+                }
+            }
         }
-        console.log(newProduct)
-        if (currentSetProduct.id == -1 || currentSetProduct.id == null) dispatch(addProduct({ newProduct, category, brand }))
-        else dispatch(editProduct({ newProduct, category, brand }))
+        else {
+            newProduct={
+             ...product,
+             name:productName,
+             images: handleImageData(category),
+             description: description,
+             id:currentSetProduct.productId
+            }
+        }
+        if (currentSetProduct.productId === -1) dispatch(addProduct({ newProduct: newProduct, brandId: brand }))
+        else dispatch(editProduct({newProduct,brand}))
         handleCloseAddProduct()
     }
     return (
@@ -150,7 +134,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                         <ImageOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                         <Box>Ảnh sản phẩm</Box>
                                     </FormLabel>
-                                    <DragDropImage setAddImages={setAddImages} initImages={currentSetProduct.images} />
+                                    <DragDropImage setAddImages={setAddImages} initImages={currentSetProduct === null ? [] : currentSetProduct.images} />
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
@@ -162,39 +146,16 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                         <Box>Tên sản phẩm</Box>
                                     </FormLabel>
                                     <TextField fullWidth={true} variant='outlined'
-                                        value={currentSetProduct.name}
+                                        value={productName}
                                         onChange={(e) => {
-                                            handleOnChangeProperties("name", e.target.value)
+                                            setProductName(e.target.value)
                                         }}
                                     />
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
-                            {/* Nhà cung cấp*/}
-                            <Grid item xs={12} sm={12} md={4} sx={style.inputContainer}>
-                                <FormControl fullWidth={true} >
-                                    <FormLabel sx={style.formLabel}>
-                                        <WarehouseOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                        <Box>Nhà cung cấp</Box>
-                                    </FormLabel>
-                                    <Select
-                                        sx={style.select}
-                                        value={vendor}
-                                        disabled={currentSetProduct.id !== -1}
-                                        onChange={handleChangeVendor}
-                                    >
-                                        {
-                                            supplier.map((supplier) => {
-                                                return <MenuItem key={supplier.id} value={supplier.id} >{supplier.name}</MenuItem>
-
-                                            })
-                                        }
-                                    </Select>
-                                    <FormHelperText></FormHelperText>
-                                </FormControl>
-                            </Grid>
                             {/* Danh mục sản phẩm  */}
-                            <Grid item xs={12} sm={12} md={4} sx={style.inputContainer} >
+                            <Grid item xs={12} sm={12} md={6} sx={style.inputContainer} >
                                 <FormControl fullWidth={true}>
                                     <FormLabel sx={style.formLabel} >
                                         <CategoryOutlinedIcon sx={style.formLabel.formLabelIcon} />
@@ -203,7 +164,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <Select
                                         sx={style.select}
                                         value={category}
-                                        disabled={currentSetProduct.id !== -1}
+                                        disabled={currentSetProduct && currentSetProduct.productId !== -1}
                                         onChange={handleChangeCategory}
                                     >
                                         {
@@ -217,7 +178,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                 </FormControl>
                             </Grid>
                             {/* Hãng sản xuất */}
-                            <Grid item xs={12} sm={12} md={4} sx={style.inputContainer} >
+                            <Grid item xs={12} sm={12} md={6} sx={style.inputContainer} >
                                 <FormControl fullWidth={true}>
                                     <FormLabel sx={style.formLabel} >
                                         <WarehouseOutlinedIcon sx={style.formLabel.formLabelIcon} />
@@ -225,7 +186,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     </FormLabel>
                                     <Select
                                         sx={style.select}
-                                        disabled={currentSetProduct.id !== -1}
+                                        disabled={currentSetProduct && currentSetProduct.productId !== -1}
                                         value={brand}
                                         onChange={handleChangeBrand}
                                     >
@@ -238,297 +199,9 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
-
-                            {/* Thuộc tính của laptop */}
-                            {category === 1 &&
-                                <React.Fragment>
-                                    {/* CPU  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <MemoryIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>CPU</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.cpu}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("cpu", e.target.value)
-                                                }} />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Card */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-
-                                                <GraphicEqIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Card</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.card}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("card", e.target.value)
-                                                }} />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Tần số quét */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
-                                        <FormControl fullWidth={true}>
-                                            <FormLabel sx={style.formLabel} >
-                                                <AutofpsSelectIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Tần số quét</Box>
-                                            </FormLabel>
-                                            <Select
-                                                sx={style.select}
-                                                value={frequencyScreen}
-                                                onChange={(e) => {
-                                                    handleChangeFrequencyScreen(e)
-                                                }}
-                                            >
-                                                <MenuItem value='60 Hz' >60 Hz</MenuItem>
-                                                <MenuItem value='120 Hz' >120 Hz</MenuItem>
-                                                <MenuItem value='144 Hz' >144 Hz</MenuItem>
-                                            </Select>
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Hệ điều hành */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
-                                        <FormControl fullWidth={true}>
-                                            <FormLabel sx={style.formLabel} >
-                                                <WysiwygIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Hệ điều hành</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.os}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("os", e.target.value)
-                                                }} />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Số cổng USB  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <UsbIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Cổng USB</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.usbNumber}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("usbNumber", e.target.value)
-                                                }} />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Loại ổ cứng  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
-                                        <FormControl fullWidth={true}>
-                                            <FormLabel sx={style.formLabel} >
-                                                <StorageOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Ổ cứng</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.typeDisk}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("typeDisk", e.target.value)
-                                                }}
-                                            />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Khối lượng  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <ScaleOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Khối lượng (kg)</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.weight}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("weight", e.target.value)
-                                                }}
-                                            />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Dung lượng pin */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <BatteryChargingFullOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Dung lượng pin (mAh)</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.batteryCapacity}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("batteryCapacity", e.target.value)
-                                                }}
-                                            />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                </React.Fragment>
-                            }
-                            {/** Thuộc tính của điện thoại */}
-                            {category === 2 &&
-                                <React.Fragment>
-                                    {/* CPU  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <MemoryIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>CPU</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.cpu}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("cpu", e.target.value)
-                                                }} />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Tần số quét */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer} >
-                                        <FormControl fullWidth={true}>
-                                            <FormLabel sx={style.formLabel} >
-                                                <AutofpsSelectIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Tần số quét</Box>
-                                            </FormLabel>
-                                            <Select
-                                                sx={style.select}
-                                                value={frequencyScreen}
-                                                onChange={(e) => {
-                                                    handleChangeFrequencyScreen(e)
-                                                }}
-                                            >
-                                                <MenuItem value='60 Hz' >60 Hz</MenuItem>
-                                                <MenuItem value='120 Hz' >120 Hz</MenuItem>
-                                                <MenuItem value='144 Hz' >144 Hz</MenuItem>
-                                            </Select>
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Số cổng SIM  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <SimCardOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Số SIM</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.simNumber}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("simNumber", e.target.value)
-                                                }} />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Dung lượng pin */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <BatteryChargingFullOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Dung lượng pin (mAh)</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.batteryCapacity}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("batteryCapacity", e.target.value)
-                                                }}
-                                            />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Camera trước */}
-                                    <Grid item xs={12} sm={6} md={6} sx={style.inputContainer} >
-                                        <FormControl fullWidth={true}>
-                                            <FormLabel sx={style.formLabel} >
-                                                <CameraFrontOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Camera trước</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.frontCamera}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("frontCamera", e.target.value)
-                                                }} />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                    {/* Camera sau  */}
-                                    <Grid item xs={12} sm={6} md={6} sx={style.inputContainer} >
-                                        <FormControl fullWidth={true}>
-                                            <FormLabel sx={style.formLabel} >
-                                                <CameraRearOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Camera sau</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.rearCamera}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("rearCamera", e.target.value)
-                                                }}
-                                            />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                </React.Fragment>
-                            }
-                            {/** Thuộc tính của phụ kiện */}
-                            {category === 3 &&
-                                <React.Fragment>
-                                    {/* Loại kết nối  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <SensorsOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Loại kết nối</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.connectType}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("connectType", e.target.value)
-                                                }} />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-
-                                    {/* Khối lượng  */}
-                                    <Grid item xs={12} sm={6} md={3} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <ScaleOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Khối lượng (kg)</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.weight}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("weight", e.target.value)
-                                                }}
-                                            />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-
-                                    {/* Thuộc tính đặc biệt  */}
-                                    <Grid item xs={12} sm={12} md={6} sx={style.inputContainer}>
-                                        <FormControl fullWidth={true} >
-                                            <FormLabel sx={style.formLabel} >
-                                                <SmartButtonOutlinedIcon sx={style.formLabel.formLabelIcon} />
-                                                <Box>Thuộc tính đặc biệt</Box>
-                                            </FormLabel>
-                                            <TextField fullWidth={true} variant='outlined'
-                                                value={currentSetProduct.specialProperties}
-                                                onChange={(e) => {
-                                                    handleOnChangeProperties("specialProperties", e.target.value)
-                                                }} />
-                                            <FormHelperText></FormHelperText>
-                                        </FormControl>
-                                    </Grid>
-                                </React.Fragment>
+                            {/* Các thuộc tính */}
+                            {
+                                (currentSetProduct && currentSetProduct.productId == -1) && <Variations variations={variations} />
                             }
                             <Grid item xs={12} sm={12} md={12} sx={style.inputContainer}>
                                 <FormControl fullWidth={true} >
@@ -536,12 +209,12 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                                         <NotesOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                         <Box>Mô tả sản phẩm</Box>
                                     </FormLabel>
-                                    <TextareaAutosize value={currentSetProduct.description}
+                                    <TextareaAutosize value={description}
                                         style={{ border: "1px solid gray" }}
                                         minRows={10}
                                         maxRows={20}
                                         onChange={(e) => {
-                                            handleOnChangeProperties("description", e.target.value)
+                                            setDesciption(e.target.value)
                                         }}
                                     />
                                     <FormHelperText></FormHelperText>

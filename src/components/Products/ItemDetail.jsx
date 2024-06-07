@@ -6,11 +6,9 @@ const ItemDetail = (props) => {
     const handleChange = () => {
         setSelectItemDetail(itemDetail);
         setSelectImage(Math.floor(Math.random() * 3))
-
-        // console.log('Selected Item Detail:', itemDetail); // Debugging line
     };
 
-    const isSelected = selectItemDetail?.id === itemDetail?.id;
+    const isSelected = selectItemDetail!==null?(selectItemDetail.at(-1)?.productItemId === itemDetail.at(-1)?.productItemId):null;
 
     return (
         <div
@@ -19,24 +17,13 @@ const ItemDetail = (props) => {
         >
             <div className="relative items-center w-full z-3 text-sm">
                 {
-                    itemDetail?.color && <div>
-                        Màu sắc: <span className='font-bold'> {itemDetail.color} </span>
-                    </div>
-                }
-                {
-                    itemDetail?.diskSize && <div>
-                        Dung lượng: <span className='font-bold'> {itemDetail.diskSize} </span>
-                    </div>
-                }
-                {
-                    itemDetail?.ram && <div>
-                        Ram: <span className='font-bold'> {itemDetail.ram} </span>
-                    </div>
-                }
-                {
-                    itemDetail?.screenSize && <div>
-                        Màn hình: <span className='font-bold'> {itemDetail.screenSize} </span>
-                    </div>
+                    itemDetail.map((item) => {
+                        if (item.important === 1) return (
+                            <div>
+                                {item.name}: <span className='font-bold'> {item.value} </span>
+                            </div>
+                        )
+                    })
                 }
             </div>
         </div>

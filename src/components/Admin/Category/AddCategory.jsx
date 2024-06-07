@@ -43,9 +43,9 @@ const AddCategory = ({ setDisplayAddCategory }) => {
       [field]: value,
     }));
   };
-  const handleSaveCategory = ()=>{
+  const handleSaveCategory = () => {
     console.log(currentSetCategory)
-    if(currentSetCategory.id ===null || currentSetCategory.id==="") {
+    if (currentSetCategory.id === null || currentSetCategory.id === "") {
       dispatch(addCategory(currentSetCategory))
     }
     else {
@@ -102,7 +102,7 @@ const AddCategory = ({ setDisplayAddCategory }) => {
         </form>
         <Box style={{ display: "flex", justifyContent: "flex-end" }}>
           <Button variant="contained" color="success"
-           onClick={handleSaveCategory} >
+            onClick={handleSaveCategory} >
             Save
           </Button>
         </Box>

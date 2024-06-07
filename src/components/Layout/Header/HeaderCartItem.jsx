@@ -11,14 +11,13 @@ export const HeaderCartItem = (props) => {
     const dispatch = useDispatch()
     const { itemInfo } = props
     const [quantity, setQuantity] = useState(itemInfo.quantity)
-    const renderName = (name, categoryId) => {
-        if (categoryId === 1) {
-            return `${name} ( ${itemInfo.details.ram} - ${itemInfo.details.diskSize} - ${itemInfo.details.screenSize} )`
-        }
-        else if (categoryId === 2) {
-            return `${name} ( ${itemInfo.details.color} - ${itemInfo.details.ram} - ${itemInfo.details.diskSize} )`
-        }
-        else return `${name} ( ${itemInfo.details.color} )`
+    const renderName = (name) => {
+        let attrString = ""
+        itemInfo.details.map((attr)=>{
+            if(attr.important) attrString+=`- ${attr.value} ` 
+        })
+        attrString= attrString.substring(1,attrString.length)
+        return `${name} ( ${attrString} )`
     }
     const handleChangeQuantity =(value)=>{
         if(quantity<2 && value==1) return
@@ -51,7 +50,7 @@ export const HeaderCartItem = (props) => {
                         to={`/san-pham/${itemInfo.itemId}`}
                         className="no-underline text-[16px]"
                     >
-                        {renderName(itemInfo.name, itemInfo.categoryId)}
+                        {renderName(itemInfo.name)}
                     </Link>
                     <div className="flex mt-auto">
                         <div className="flex gap-[20px] p-[6px] rounded-[30px] border border-solid border-[#eee]">
@@ -77,7 +76,7 @@ export const HeaderCartItem = (props) => {
                     
                     
                     >x</div>
-                    <div className='flex items-end' >{formatCurrency(quantity*itemInfo.details.price)}</div>
+                    <div className='flex items-end' >{formatCurrency(quantity*itemInfo.price)}</div>
                 </div>
             </div>
         </div>

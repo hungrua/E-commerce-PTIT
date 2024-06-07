@@ -5,14 +5,13 @@ import { formatCurrency } from '../../basicFunction'
 export const CheckoutItemsDetails = (props) => {
     const {item}= props
 
-    const renderName = (name, categoryId) => {
-        if (categoryId === 1) {
-            return `${name} ( ${item.details.ram} - ${item.details.diskSize} - ${item.details.screenSize} )`
-        }
-        else if (categoryId === 2) {
-            return `${name} ( ${item.details.color} - ${item.details.ram} - ${item.details.diskSize} )`
-        }
-        return `${name} ( ${item.details.color} )`
+    const renderName = (name) => {
+        let attrString = ""
+        item.details.map((attr)=>{
+            if(attr.important) attrString+=`- ${attr.value} ` 
+        })
+        attrString= attrString.substring(1,attrString.length)
+        return `${name} ( ${attrString} )`
     }
     return (
         <Box sx={style.supplyContainer.supplyBox.supplyHolder}>
@@ -21,8 +20,8 @@ export const CheckoutItemsDetails = (props) => {
                     <img src={item.image}></img>
                 </Box>
                 <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.info} >
-                    <Tooltip title={renderName(item.name,item.categoryId)}>
-                        <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.name}>{renderName(item.name,item.categoryId)}</Box>
+                    <Tooltip title={renderName(item.name)}>
+                        <Box sx={style.supplyContainer.supplyBox.supplyHolder.supply.name}>{renderName(item.name)}</Box>
                     </Tooltip>
                     <Box>SL : {item.quantity}</Box>
                 </Box>

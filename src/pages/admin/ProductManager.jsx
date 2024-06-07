@@ -8,7 +8,7 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import AddProduct from '../../components/Admin/Product/AddProduct';
 import ProductCollapseTable from '../../components/Admin/Product/ProductCollapseTable';
 import { useDispatch, useSelector } from 'react-redux';
-import productSlice, {  getProductById } from '../../redux/reducer/ProductSlice';
+import productSlice, {  fetchBrand, fetchProduct, getProductById, getVariationByCategory } from '../../redux/reducer/ProductSlice';
 import { notify } from '../../components/Admin/notify';
 import { fetchSupplier } from '../../redux/reducer/SupplierSlice';
 const ProductManager = () => {
@@ -19,13 +19,15 @@ const ProductManager = () => {
     if(message!==undefined) notify(message.message,message.code)
 
     return ()=>{
-      dispatch(fetchSupplier())
+      dispatch(fetchBrand())
+      dispatch(fetchProduct())
       dispatch(productSlice.actions.resetAlert(undefined))
     }
   },[message,dispatch])
   const handleOpenAddProduct = () => {
     setDisplayAddProduct(true)
     dispatch(getProductById(-1))
+    dispatch(getVariationByCategory(1))
   }
 
   return (

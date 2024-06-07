@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom';
 import { formatCurrency } from '../../basicFunction';
 import { notify } from '../../Admin/notify';
 import paymentSlice, { getVNPay } from '../../../redux/reducer/PaymentSlice';
+import { createOrder } from '../../../redux/reducer/OrderSlice';
 const CheckoutBill = (props) => {
     const dispatch = useDispatch()
     const cartItem = useSelector(state => state.cart.preOrder)
     const discountVoucher = useSelector(state => state.voucher.usingVoucher)
     const shipment = useSelector(state => state.shipment.choosenShipment)
+    const orderItems = useSelector(state => state.cart.preOrder)
     const [discount, setDiscount] = useState(0)
-    const [shipmentFee,setShipmentFee] = useState(0)
+    const [shipmentFee, setShipmentFee] = useState(0)
     const [total, setTotal] = useState(0)
     useEffect(() => {
         if (cartItem) {
@@ -26,27 +28,41 @@ const CheckoutBill = (props) => {
                 console.log(tmp)
             }
             console.log(1)
-            if(shipment){
+            if (shipment) {
                 setShipmentFee(shipment.price)
             }
         }
-    }, [dispatch, cartItem, discountVoucher,shipment])
+    }, [dispatch, cartItem, discountVoucher, shipment])
     const handlePay = () => {
         const payment = JSON.parse(sessionStorage.getItem("choosenPayment"))
         const shipment = JSON.parse(sessionStorage.getItem("choosenShipment"))
-        if(!payment) {
-            notify("Bạn chưa chọn phương thức thanh toán",2)
+        if (!payment) {
+            notify("Bạn chưa chọn phương thức thanh toán", 2)
             return;
         }
-        if(!shipment) {
-            notify("Bạn chưa chọn phương thức giao hàng",2)
+        if (!shipment) {
+            notify("Bạn chưa chọn phương thức giao hàng", 2)
             return;
         }
-        if(payment.name.includes("VNPay")){
+        if (payment.name.includes("VNPay")) {
             let body = {
-                totalPrice: total - discount +  shipmentFee
+                totalPrice: total - discount + shipmentFee
             }
             dispatch(getVNPay(body))
+        }
+        else {
+            let body = {
+                totalPrice: total - discount + shipmentFee,
+                address: sessionStorage.getItem("receiveAddress") ,
+                itemOrders : orderItems.map((item)=> item.cartItemId) 
+            }
+            console.log(body)
+            const orderParams = {
+                payment: 1,
+                shipment: shipment.id,
+                voucher: JSON.parse(sessionStorage.getItem("usingVoucher")) ? JSON.parse(sessionStorage.getItem("usingVoucher")).userVoucherId : null
+            }
+            dispatch(createOrder({ orderParams: orderParams, orderBody: body }))
         }
     }
     return (
@@ -93,7 +109,7 @@ const CheckoutBill = (props) => {
                         Tổng tiền
                     </div>
                     <div className="font-medium text-2xl text-[rgb(254_56_52)]">
-                        {formatCurrency(total - discount +shipmentFee)}
+                        {formatCurrency(total - discount + shipmentFee)}
                     </div>
                 </div>
                 <div className="text-right text-sm text-[rgb(120_120_120)]">

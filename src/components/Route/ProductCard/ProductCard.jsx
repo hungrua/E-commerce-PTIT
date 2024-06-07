@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaStar,FaStarHalfAlt } from "react-icons/fa";
 import { FaCartPlus } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { getProductById } from "../../../redux/reducer/ProductSlice";
 
 const ProductCard = ({ details }) => {
     const [productInfo, setProductInfo] = useState(details)
+    const dispatch = useDispatch()
     useEffect(() => {
         let priceArray = details.itemDetails.map(item => {
-            return item.price
+            return item.at(-1).price
         })
 
         let productDetail = {
@@ -16,7 +19,7 @@ const ProductCard = ({ details }) => {
             minPrice: formatCurrency(Math.min(...priceArray)),
             maxPrice: formatCurrency(Math.max(...priceArray)),
             rating: details.rating,
-            numberRating : details.numberRating
+            numberRating : details.number_rating
         }
         setProductInfo(productDetail)
     }, [])
@@ -37,7 +40,7 @@ const ProductCard = ({ details }) => {
     }
     return (
         <div className="relative group bg-white rounded-[10px] shadow-[0px_2px_10px_#00000014] transition-all duration-300 ease-in-out hover:translate-y-[-5px] hover:shadow-[0px_8px_16px_#0000002f]">
-            <Link to={`/san-pham/${details.id}`}>
+            <Link onClick={()=>dispatch(getProductById(details.productId))} to={`/san-pham/${details.productId}`}>
                 <div className="relative">
                     <div className="p-2.5">
                         <img src={productInfo.img} 

@@ -56,6 +56,7 @@ const Header = () => {
   }
   const handleLogout = () => {
     localStorage.removeItem("authorization")
+    sessionStorage.clear()
 
     window.location.href = "/login"
   }

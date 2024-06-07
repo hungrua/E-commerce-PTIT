@@ -4,13 +4,12 @@ import CollapseRow from './CollapseRow'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProduct } from '../../../redux/reducer/ProductSlice'
 
-const ProductCollapseTable = ({setDisplayAddProduct}) => {
+const CategoryCollapseTable = ({setDisplayAddCategory}) => {
     const dispatch = useDispatch()
-    var products = useSelector((state)=> state.product.products)
-    useEffect(()=>{
-        dispatch(fetchProduct({brandId:"",categoryId:"",key:""}))
+    const categories = useSelector((state)=> state.category.categories)
+    // useEffect(()=>{
         
-    },[])
+    // },[])
     return (
         <Box mt={4}>
             <TableContainer component={Paper}>
@@ -19,15 +18,16 @@ const ProductCollapseTable = ({setDisplayAddProduct}) => {
                         <TableRow>
                             <TableCell />
                             <TableCell align='center'>Id</TableCell>
-                            <TableCell align='center'>Tên sản phẩm</TableCell>
-                            <TableCell align='center'>Danh mục</TableCell>
+                            <TableCell align='center'>Tên danh mục</TableCell>
+                            <TableCell align='center'>Mã danh mục</TableCell>
+                            <TableCell align='center'>Mô tả</TableCell>
                             <TableCell align='center'>Tác vụ</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
-                            products.map((row) => (
-                                <CollapseRow key={row.productId} row={row} productId={row.productId} category={row.category.id} itemDetails={row.itemDetails} setDisplayAddProduct={setDisplayAddProduct} />
+                            categories.map((row) => (
+                                <CollapseRow key={row.id} row={row} category={row.id} variations={row.variations}  setDisplayAddCategory={setDisplayAddCategory} />
                             ))
                         }
                     </TableBody>
@@ -37,4 +37,4 @@ const ProductCollapseTable = ({setDisplayAddProduct}) => {
     )
 }
 
-export default ProductCollapseTable
+export default CategoryCollapseTable

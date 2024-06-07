@@ -7,14 +7,15 @@ const getUser = () => {
 const orderSlice = createSlice({
   name: "order",
   initialState: {
-    orders : []
+    orders: []
   },
   reducers: {
   },
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.fulfilled, (state, action) => {
-        state.orderStatus = action.payload
+        state.orderStatus = action.payload.data
+        console.log(action.payload.data)
       })
       .addCase(fetchOrderOfUser.fulfilled, (state, action) => {
         state.orders = action.payload
@@ -29,7 +30,7 @@ export const createOrder = createAsyncThunk(
     orderBody = { ...orderBody, totalPrice: orderParams.vnp_Amount }
     console.log(orderParams.voucher)
     const token = getUser().token
-    const res = await fetch(`${IP}/api/order?vnp_BankTranNo=${orderParams.payment === 1 ? `shipcode` : orderParams.vnp_BankTranNo}&vnp_OrderInfo=${orderParams.vnp_OrderInfo}&vnp_ResponseCode=${orderParams.vnp_ResponseCode}&vnp_TransactionStatus=${orderParams.vnp_TransactionStatus}&shipmentId=${parseInt(orderParams.shipment)}&paymentId=${orderParams.payment}&voucherId=${orderParams.voucher??""}`, {
+    const res = await fetch(`${IP}/api/order?vnp_BankTranNo=${orderParams.payment === 1 ? `shipcode` : orderParams.vnp_BankTranNo}&vnp_OrderInfo=${orderParams.vnp_OrderInfo ?? ""}&vnp_ResponseCode=${orderParams.vnp_ResponseCode ?? ""}&vnp_TransactionStatus=${orderParams.vnp_TransactionStatus ?? ""}&shipmentId=${parseInt(orderParams.shipment)}&paymentId=${orderParams.payment}&voucherId=${orderParams.voucher ?? ""}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -38,9 +39,13 @@ export const createOrder = createAsyncThunk(
       body: JSON.stringify(orderBody)
     });
     const data = await res.json();
-    return data;
+    return {
+      paymentId: orderParams.payment,
+      data: data
+    };
   }
 );
+
 export const fetchOrderOfUser = createAsyncThunk(
   "order/fetchOrderOfUser",
   async () => {

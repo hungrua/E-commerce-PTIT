@@ -16,14 +16,13 @@ const CartItem = (props) => {
     const [checked, setChecked] = useState(() => {
         return preOrder.find(item => item.cartItemId === itemInfo.cartItemId)?true:false
     })
-    const renderName = (name, categoryId) => {
-        if (categoryId === 1) {
-            return `${name} ( ${itemInfo.details.ram} - ${itemInfo.details.diskSize} - ${itemInfo.details.screenSize} )`
-        }
-        else if (categoryId === 2) {
-            return `${name} ( ${itemInfo.details.color} - ${itemInfo.details.ram} - ${itemInfo.details.diskSize} )`
-        }
-        return `${name} ( ${itemInfo.details.color} )`
+    const renderName = (name) => {
+        let attrString = ""
+        itemInfo.details.map((attr)=>{
+            if(attr.important) attrString+=`- ${attr.value} ` 
+        })
+        attrString= attrString.substring(1,attrString.length)
+        return `${name} ( ${attrString} )`
     }
     const handleChangeQuantity = (value) => {
         if (quantity < 2 && value == 1) return
@@ -59,7 +58,7 @@ const CartItem = (props) => {
                         Chính hãng
                     </div>
                     <Link to={`/san-pham/${itemInfo.itemId}`} className="line-clamp-2">
-                        {renderName(itemInfo.name, itemInfo.categoryId)}
+                        {renderName(itemInfo.name)}
                     </Link>
                     {/* <div className="flex items-center gap-x-1">
                         <FaTruckFast />
@@ -78,7 +77,7 @@ const CartItem = (props) => {
                     onClick={() => handleChangeQuantity(-1)}
                 >+</button>
             </div>
-            <div className="font-bold text-[rgb(254_56-52)]">{formatCurrency(quantity * itemInfo.details.price)}</div>
+            <div className="font-bold text-[rgb(254_56-52)]">{formatCurrency(quantity * itemInfo.price)}</div>
             <button
                 onClick={() => handleRemoveCartItem()}
             >

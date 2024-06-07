@@ -17,9 +17,18 @@ const CollapseRow = (props) => {
     const [openConfirmProduct, setOpenConfirmProduct] = useState(false)
     const [deleteProductDetailId, setDeleteProductDetailId] = useState(0)
     const [openConfirmProductDetail, setOpenConfirmProductDetail] = useState(false)
+    const [details,setDetails] = useState([])
     const handleOpenEditProductScreen = (id) => {
         dispatch(getProductById(id))
         setDisplayAddProduct(true)
+    }
+    const getImportantRow = () => {
+        const first = itemDetails[0]
+        let attr = []
+        first.forEach((item) => {
+            if (item.important === 1) attr.push(item.name)
+        })
+        return attr
     }
 
     const handleDeleteProduct = (id) => {
@@ -32,13 +41,13 @@ const CollapseRow = (props) => {
         setDeleteProductId(0)
     }
 
-    const handleOpenEditProductDetails = (id) => {
-        dispatch(getProductDetailsById(id))
+    const handleOpenEditProductDetails = (value) => {
+        setDetails(value)
         setDisplayAddProductDetails(true)
     }
 
     const handleOpenAddProductDetails = () => {
-        dispatch(getProductDetailsById(-1))
+        setDetails([])
         setDisplayAddProductDetails(true)
     }
 
@@ -48,7 +57,7 @@ const CollapseRow = (props) => {
     }
 
     const doDeleteProductDetail = (id) => {
-        dispatch(deleteProductDetails({ productId, id }))
+        dispatch(deleteProductDetails({ productId : productId, productItemId:id }))
         setOpenConfirmProductDetail(false)
         setDeleteProductDetailId(0)
     }
@@ -65,18 +74,17 @@ const CollapseRow = (props) => {
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                <TableCell component="th" scope='row' align='center'>{row.id}</TableCell>
-                <TableCell align='left'>{row.name}</TableCell>
-                <TableCell align='center'>{row.categoryDto.name}</TableCell>
-                <TableCell align='center'>{row.vendor}</TableCell>
+                <TableCell component="th" scope='row' align='center'>{row.productId}</TableCell>
+                <TableCell align='center'>{row.name}</TableCell>
+                <TableCell align='center'>{row.category.name}</TableCell>
                 <TableCell align='center'>
                     <IconButton
-                        onClick={() => handleOpenEditProductScreen(row.id)}
+                        onClick={() => handleOpenEditProductScreen(row.productId)}
                     >
                         <BorderColorOutlinedIcon color='info' />
                     </IconButton>
                     <IconButton
-                        onClick={() => handleDeleteProduct(row.id)}
+                        onClick={() => handleDeleteProduct(row.productId)}
                     >
                         <DeleteOutlinedIcon color='error' />
                     </IconButton>
@@ -106,60 +114,56 @@ const CollapseRow = (props) => {
                             {itemDetails.length !== 0 && <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell align='center'>Màu sắc</TableCell>
-                                        {(category == 1 || category == 2) &&
-                                            <React.Fragment>
-                                                <TableCell align='center'>Bộ nhớ</TableCell>
-                                                <TableCell align='center'>RAM</TableCell>
-                                            </React.Fragment>
+                                        {
+                                            getImportantRow().map((field) => (
+                                                <TableCell align='center'>{field}</TableCell>
+                                            ))
                                         }
-                                        {category == 1 && <TableCell align='center' >Kích thước màn hình</TableCell>}
-                                        <TableCell align='center' >Tình trạng hàng</TableCell>
-                                        <TableCell align='center' >Giá bán</TableCell>
+                                        <TableCell align='center'>Giá bán</TableCell>
                                         <TableCell align='center'>Đã bán</TableCell>
-                                        <TableCell align='center'>Số lượng còn</TableCell>
+                                        <TableCell align='center'>Số lượng tồn kho</TableCell>
                                         <TableCell align='center'>Tác vụ</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody width="100">
-                                    {itemDetails.map((items) => (
-                                        <TableRow key={items.id} >
-                                            <TableCell align='center' >{items.color}</TableCell>
-                                            {(category == 1 || category == 2) &&
-                                                <React.Fragment>
-                                                    <TableCell align='center' >{items.diskSize}</TableCell>
-                                                    <TableCell align='center' >{items.ram}</TableCell>
-                                                </React.Fragment>
-                                            }
-                                            {category == 1 && <TableCell align='center'>{items.screenSize}</TableCell>}
-                                            <TableCell align='center' >{items.isAvailable === true ? "Còn hàng" : "Hết hàng"}</TableCell>
-                                            <TableCell align='center' >{items.price}</TableCell>
-                                            <TableCell align='center'>{items.soldNumber}</TableCell>
-                                            <TableCell align='center'>{items.quantity}</TableCell>
-                                            <TableCell align='center'>
-                                                <IconButton
-                                                    onClick={() => handleOpenEditProductDetails(items.id)}
-                                                >
-                                                    <BorderColorOutlinedIcon color='info' />
-                                                </IconButton>
-                                                <IconButton
-                                                    onClick={() => handleDeleteProductDetails(items.id)}
-                                                >
-                                                    <DeleteOutlinedIcon color='error' />
-                                                </IconButton>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                    {itemDetails.map((items) => {
+                                        const otherAttr = items.at(-1)
+                                        return (
+                                            <TableRow key={otherAttr.productItemId} >
+                                                {items.map((attr) => {
+                                                    if (attr.important === 1) return (
+                                                        <TableCell align='center'>{attr.value}</TableCell>
+                                                    )
+                                                })}
+                                                <TableCell align='center'>{otherAttr.price??0}</TableCell>
+                                                <TableCell align='center'>{otherAttr.quantity_sold??0}</TableCell>
+                                                <TableCell align='center'>{otherAttr.quantity_stock??0}</TableCell>
+                                                <TableCell align='center'>
+                                                    <IconButton
+                                                        onClick={() => handleOpenEditProductDetails(items)}
+                                                    >
+                                                        <BorderColorOutlinedIcon color='info' />
+                                                    </IconButton>
+                                                    <IconButton
+                                                        onClick={() => handleDeleteProductDetails(otherAttr.productItemId)}
+                                                    >
+                                                        <DeleteOutlinedIcon color='error' />
+                                                    </IconButton>
+                                                </TableCell>
+                                            </TableRow>
+                                        )
+                                    })}
+
                                 </TableBody>
                             </Table>}
                         </Box>
                     </Collapse>
                 </TableCell>
             </TableRow>
-            {displayAddProductDetails && <AddProductDetails setDisplayAddProduct={setDisplayAddProductDetails} category={category} productId={productId} />}
+            {displayAddProductDetails && <AddProductDetails itemDetails={details} setDisplayAddProduct={setDisplayAddProductDetails} category={category} productId={productId} />}
             {openConfirmProduct && <Confirm name="PRODUCT" noAction={() => setOpenConfirmProduct(false)} yesAction={() => doDeleteProduct(deleteProductId)} />}
             {openConfirmProductDetail && <Confirm name="PRODUCT DETAIL" noAction={() => setOpenConfirmProductDetail(false)} yesAction={() => doDeleteProductDetail(deleteProductDetailId)} />}
-            
+
         </React.Fragment >
     )
 }

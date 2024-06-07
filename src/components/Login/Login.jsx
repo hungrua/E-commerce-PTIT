@@ -24,7 +24,9 @@ const Login = () => {
     const res =  await dispatch(login({ username: username, password: password })).unwrap()
     if (res) {
       let role = res.role
+      console.log()
       if (role === "ADMIN") window.location.href = '/admin'
+      else if(role==="EMPLOYEE") window.location.href = '/employee'
       else window.location.href = '/'
     }
   };

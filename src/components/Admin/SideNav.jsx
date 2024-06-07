@@ -15,6 +15,7 @@ function SideNav(props) {
     const theme = useTheme();
     const { sideNavExpanded } = props
     const location = useLocation()
+    const user = JSON.parse(localStorage.getItem("authorization"))
     return (
         <Sidebar
             style={{
@@ -41,30 +42,45 @@ function SideNav(props) {
                 }}
 
             >
-                <MenuItem active={location.pathname === '/admin/'} component={<Link to={'/admin/'} />} icon={<DashboardOutlinedIcon />}>
-                    <Typography variant='body2'>Dashboard</Typography>
-                </MenuItem>
-                <MenuItem active={location.pathname === '/admin/bill'} component={<Link to={'/admin/bill'} />} icon={<PaymentIcon />}>
-                    <Typography variant='body2'>Content</Typography>
-                </MenuItem>
-                <MenuItem active={location.pathname === '/admin/productmanager'} component={<Link to={'/admin/productmanager'} />} icon={<Inventory2OutlinedIcon />}>
-                    <Typography variant='body2'>Product</Typography>
-                </MenuItem>
-                <MenuItem active={location.pathname === '/admin/promotion'} component={<Link to={'/admin/promotion'} />} icon={<LoyaltyOutlinedIcon />}>
-                    <Typography variant='body2'>Promotion</Typography>
-                </MenuItem>
-                <MenuItem active={location.pathname === '/admin/usermanager'} component={<Link to={'/admin/usermanager'} />} icon={<PersonOutlineOutlinedIcon />}> 
-                    <Typography variant='body2'> User</Typography>
-                </MenuItem>
-                <MenuItem active={location.pathname === '/admin/voucher'} component={<Link to={'/admin/voucher'} />} icon={<StyleOutlinedIcon />}> 
-                    <Typography variant='body2'> Voucher</Typography>
-                </MenuItem>
-                <MenuItem active={location.pathname === '/admin/category'} component={<Link to={'/admin/category'} />} icon={<CategoryOutlinedIcon />}> 
-                    <Typography variant='body2'>Category</Typography>
-                </MenuItem>
-                <MenuItem active={location.pathname === '/admin/supplier'} component={<Link to={'/admin/supplier'} />} icon={<LocalShippingOutlinedIcon />}> 
-                    <Typography variant='body2'>Supplier</Typography>
-                </MenuItem>
+                {
+                    user === "ADMIN" ? (
+                        <>
+                            <MenuItem active={location.pathname === '/admin/'} component={<Link to={'/admin/'} />} icon={<DashboardOutlinedIcon />}>
+                                <Typography variant='body2'>Dashboard</Typography>
+                            </MenuItem>
+                            <MenuItem active={location.pathname === '/admin/bill'} component={<Link to={'/admin/bill'} />} icon={<PaymentIcon />}>
+                                <Typography variant='body2'>Content</Typography>
+                            </MenuItem>
+                            <MenuItem active={location.pathname === '/admin/productmanager'} component={<Link to={'/admin/productmanager'} />} icon={<Inventory2OutlinedIcon />}>
+                                <Typography variant='body2'>Product</Typography>
+                            </MenuItem>
+                            <MenuItem active={location.pathname === '/admin/promotion'} component={<Link to={'/admin/promotion'} />} icon={<LoyaltyOutlinedIcon />}>
+                                <Typography variant='body2'>Promotion</Typography>
+                            </MenuItem>
+                            <MenuItem active={location.pathname === '/admin/usermanager'} component={<Link to={'/admin/usermanager'} />} icon={<PersonOutlineOutlinedIcon />}>
+                                <Typography variant='body2'> User</Typography>
+                            </MenuItem>
+                            <MenuItem active={location.pathname === '/admin/voucher'} component={<Link to={'/admin/voucher'} />} icon={<StyleOutlinedIcon />}>
+                                <Typography variant='body2'> Voucher</Typography>
+                            </MenuItem>
+                            <MenuItem active={location.pathname === '/admin/category'} component={<Link to={'/admin/category'} />} icon={<CategoryOutlinedIcon />}>
+                                <Typography variant='body2'>Category</Typography>
+                            </MenuItem>
+                            <MenuItem active={location.pathname === '/admin/supplier'} component={<Link to={'/admin/supplier'} />} icon={<LocalShippingOutlinedIcon />}>
+                                <Typography variant='body2'>Supplier</Typography>
+                            </MenuItem>
+                        </>
+                    ) : (
+                        <>
+                            <MenuItem active={location.pathname === '/employee/'} component={<Link to={'/employee/'} />} icon={<DashboardOutlinedIcon />}>
+                                <Typography variant='body2'>Hóa đơn nhập</Typography>
+                            </MenuItem>
+                            <MenuItem active={location.pathname === '/employee/import'} component={<Link to={'/employee/import'} />} icon={<PaymentIcon />}>
+                                <Typography variant='body2'>Nhập hàng</Typography>
+                            </MenuItem>
+                        </>
+                    )
+                }
             </Menu>
         </Sidebar>
     )

@@ -8,7 +8,6 @@ export default function DragDropImage({ setAddImages,initImages }) {
     useEffect(()=>{
         if(initImages) {
             let tmpImg = []
-            console.log(initImages)
             if(typeof initImages !=="string"){
                 initImages.map((img)=>{
                     tmpImg.push({
@@ -51,7 +50,6 @@ export default function DragDropImage({ setAddImages,initImages }) {
                 })
             }
         }
-        console.log(imageAdded)
         setAddImages(imageAdded)
     }
     const handleDeleteImg = (index) => {
@@ -60,7 +58,6 @@ export default function DragDropImage({ setAddImages,initImages }) {
             prevImages.filter((_, i) => i !== index)
         )
         imageAdded = imageAdded.filter((_, i) => i !== index)
-        console.log(imageAdded)
         setAddImages(imageAdded)
     }
     return (

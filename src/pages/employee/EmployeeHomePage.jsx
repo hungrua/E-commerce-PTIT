@@ -9,14 +9,13 @@ import '@fontsource/roboto/700.css';
 import SideNav from '../../components/Admin/SideNav.jsx';
 import AppHeader from '../../components/Admin/AppHeader.jsx';
 import { Routes, Route } from 'react-router-dom';
-import { Dashboard, Promotion, UserManager, ProductManager, Voucher, Bill, Category } from '../../routes/AdminRouter.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Supplier from './Supplier.jsx';
 import { useDispatch } from 'react-redux';
 import { fetchCategory } from '../../redux/reducer/CategorySlice.jsx';
 import { fetchProduct } from '../../redux/reducer/ProductSlice.jsx';
-function AdminHomePage() {
+import { Bill, Import } from '../../routes/EmployeeRouter.jsx';
+function EmployeeHomePage() {
   const dispatch = useDispatch()
   const [sideNavExpanded, setSideNavExpanded] = useState(false)
   useEffect(()=>{
@@ -33,14 +32,8 @@ function AdminHomePage() {
           <Box component={'main'} sx={style.mainSection}>
             <Suspense fallback={<CircularProgress />}>
               <Routes>
-                <Route path='/' element={<Dashboard />} />
-                <Route path='/bill' element={<Bill />} />
-                <Route path='/productmanager' element={<ProductManager />} />
-                <Route path='/promotion' element={<Promotion />} />
-                <Route path='/usermanager' element={<UserManager />} />
-                <Route path='/voucher' element={<Voucher />} />
-                <Route path='/category' element={<Category />} />
-                <Route path='/supplier' element={<Supplier />} />
+                <Route path='/' element={<Bill />} />
+                <Route path='/import' element={<Import />} />
               </Routes>
             </Suspense>
           </Box>
@@ -64,4 +57,4 @@ const style = {
     overflow: "auto"
   }
 }
-export default AdminHomePage
+export default EmployeeHomePage

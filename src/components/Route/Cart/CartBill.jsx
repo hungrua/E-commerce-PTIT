@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from '../../basicFunction';
-
+import { notify } from '../../Admin/notify';
 const CartBill = (props) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -27,7 +27,10 @@ const CartBill = (props) => {
         }
     }, [dispatch,cartItem,discountVoucher])
     const handleCheckout = (e) => {
-        navigate('/checkout')
+        const preOrder = JSON.parse(sessionStorage.getItem("preOrder"))
+        console.log(preOrder)
+        if(!preOrder || preOrder.length===0) notify("Bạn chưa chọn sản phẩm mua hàng",3)
+        else navigate('/checkout') 
     }
     return (
         <div className="sticky top-[77px]">

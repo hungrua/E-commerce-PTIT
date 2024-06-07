@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaBatteryHalf, FaCartShopping } from "react-icons/fa6";
 import { FaCheck, FaTimes, FaRegHeart, FaMinus, FaPlus, FaStar, FaStarHalfAlt, FaUsb, FaWeight, FaSimCard } from "react-icons/fa";
 import { MdWarehouse, MdOutlineFolderSpecial } from "react-icons/md";
-import { FiCpu } from "react-icons/fi";
+import { MdOutlineCheckCircle } from "react-icons/md";
 import { GiLightningFrequency } from "react-icons/gi";
 import { AiFillWindows } from "react-icons/ai";
 import { RiPhoneCameraLine, RiPhoneCameraFill } from "react-icons/ri";
@@ -25,35 +25,39 @@ const ProductDetails = () => {
   const [active, setActive] = useState(1);
   const [displayProduct, setDisplayProduct] = useState({})
   const product = useSelector(state => state.product.currentSetProduct)
-  const images = product.images.map(img => img.path)
   const [rating, setRating] = useState(3.5);
   const [selectItemDetail, setSelectItemDetail] = useState(null);
   const [quantity, setQuantity] = useState(1)
-  const message = useSelector((state)=> state.cart.alert)
+  const images = product.images ? product.images.map(img => img.path) : []
+
+  const message = useSelector((state) => state.cart.alert)
   useEffect(() => {
     dispatch(getProductById(id))
-  }, [dispatch, id])
-  useEffect(() => {
+    console.log()
+  }, [])
+  useEffect((product) => {
     if (message !== undefined) notify(message.message, message.code)
     return () => {
       dispatch(cartSlice.actions.resetAlert(undefined))
     }
   }, [message, dispatch])
   useEffect(() => {
-    let priceArray = product.itemDetails.map(item => {
-      return item.price
-    })
-    let totalSold = product.itemDetails.reduce((a,b)=> a+b.soldNumber,0)
-    let tmpProduct = {
-      ...product,
-      isAvailable: product.itemDetails.some(item => item.isAvailable == true),
-      minPrice: formatCurrency(Math.min(...priceArray)),
-      maxPrice: formatCurrency(Math.max(...priceArray)),
-      totalSold: totalSold
+    if (product.productId != -1) {
+      let priceArray = product.itemDetails.map(item => {
+        return item.at(-1).price
+      })
+      let totalSold = product.itemDetails.reduce((a, b) => a + b.at(-1).quantity_sold, 0)
+      let tmpProduct = {
+        ...product,
+        isAvailable: product.itemDetails.some(item => item.isAvailable == true),
+        minPrice: formatCurrency(Math.min(...priceArray)),
+        maxPrice: formatCurrency(Math.max(...priceArray)),
+        totalSold: totalSold
 
+      }
+      // console.log(tmpProduct)
+      setDisplayProduct(tmpProduct)
     }
-    // console.log(tmpProduct)
-    setDisplayProduct(tmpProduct)
   }, [product])
   const formatCurrency = (value) => {
     if (typeof value !== 'number') {
@@ -77,10 +81,9 @@ const ProductDetails = () => {
     if (selectItemDetail) {
       let cartItem = {
         quantity: quantity,
-        itemDetail: {
-          id: selectItemDetail.id
-        }
+        productItemId: selectItemDetail.at(-1).productItemId
       }
+      console.log(cartItem)
       dispatch(addItemToCart(cartItem))
     }
     else notify("Bạn chưa chọn loại sản phẩm", 0)
@@ -216,7 +219,7 @@ const ProductDetails = () => {
                 </div>
                 <div className="mt-4 flex gap-x-4 cursor-pointer">
                   {
-                    product.itemDetails?.map((detail, index) => (
+                    displayProduct.itemDetails && displayProduct.itemDetails.map((detail, index) => (
                       <ItemDetail
                         key={index}
                         data={detail}
@@ -289,128 +292,34 @@ const ProductDetails = () => {
                   <div className="absolute w-full pt-[55%] top-0 right-0 z-0 bg-6 translate-x-[42%] rotate-[220deg]"></div>
 
                   {
-                    displayProduct.vendor && <div className="flex items-center gap-[10px]">
+                    displayProduct.brand && <div className="flex items-center gap-[10px]">
                       <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
                         <MdWarehouse color="red" />
                       </span>
                       <span className="text-[#444545] text-[16px] font-[400]">
-                        Nhà cung cấp: <span className="font-bold">{displayProduct.vendor}</span>
+                        Nhà cung cấp: <span className="font-bold">{displayProduct.brand.name}</span>
                       </span>
                     </div>
                   }
 
                   {
-                    displayProduct.cpu && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <FiCpu color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400]">
-                        CPU: <span className="font-bold">{displayProduct.cpu}</span>
-                      </span>
-                    </div>
-                  }
+                     displayProduct.itemDetails && displayProduct.itemDetails[0].slice(0,displayProduct.itemDetails[0].length-1).map((attr) => {
+                      if(attr.important!==1)
+                        return(
+                          <div className="flex items-center gap-[10px]">
+                            <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
+                              <MdOutlineCheckCircle size="small" color="red" />
+                            </span>
+                            <span className="text-[#444545] text-[16px] font-[400]">
+                              {attr.name}: <span className="font-bold">{attr.value}</span>
+                            </span>
+                          </div>
+                        )
 
-                  {
-                    displayProduct.frequencyScreen && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <GiLightningFrequency color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400]">
-                        Tần số quét: <span className="font-bold">{displayProduct.frequencyScreen}</span>
-                      </span>
-                    </div>
-                  }
+                    })
 
-                  {
-                    displayProduct.os && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <AiFillWindows color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400]">
-                        Hệ điều hành: <span className="font-bold">{displayProduct.os}</span>
-                      </span>
-                    </div>
-                  }
 
-                  {
-                    displayProduct.weight && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <FaWeight color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
-                        Khối lượng: <span className="font-bold">{displayProduct.weight} kg</span>
-                      </span>
-                    </div>
-                  }
-                  {
-                    displayProduct.batteryCapacity && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <FaBatteryHalf color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
-                        Dung lượng pin: <span className="font-bold">{displayProduct.batteryCapacity}</span>
-                      </span>
-                    </div>
-                  }
-                  {
-                    displayProduct.frontCamera && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <RiPhoneCameraLine color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
-                        Camera trước: <span className="font-bold">{displayProduct.frontCamera}</span>
-                      </span>
-                    </div>
-                  }
-                  {
-                    displayProduct.rearCamera && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <RiPhoneCameraFill color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
-                        Camera sau: <span className="font-bold">{displayProduct.rearCamera}</span>
-                      </span>
-                    </div>
-                  }
-                  {
-                    displayProduct.usbNumber && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <FaUsb color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden ">
-                        Cổng kết nối: <span className="font-bold">{displayProduct.usbNumber}</span>
-                      </span>
-                    </div>
-                  }
-                  {
-                    displayProduct.simNumber && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <FaSimCard color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
-                        Số lượng khe sim: <span className="font-bold">{displayProduct.simNumber}</span>
-                      </span>
-                    </div>
-                  }
-                  {
-                    displayProduct.connectType && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <IoMdWifi color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
-                        Loại kết nối: <span className="font-bold">{displayProduct.connectType}</span>
-                      </span>
-                    </div>
-                  }
-                  {
-                    displayProduct.specialProperties && <div className="flex items-center gap-[10px]">
-                      <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                        <MdOutlineFolderSpecial color="red" />
-                      </span>
-                      <span className="text-[#444545] text-[16px] font-[400] whitespace-nowrap text-ellipsis overflow-hidden">
-                        Thuộc tính đặc biệt: <span className="font-bold">{displayProduct.specialProperties}</span>
-                      </span>
-                    </div>
+
                   }
                 </div>
               </div>
