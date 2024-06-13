@@ -45,13 +45,14 @@ const promotionSlice = createSlice({
                 state.promotions.push(action.payload.promotion)
             })
             .addCase(editPromotion.fulfilled, (state, action) => {
+                console.log(action.payload)
                 state.alert = {
                     code: action.payload.code,
                     message: action.payload.message
                 }
                 state.promotions = state.promotions.map((promotion) => {
-                    if (promotion.id === action.payload.promotiom.id) {
-                        return action.payload.promotiom;
+                    if (promotion.id === action.payload.promotion.id) {
+                        return action.payload.promotion;
                     }
                     return promotion;
                 });
@@ -70,11 +71,13 @@ export const fetchPromotion = createAsyncThunk(
     async () => {
         const token = getUser().token
         const res = await fetch(IP + "/admin/api/promotions", {
+            method:"GET",
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         const data = await res.json();
+        console.log(data)
         return data;
     }
 );

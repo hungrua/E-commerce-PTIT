@@ -63,7 +63,7 @@ function Promotion() {
   const [displayAddPromotion, setDisplayAddPromotion] = useState(false)
   useEffect(() => {
     dispatch(fetchPromotion())
-  }, [dispatch])
+  }, [])
   useEffect(() => {
     if (message !== undefined) notify(message.message, message.code)
     return () => {
@@ -73,11 +73,11 @@ function Promotion() {
   const rows = promotions.map((promotion) => {
     return {
       id: promotion.id,
-      content: promotion.content,
+      content: promotion.name,
       startDate: promotion.dateStart,
       endDate: promotion.dateEnd,
       percent: promotion.discount,
-      numberOfProduct: promotion.items.length
+      numberOfProduct: promotion.products?[...new Set(promotion.products.map(item => item.productId))].length:0
     }
   })
   const handleDeletePromotion = (id)=>{

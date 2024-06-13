@@ -1,291 +1,164 @@
-import { Box, Button, IconButton, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import TabPanel from "../../components/Admin/TabPanel";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
-import AddUser from "../../components/Admin/UserManager/AddUser";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  deleteUser,
-  fetchUser,
-  getUserById,
-} from "../../redux/reducer/UserSlice";
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { notify } from "../../components/Admin/notify";
-import { Confirm } from "../../components/Admin/Confirm";
+import styled from "styled-components";
+import ProductCollapseTable from "../../components/Employee/Product/ProductCollapseTable";
+import { formatCurrency } from "../../components/basicFunction";
+import ImportSlice, { importSupply } from "../../redux/reducer/ImportSlice";
+import AddImport from "../../components/Employee/Product/AddImport";
+import { fetchSupplier } from "../../redux/reducer/SupplierSlice";
+import { Confirm } from "../../components/Employee/Confirm";
 
 function Import() {
   const dispatch = useDispatch();
   var message = useSelector((state) => state.users.alert);
-  var users = useSelector((state) => state.users.users);
-  const [customers, setCustomers] = useState([]);
-  const [employees, setEmployees] = useState([]);
-  const [openConfirm,setOpenConfirm] = useState(false)
-  const [deleteId,setDeleteId] = useState(0)
+  const invoice = useSelector((state) => state.import.itemInvoices)
+  const totalImport = invoice.reduce((total, item) => total + item.importPrice * item.importQuantity, 0)
+  const suppliers = useSelector(state => state.supplier.suppliers)
+  const [openConfirm, setOpenConfirm] = useState(false)
+  const [supplier, setSupplier] = useState(null)
+  const [editItemInvoice, setEditItemInvoice] = useState(null)
   useEffect(() => {
-    dispatch(fetchUser())
-  }, [dispatch]);
-  useEffect(() => {
-    let customers = [],
-      employees = [];
-    users.forEach((user) => {
-      if (user.roles.includes("USER")) customers.push(user);
-      else employees.push(user);
-    });
-    setCustomers(customers);
-    setEmployees(employees);
-  }, [users]);
-  useEffect(()=>{
     console.log(message)
-    if(message!=undefined) notify(message.message,message.code)
-  },[message])
-  const columnsCustomer = [
-    {
-      field: "username",
-      headerName: "Tên đăng nhập",
-      minWidth: "200",
-      hideable: false,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      minWidth: "300",
-    },
-    {
-      field: "fullname",
-      headerName: "Họ tên",
-      minWidth: "200",
-    },
-    {
-      field: "dob",
-      headerName: "Ngày sinh",
-      minWidth: "200",
-    },
-    {
-      field: "phone",
-      headerName: "Số điện thoại",
-      minWidth: "200",
-    },
-    {
-      field: "address",
-      headerName: "Địa chỉ",
-      minWidth: "200",
-    },
-    {
-      field: "createDate",
-      headerName: "Ngày tạo",
-      minWidth: "100",
-    },
-    {
-      field: "action",
-      headerName: "Tác vụ",
-      minWidth: "150",
-      sortable: false,
-      headerAlign: "center",
-      renderCell: (params) => {
-        return (
-          <Box>
-            <IconButton
+    if (message != undefined) notify(message.message, message.code)
+  }, [message])
+  useEffect(() => {
+    dispatch(fetchSupplier())
+  }, [])
 
-              size="medium"
-              sx={{ m: 1 }}
-              onClick={() => {
-                handleOpenDisplayAddUser(params.row.id);
-              }}
-            >
-              <ModeEditIcon color="info" />
-            </IconButton>
-            <IconButton
-              size="medium"
-              sx={{ m: 1 }}
-              onClick={() => {
-                handleDeleteUser(params.row.id);
-              }}
-            >
-              <DeleteIcon color="error"/>
-            </IconButton>
-          </Box>
-        );
-      },
-    },
-  ];
+  const [displayImport, setDisplayImport] = useState(false);
 
-  const columnsEmployee = [
-    {
-      field: "username",
-      headerName: "Tên đăng nhập",
-      minWidth: "200",
-      hideable: false,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      minWidth: "300",
-    },
-    {
-      field: "fullname",
-      headerName: "Họ tên",
-      minWidth: "200",
-    },
-    {
-      field: "dob",
-      headerName: "Ngày sinh",
-      minWidth: "200",
-    },
-    {
-      field: "phone",
-      headerName: "Số điện thoại",
-      minWidth: "200",
-    },
-    {
-      field: "address",
-      headerName: "Địa chỉ",
-      minWidth: "200",
-    },
-    {
-      field: "roles",
-      headerName: "Chức vụ",
-      minWidth: "100",
-    },
-    {
-      field: "action",
-      headerName: "Tác vụ",
-      minWidth: "150",
-      sortable: false,
-      headerAlign: "center",
-      renderCell: (params) => {
-        return (
-          <Box>
-            <IconButton
-              size="medium"
-              sx={{ m: 1 }}
-              onClick={() => {
-                handleOpenDisplayAddUser(params.row.id);
-              }}
-            >
-              <ModeEditIcon color="info" />
-            </IconButton>
-            <IconButton
-              size="medium"
-              sx={{ m: 1 }}
-              onClick={() => {
-                handleDeleteUser(params.row.id);
-              }}
-            >
-              <DeleteIcon color="error" />
-            </IconButton>
-          </Box>
-        );
-      },
-    },
-  ];
-
-  const customersRows = customers.map((customer) => {
-    return {
-      id: customer.id,
-      username: customer.username,
-      email: customer.email,
-      fullname: customer.name,
-      dob: customer.dob,
-      address: customer.address,
-      phone: customer.phoneNumber,
-      createDate: customer.createDate,
-    };
-  });
-
-  const employeesRows = employees.map((employee) => {
-    return {
-      id: employee.id,
-      username: employee.username,
-      email: employee.email,
-      fullname: employee.name,
-      dob: employee.dob,
-      phone: employee.phoneNumber,
-      address: employee.address,
-      roles: employee.roles === "ADMIN" ? "Quản trị viên" : "Nhân viên",
-    };
-  });
-
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  const [displayAddUser, setDisplayAddUser] = useState(false);
-  const handleOpenDisplayAddUser = (id) => {
-    dispatch(getUserById(id));
-    setTimeout(setDisplayAddUser(true),1000);
-  };
-  const handleDeleteUser = (id) => {
-    setDeleteId(id)
-    setOpenConfirm(true)
-  };
-  const doDelete = (id) =>{
-    dispatch(deleteUser(id));
-    setOpenConfirm(false)
-    setDeleteId(0)
+  const deleteFromInvoice = (id) => {
+    dispatch(ImportSlice.actions.deleteFromInvoice(id))
   }
+  const openEditScreen = (item) => {
+    setEditItemInvoice(item)
+    setDisplayImport(true)
+  }
+  const handleChangeSupplier = (event) => {
+    setSupplier(event.target.value);
+  };
+  const handleImportSupply = () => {
+    const productItems = invoice.map((item)=> ({
+      id: item.id,
+      soldPrice:item.soldPrice,
+      importPrice: item.importPrice,
+      importQuantity:item.importQuantity
+    }))
+    const importInfo = {
+      productItems:productItems,
+      supplierId: supplier
+    }
+    dispatch(importSupply(importInfo))
+    setOpenConfirm(false)
+  }
+  const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: "white",
+    },
+    '&:nth-of-type(even)': {
+      backgroundColor: "#f5f5f5",
+    },
+  }));
   return (
     <div>
-      <Box>
+      <Box >
         <Typography sx={style.pageTitle} variant="h5">
-          Quản lý người dùng
+          Nhập hàng
         </Typography>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={value} onChange={handleChange}>
-            <Tab label="Khách hàng" id="tab-0" />
-            <Tab label="Nhân viên" id="tab-1" />
-          </Tabs>
-          <TabPanel value={value} index={0}>
-            <Box>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  handleOpenDisplayAddUser(-1);
-                }}
-              >
-                <PersonAddAlt1Icon fontSize="small" />
-                <Box ml={1}>Thêm mới khách hàng</Box>
-              </Button>
-            </Box>
-            <DataGrid
-              sx={{ boxShadow: 2, mt: 2 }}
-              columns={columnsCustomer}
-              rows={customersRows}
-              slots={{
-                toolbar: GridToolbar,
-              }}
-            ></DataGrid>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Box>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  setDisplayAddUser(true);
-                }}
-              >
-                <PersonAddAlt1Icon fontSize="small" />
-                <Box ml={1}>Thêm mới nhân viên</Box>
-              </Button>
-            </Box>
-            <DataGrid
-              columns={columnsEmployee}
-              rows={employeesRows}
-              slots={{
-                toolbar: GridToolbar,
-              }}
-              sx={{ boxShadow: 2, mt: 2 }}
-            ></DataGrid>
-          </TabPanel>
+        <FormControl variant="standard" sx={{ mb: 1, minWidth: 120 }}>
+          <InputLabel id="demo-simple-select-helper-label">Nhà cung cấp</InputLabel>
+          <Select
+            labelId="demo-simple-select-helper-label"
+            id="demo-simple-select-helper"
+            value={supplier}
+            label="Chọn nhà cung cấp"
+            onChange={handleChangeSupplier}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {suppliers.map((supplier)=>
+              (<MenuItem value={supplier.id}>{supplier.name}</MenuItem>)
+            )
+            }
+          </Select>
+        </FormControl>
+        <Box border={2} >
+          <Box maxHeight={300} overflow="scroll" >
+            <TableContainer>
+              <Table>
+                <TableHead sx={{ background: "#0288d1" }} >
+                  <TableRow  >
+                    <TableCell align="center" sx={{ color: "#fffbfe" }}>MÃ SẢN PHẨM</TableCell>
+                    <TableCell align="center" sx={{ color: "#fffbfe" }}>TÊN SẢN PHẨM</TableCell>
+                    <TableCell align="center" sx={{ color: "#fffbfe" }}>GIÁ BÁN</TableCell>
+                    <TableCell align="center" sx={{ color: "#fffbfe" }}>GIÁ NHẬP</TableCell>
+                    <TableCell align="center" sx={{ color: "#fffbfe" }}>SỐ LƯỢNG</TableCell>
+                    <TableCell align="center" sx={{ color: "#fffbfe" }}>THÀNH TIỀN</TableCell>
+                    <TableCell align="center" sx={{ color: "#fffbfe" }}>THAO TÁC</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {
+                    invoice.map((item) => (
+                      <StyledTableRow>
+                        <TableCell align="center" size="small">{item.id}</TableCell>
+                        <TableCell align="center" size="small">{item.itemName}</TableCell>
+                        <TableCell align="center" size="small">{formatCurrency(item.soldPrice)}</TableCell>
+                        <TableCell align="center" size="small">{formatCurrency(item.importPrice)}</TableCell>
+                        <TableCell align="center" size="small">{item.importQuantity}</TableCell>
+                        <TableCell align="center" size="small">{formatCurrency(item.importPrice * item.importQuantity)}</TableCell>
+                        <TableCell align="center" size="small" sx={{ display: "flex", justifyContent: "space-around" }}>
+                          <Box sx={{ cursor: "pointer" }} >
+                            <div
+                              onClick={() => openEditScreen(item)}
+                            >
+                              <BorderColorOutlinedIcon fontSize="small" color='info' />
+                            </div>
+                          </Box>
+                          <Box sx={{ cursor: "pointer" }}  >
+                            <div
+                              onClick={() => deleteFromInvoice(item.id)}
+                            >
+                              <DeleteOutlinedIcon fontSize="small" color='error' />
+                            </div>
+                          </Box>
+                        </TableCell>
+                      </StyledTableRow>
+                    ))
+                  }
+                  <StyledTableRow>
+                    <TableCell align="center" size="small" colSpan={7} >
+                      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                        <Box>Tổng tiền nhập</Box>
+                        <Box>{formatCurrency(totalImport)}</Box>
+                      </Box>
+                    </TableCell>
+                  </StyledTableRow>
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
         </Box>
+        {invoice.length!=0 && <Box display="flex" justifyContent="flex-end" py={1}>
+          <Button variant="contained" color="info" onClick={()=>setOpenConfirm(true)}>Nhập hàng</Button>
+        </Box>}
       </Box>
-      {displayAddUser && (
-        <AddUser setDisplayAddUser={setDisplayAddUser} typeUser={value} />
+      <Box mt={2}>
+        <Typography sx={style.pageTitle} variant="h5">
+          Danh sách sản phẩm
+        </Typography>
+        <ProductCollapseTable />
+      </Box>
+      {displayImport && (
+        <AddImport setDisplayImport={setDisplayImport} itemInvoices={editItemInvoice} />
       )}
-      {openConfirm && <Confirm noAction={()=>setOpenConfirm(false)} yesAction={()=>doDelete(deleteId)} name="USER" />}
-      
+      {openConfirm && <Confirm noAction={() => setOpenConfirm(false)} yesAction={() => handleImportSupply()} />}
+
     </div>
   );
 }

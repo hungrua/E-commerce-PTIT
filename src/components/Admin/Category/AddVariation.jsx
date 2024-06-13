@@ -1,4 +1,4 @@
-import { Box, FormControl, FormHelperText, FormLabel, IconButton, Input, Select, MenuItem, InputLabel, FormGroup, Grid, TextField, NativeSelect, Button, Typography } from '@mui/material'
+import { Box, FormControl, FormHelperText, FormLabel, IconButton, Input, Select, MenuItem, InputLabel, FormGroup, Grid, TextField, NativeSelect, Button, Typography, FormControlLabel, Checkbox } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
@@ -9,11 +9,12 @@ import { addVariation, editVariation } from '../../../redux/reducer/CategorySlic
 const AddVariation = ({ setDisplayAddVariation, category }) => {
     const dispatch = useDispatch()
     const [currentSetVariation, setCurrentSetVariation] = useState({})
-
+    const [important,setImportant] = useState(false)
     var variation = useSelector((state) => state.category.currentSetVariation)
     useEffect(() => {
         setCurrentSetVariation(variation)
-    }, [dispatch,variation])
+        setImportant(variation.important===1?true:false)
+    }, [dispatch, variation])
 
     const handleCloseAddVariation = () => {
         setDisplayAddVariation(false)
@@ -25,15 +26,18 @@ const AddVariation = ({ setDisplayAddVariation, category }) => {
         }));
     };
 
-    const handleSaveProductDetails = ()=>{
-        let newVariation= {
-            categoryId:category,
-            variation:currentSetVariation
+    const handleSaveProductDetails = () => {
+        let newVariation = {
+            categoryId: category,
+            variation: {
+                ...currentSetVariation,
+                important:important===true?1:0
+            }
         }
-        if(currentSetVariation.id===null) dispatch(addVariation(newVariation))   
+        if (currentSetVariation.id === null) dispatch(addVariation(newVariation))
         else dispatch(editVariation(newVariation))
         handleCloseAddVariation()
-        
+
     }
 
 
@@ -51,6 +55,11 @@ const AddVariation = ({ setDisplayAddVariation, category }) => {
                     <Typography variant='h5' ml={5}>Thuộc tính</Typography>
                     <form>
                         <Grid sx={style.form} container rowSpacing={2} columnSpacing={2}>
+                            <Grid item xs={12} sm={12} md={12} >
+                                <FormControl fullWidth={true} >
+                                    <FormControlLabel control={<Checkbox checked={important} onChange={()=> setImportant(!important)} />} label="Tick nếu là thuộc tính riêng" />
+                                </FormControl>
+                            </Grid>
                             {/* Tên thuộc tính  */}
                             <Grid item xs={12} sm={6} md={9} sx={style.inputContainer}>
                                 <FormControl fullWidth={true} >
@@ -81,14 +90,14 @@ const AddVariation = ({ setDisplayAddVariation, category }) => {
                                     <FormHelperText></FormHelperText>
                                 </FormControl>
                             </Grid>
-                            
+
                         </Grid>
                     </form>
                     <Box style={{ display: 'flex', justifyContent: "flex-end" }}>
                         <Button
-                            onClick={()=> handleSaveProductDetails()}
-                        
-                        variant='contained' color='success'>Save</Button>
+                            onClick={() => handleSaveProductDetails()}
+
+                            variant='contained' color='success'>Save</Button>
                     </Box>
                 </Box>
             </Box>

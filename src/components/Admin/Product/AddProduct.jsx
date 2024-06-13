@@ -24,7 +24,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
     const variations = useSelector((state) => state.product.variations)
     const variationsObjArr = useSelector((state) => state.product.variationsObjArr)
     const [productName, setProductName] = useState("")
-    const [description,setDesciption] = useState("")
+    const [description, setDesciption] = useState("")
     useEffect(() => {
         if (currentProduct !== undefined) {
             dispatch(fetchBrand)
@@ -32,6 +32,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
             setCategory(currentProduct.category.id)
             if (currentProduct.brand) setBrand(currentProduct.brand.id)
             setProductName(currentProduct.name)
+            console.log(currentProduct)
             setDesciption(currentProduct.description)
             currentProduct.productId !== -1 ? setAddImages(currentProduct.images) : setAddImages(currentProduct.product.images)
         }
@@ -86,7 +87,7 @@ const AddProduct = ({ setDisplayAddProduct }) => {
 
     const handleSaveProduct = () => {
         let product = currentSetProduct
-        let newProduct ={}
+        let newProduct = {}
         if (currentSetProduct.productId === -1) {
             newProduct = {
                 category: {
@@ -97,21 +98,22 @@ const AddProduct = ({ setDisplayAddProduct }) => {
                     ...product.product,
                     name: productName,
                     images: handleImageData(category),
-                    description:description
+                    description: description
                 }
             }
         }
         else {
-            newProduct={
-             ...product,
-             name:productName,
-             images: handleImageData(category),
-             description: description,
-             id:currentSetProduct.productId
+            newProduct = {
+                ...currentSetProduct,
+                name: productName,
+                images: handleImageData(category),
+                description: description,
+                id: currentSetProduct.productId
             }
         }
+        console.log(newProduct)
         if (currentSetProduct.productId === -1) dispatch(addProduct({ newProduct: newProduct, brandId: brand }))
-        else dispatch(editProduct({newProduct,brand}))
+        else dispatch(editProduct({ newProduct, brand }))
         handleCloseAddProduct()
     }
     return (

@@ -61,7 +61,7 @@ const Phone = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                 {
                   phone.map(item => {
-                    return <ProductCard key={item.id} details={item} />
+                    return <ProductCard key={item.productId} details={item} />
                   })
                 }
               </div>

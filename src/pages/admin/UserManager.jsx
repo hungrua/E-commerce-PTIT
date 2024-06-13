@@ -277,7 +277,8 @@ function UserManager() {
                 toolbar: GridToolbar,
               }}
               sx={{ boxShadow: 2, mt: 2 }}
-            ></DataGrid>
+              pageSizeOptions={[5,10,15]}
+            />
           </TabPanel>
         </Box>
       </Box>

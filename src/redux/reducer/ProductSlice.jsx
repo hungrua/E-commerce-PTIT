@@ -209,6 +209,7 @@ export const addProduct = createAsyncThunk(
 export const editProduct = createAsyncThunk(
   "product/editProduct",
   async ({ newProduct, brand }) => {
+    console.log(newProduct)
     const token = getUser().token
     const options = {
       method: "PUT",

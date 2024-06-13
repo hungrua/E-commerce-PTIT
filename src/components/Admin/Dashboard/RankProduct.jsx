@@ -30,11 +30,11 @@ const RankProduct = ({ number, product }) => {
       <Box sx={style.productContainer.infoContainer}>
         <Tooltip title={product.name}>
           <Box sx={style.productContainer.infoContainer.productName}>
-            {product.name}
+            {product.product_name}
           </Box>
         </Tooltip>
         <Box sx={style.productContainer.infoContainer.monthSale}>
-          Doanh số tháng: {product.sale} sản phẩm
+          Doanh số tháng: {product.quantity} sản phẩm
         </Box>
       </Box>
     </Box>

@@ -16,12 +16,16 @@ import Supplier from './Supplier.jsx';
 import { useDispatch } from 'react-redux';
 import { fetchCategory } from '../../redux/reducer/CategorySlice.jsx';
 import { fetchProduct } from '../../redux/reducer/ProductSlice.jsx';
+import { fetchOrder } from '../../redux/reducer/OrderSlice.jsx';
+import { fetchInvoices } from '../../redux/reducer/ImportSlice.jsx';
 function AdminHomePage() {
   const dispatch = useDispatch()
   const [sideNavExpanded, setSideNavExpanded] = useState(false)
   useEffect(()=>{
     dispatch(fetchCategory())
     dispatch(fetchProduct())
+    dispatch(fetchOrder(null))
+    dispatch(fetchInvoices())
   },[])
   return (
     <React.Fragment>

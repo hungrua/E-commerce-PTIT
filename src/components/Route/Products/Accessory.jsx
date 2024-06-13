@@ -37,7 +37,7 @@ const Accessory = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                 {
                   accessory.map(item => {
-                    return <ProductCard key={item.id} details={item} />
+                    return <ProductCard key={item.productId} details={item} />
                   })
                 }
               </div>

@@ -16,7 +16,6 @@ const Cart = () => {
     const cartItem = useSelector(state => state.cart.cartItems)
     useEffect(() => {
         dispatch(fetchUserVoucher())
-        dispatch(getOwnInformation())
     }, [])
     return (
         <div className="p-5 bg-[#efefef] mt-11">

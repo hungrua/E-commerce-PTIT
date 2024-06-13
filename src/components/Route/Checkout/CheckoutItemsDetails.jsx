@@ -8,7 +8,7 @@ export const CheckoutItemsDetails = (props) => {
     const renderName = (name) => {
         let attrString = ""
         item.details.map((attr)=>{
-            if(attr.important) attrString+=`- ${attr.value} ` 
+            if(attr.important) attrString+=`/ ${attr.value} ` 
         })
         attrString= attrString.substring(1,attrString.length)
         return `${name} ( ${attrString} )`

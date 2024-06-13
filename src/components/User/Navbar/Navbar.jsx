@@ -1,6 +1,7 @@
 import React from "react";
 
 const Navbar = (props) => {
+    const user = JSON.parse(localStorage.getItem("authorization")).name
     
     return (
         <>
@@ -8,7 +9,7 @@ const Navbar = (props) => {
                 <img className="rounded-full w-[45px]" src="/static/images/user/avatar1.png" alt="" />
                 <div className="flex flex-col">
                     <span className="text-sm text-[rgb(100_100_109)]">Tài khoản của</span>
-                    <span>Lê Thị Hà</span>
+                    <span>{user}</span>
                 </div>
             </div>
             <div>

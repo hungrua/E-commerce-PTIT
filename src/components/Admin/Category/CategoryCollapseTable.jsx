@@ -7,9 +7,6 @@ import { fetchProduct } from '../../../redux/reducer/ProductSlice'
 const CategoryCollapseTable = ({setDisplayAddCategory}) => {
     const dispatch = useDispatch()
     const categories = useSelector((state)=> state.category.categories)
-    // useEffect(()=>{
-        
-    // },[])
     return (
         <Box mt={4}>
             <TableContainer component={Paper}>

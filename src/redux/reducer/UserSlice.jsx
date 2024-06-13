@@ -148,7 +148,7 @@ export const addUser = createAsyncThunk("user/addUser", async (newUser) => {
   return data;
 });
 export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
-  newUser.password = null
+  if(!newUser.passwordOld) newUser.password = null
   const token = getUser().token
   const options = {
     method: "PUT",

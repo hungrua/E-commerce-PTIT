@@ -45,6 +45,7 @@ const categorySlice = createSlice({
     builder
       .addCase(fetchCategory.fulfilled, (state, action) => {
         state.categories = action.payload;
+        console.log(action.payload)
       })
       .addCase(getCategoryById.fulfilled, (state, action) => {
         state.currentSetCategory = action.payload;
@@ -76,7 +77,7 @@ const categorySlice = createSlice({
                 variationOptionValue:""
             }
         })
-        state.variations = data
+        state.variations = variationsObjArr
       })
       .addCase(addVariation.fulfilled, (state, action) => {
         const data = action.payload

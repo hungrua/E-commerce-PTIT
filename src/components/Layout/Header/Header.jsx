@@ -18,6 +18,7 @@ import { fetchCartItem } from "../../../redux/reducer/CartSlice";
 const Header = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const user = JSON.parse(localStorage.getItem("authorization"))
   const [openMenu, setOpenMenu] = useState(false);
   const [openProductList, setOpenProductList] = useState(false);
   const [openCartList, setOpenCartList] = useState(false);
@@ -291,7 +292,7 @@ const Header = () => {
                   </li>
                   <li>
                     <Link
-                      to="/order-status/2"
+                      to="/order-status/1"
                       className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Tra đơn hàng

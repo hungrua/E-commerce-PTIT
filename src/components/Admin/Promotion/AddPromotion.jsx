@@ -24,6 +24,7 @@ const AddPromotion = ({ setDisplayAddPromotion }) => {
     useEffect(() => {
         setCurrentSetPromotion(currentPromotion)
         dispatch(fetchProduct({brandId:"",categoryId:"",key:""}))
+        console.log(currentPromotion)
     }, [dispatch, currentPromotion])
     const handleCloseAddPromotion = () => {
         dispatch(getPromtionById(-1))
@@ -32,6 +33,7 @@ const AddPromotion = ({ setDisplayAddPromotion }) => {
     const handleFowardToAddProductToPromotion = () => {
         setAddProductToPromotion(!addProductToPromotion)
         let dataTmp = {...currentSetPromotion}
+        console.log(addImages[0].name)
         if(addImages[0]!==undefined) {
             dataTmp= {
             ...currentSetPromotion,
@@ -74,12 +76,12 @@ const AddPromotion = ({ setDisplayAddPromotion }) => {
                                         <MonetizationOnOutlinedIcon sx={style.formLabel.formLabelIcon} />
                                         <Box>Nội dung khuyến mãi</Box>
                                     </FormLabel>
-                                    <TextareaAutosize value={currentSetPromotion.content}
+                                    <TextareaAutosize value={currentSetPromotion.name}
                                         style={{ border: "1px solid gray" }}
                                         minRows={7}
                                         maxRows={15}
                                         onResize={() => { console.log(1) }}
-                                        onChange={(e) => { handleOnChangeProperties("content", e.target.value) }}
+                                        onChange={(e) => { handleOnChangeProperties("name", e.target.value) }}
                                     />
                                     <FormHelperText></FormHelperText>
                                 </FormControl>

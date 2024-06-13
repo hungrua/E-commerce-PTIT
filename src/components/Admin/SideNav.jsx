@@ -43,7 +43,7 @@ function SideNav(props) {
 
             >
                 {
-                    user === "ADMIN" ? (
+                    user.role === "ADMIN" ? (
                         <>
                             <MenuItem active={location.pathname === '/admin/'} component={<Link to={'/admin/'} />} icon={<DashboardOutlinedIcon />}>
                                 <Typography variant='body2'>Dashboard</Typography>

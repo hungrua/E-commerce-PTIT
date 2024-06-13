@@ -18,7 +18,7 @@ export default function DragDropImage({ setAddImages,initImages }) {
             }
             else {
                 tmpImg.push({
-                    name: "unique",
+                    name: initImages.split('/').at(-1),
                     url: initImages
                 })
             }

@@ -56,12 +56,12 @@ const CheckoutBill = (props) => {
                 address: sessionStorage.getItem("receiveAddress") ,
                 itemOrders : orderItems.map((item)=> item.cartItemId) 
             }
-            console.log(body)
             const orderParams = {
                 payment: 1,
                 shipment: shipment.id,
                 voucher: JSON.parse(sessionStorage.getItem("usingVoucher")) ? JSON.parse(sessionStorage.getItem("usingVoucher")).userVoucherId : null
-            }
+                }
+            console.log(body)
             dispatch(createOrder({ orderParams: orderParams, orderBody: body }))
         }
     }

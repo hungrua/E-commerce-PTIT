@@ -2,9 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import { IoIosLock } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import { editUser } from "../../../redux/reducer/UserSlice";
 
 
 const UserProfile = (props) => {
+    const { loginUser } = props
+    const dispatch = useDispatch()
     const [selectedDay, setSelectedDay] = useState(0);
     const [selectedMonth, setSelectedMonth] = useState(0);
     const [selectedYear, setSelectedYear] = useState(0);
@@ -14,12 +18,21 @@ const UserProfile = (props) => {
     const [isChangeEmail, setIsChangeEmail] = useState(false);
     const emailRef = useRef(null);
     const [isChangePassword, setIsChangePassword] = useState(false);
-
-
+    const [user, setUser] = useState(loginUser)
     const years = Array.from({ length: 2024 - 1900 }, (_, index) => 2024 - index);
     const months = Array.from({ length: 12 }, (_, index) => index + 1);
     const [days, setDays] = useState(Array.from({ length: 31 }, (_, index) => index + 1))
-
+    const [phoneNumber, setPhoneNumber] = useState(loginUser.phoneNumber)
+    const [email, setEmail] = useState(loginUser.email)
+    const [name, setName] = useState(loginUser.name)
+    const [address, setAddress] = useState(loginUser.address)
+    useEffect(() => {
+        setUser(loginUser)
+        let dob = loginUser.dob.split("-")
+        setSelectedDay(dob[2].replace(/^0+/, ''))
+        setSelectedMonth(dob[1].replace(/^0+/, ''))
+        setSelectedYear(dob[0])
+    }, [])
     useEffect(() => {
         let maxDay = maxDayOfMonthInYear(selectedMonth, selectedYear)
         setDays(Array.from({ length: maxDay }, (_, index) => index + 1))
@@ -70,6 +83,8 @@ const UserProfile = (props) => {
         setTimeout(() => {
             phoneNumberRef.current.focus();
         })
+        // dispatch()
+        if (isChangePhoneNumber) handleUpdatePhoneNumber()
     }
 
     const handleChangeEmail = () => {
@@ -77,11 +92,36 @@ const UserProfile = (props) => {
         setTimeout(() => {
             emailRef.current.focus();
         })
+        if(isChangeEmail) handleUpdateEmail()
     }
 
     const handleChangePassword = () => {
         setIsChangePassword(!isChangePassword);
         props.setActiveTab(6);
+    }
+    const handleUpdateBasicInfo = () => {
+        const newUser = {
+            ...loginUser,
+            name: name,
+            dob: [selectedYear, selectedMonth.toString().padStart(2, '0'), selectedDay.toString().padStart(2, '0')].join("-"),
+            address: address
+        }
+        dispatch(editUser(newUser))
+    }
+
+    const handleUpdatePhoneNumber = () => {
+        const newUser = {
+            ...loginUser,
+            phoneNumber: phoneNumber
+        }
+        dispatch(editUser(newUser))
+    }
+    const handleUpdateEmail = () => {
+        const newUser = {
+            ...loginUser,
+            email: phoneNumber
+        }
+        dispatch(editUser(newUser))
     }
 
     return (
@@ -92,16 +132,20 @@ const UserProfile = (props) => {
                 </div>
                 <div className="flex gap-x-5 mt-4">
                     <div className="flex w-28 h-28 rounded-full overflow-hidden items-center justify-center border-solid border-4 border-[rgb(194_225_255)] bg-[rgb(240_248_255)]">
-                        <img className="w-[50px]" src="/static/images/user/avatar.png" alt="" srcset="" />
+                        <img className="w-[50px]" src="/static/images/user/avatar.png" alt="" />
                     </div>
                     <div className="flex-1">
                         <div className="flex mb-8 gap-x-8 items-center">
                             <label htmlFor="name">Họ và tên<span className="text-red-600">*</span>:</label>
-                            <input className="flex-1 h-9 px-3 py-4 border-solid border-[rgb(196_196_207)] border-[1px] rounded" id="name" type="text" value={"Lê Thị Hà"} placeholder="Thêm họ và tên" />
+                            <input className="flex-1 h-9 px-3 py-4 border-solid border-[rgb(196_196_207)] border-[1px] rounded"
+                                id="name" type="text"
+                                value={name} placeholder="Thêm họ và tên"
+                                onChange={(e) => setName(e.target.value)}
+                            />
                         </div>
                         <div className="flex mb-8 gap-x-8 items-center">
-                            <label htmlFor="nickname">NickName:</label>
-                            <input className="flex-1 h-9 px-3 py-4 border-solid border-[rgb(196_196_207)] border-[1px] rounded" id="nickname" type="text" placeholder="Thêm nickname" />
+                            <label htmlFor="nickname">Tên đăng nhập:</label>
+                            <input className="flex-1 h-9 px-3 py-4 border-solid border-[rgb(196_196_207)] border-[1px] rounded" id="nickname" type="text" placeholder="Thêm nickname" value={user.username} disabled={true} />
                         </div>
                     </div>
                 </div>
@@ -136,31 +180,20 @@ const UserProfile = (props) => {
                     </div>
 
                 </div>
-                <div className="flex mb-8 items-center">
-                    <label className="w-36 min-w-36" htmlFor="">Giới tính</label>
-                    <div className="flex gap-x-8">
-                        <span className="flex gap-x-2">
-                            <input type="radio" name="gender" id="male" value={"Nam"} />
-                            <label htmlFor="male">Nam</label>
-                        </span>
-                        <span className="flex gap-x-2">
-                            <input type="radio" name="gender" id="female" value={"Nữ"} />
-                            <label htmlFor="female">Nữ</label>
-                        </span>
-                        <span className="flex gap-x-2">
-                            <input type="radio" name="gender" id="other" value={"Khác"} />
-                            <label htmlFor="other">Khác</label>
-                        </span>
-
-                    </div>
-
-                </div>
                 <div className="flex mb-8">
                     <label className="w-36 min-w-36" htmlFor="address">Địa chỉ thường trú:</label>
-                    <input className="flex-1 h-9 px-3 py-4 border-solid border-[rgb(196_196_207)] border-[1px] rounded" type="text" name="" id="address" placeholder="Nhập địa chỉ thường trú" />
+                    <input className="flex-1 h-9 px-3 py-4 border-solid border-[rgb(196_196_207)] border-[1px] rounded"
+                        type="text" name=""
+                        id="address" placeholder="Nhập địa chỉ thường trú" value={address}
+                        onChange={(e)=>setAddress(e.target.value)}
+                    />
                 </div>
                 <div className="text-center">
-                    <button className="px-4 py-1 text-white bg-[rgb(11_116_229)] border-solid border-[rgb(196_196_207)] border-[1px] rounded" type="submit">Lưu thay đổi</button>
+                    <button className="px-4 py-1 text-white bg-[rgb(11_116_229)] border-solid border-[rgb(196_196_207)] border-[1px] rounded"
+                        type="button"
+                        onClick={handleUpdateBasicInfo}
+
+                    >Lưu thay đổi</button>
                 </div>
             </form>
             <div className="pt-2 pb-4 pr-4 pl-5">
@@ -174,14 +207,16 @@ const UserProfile = (props) => {
                         </div>
                         <div className="flex flex-col">
                             <span>Số điện thoại</span>
-                            <input value={"0123456789"}  disabled={!isChangePhoneNumber} className="p-1 rounded w-[250px]" ref={phoneNumberRef}/>
+                            <input value={phoneNumber} disabled={!isChangePhoneNumber} className="p-1 rounded w-[250px]" ref={phoneNumberRef}
+                                onChange={(e)=>setPhoneNumber(e.target.value)}
+                            />
                         </div>
                     </div>
                     <div className="flex gap-x-2">
                         <button className={`px-2 py-0.5 border-solid border-[rgb(104,109,114)] text-[rgb(52,55,58)] border-[1px] rounded hover:bg-[rgb(104,109,114)] hover:text-white ${!isChangePhoneNumber ? 'hidden' : ''}`}
-                                onClick={() => setIsChangePhoneNumber(!isChangePhoneNumber)}>Hủy</button>
+                            onClick={() => setIsChangePhoneNumber(!isChangePhoneNumber)}>Hủy</button>
                         <button className="px-2 py-0.5 border-solid border-[rgb(11_116_229)] text-[rgb(11_116_229)] border-[1px] rounded hover:bg-[rgb(11_116_229)] hover:text-white"
-                                onClick={handleChangePhoneNumber}> {!isChangePhoneNumber ? 'Cập nhật' : 'Lưu'}</button>
+                            onClick={handleChangePhoneNumber}> {!isChangePhoneNumber ? 'Cập nhật' : 'Lưu'}</button>
                     </div>
                 </div>
                 <div className="flex justify-between items-center mb-4 px-2">
@@ -191,14 +226,17 @@ const UserProfile = (props) => {
                         </div>
                         <div className="flex flex-col col-span-1">
                             <span>Email</span>
-                            <input type="email" ref={emailRef} disabled={!isChangeEmail} value={'nguyenhaiyen@gmail.com'} className="p-1 rounded w-[250px]"/>
+                            <input type="email" ref={emailRef} disabled={!isChangeEmail} value={email}
+                            className="p-1 rounded w-[250px]"
+                            onChange={(e)=>setEmail(e.target.value)}
+                            />
                         </div>
                     </div>
                     <div className="flex gap-x-2">
                         <button className={`px-2 py-0.5 border-solid border-[rgb(104,109,114)] text-[rgb(52,55,58)] border-[1px] rounded hover:bg-[rgb(104,109,114)] hover:text-white ${!isChangeEmail ? 'hidden' : ''}`}
-                                onClick={() => setIsChangeEmail(!isChangeEmail)}>Hủy</button>
+                            onClick={() => setIsChangeEmail(!isChangeEmail)}>Hủy</button>
                         <button className="px-2 py-0.5 border-solid border-[rgb(11_116_229)] text-[rgb(11_116_229)] border-[1px] rounded hover:bg-[rgb(11_116_229)] hover:text-white"
-                                onClick={handleChangeEmail}> {!isChangeEmail ? 'Cập nhật' : 'Lưu'}</button>
+                            onClick={handleChangeEmail}> {!isChangeEmail ? 'Cập nhật' : 'Lưu'}</button>
                     </div>
                 </div>
                 <div className="text-[rgb(100_100_109)] mb-4">

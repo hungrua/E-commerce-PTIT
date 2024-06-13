@@ -3,25 +3,16 @@ import React, { useState } from 'react'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import AddProductDetails from './AddProductDetails';
+import AddBusinessOutlinedIcon from '@mui/icons-material/AddBusinessOutlined';
 import { useDispatch } from 'react-redux';
 import { deleteProduct, deleteProductDetails, getProductById, getProductDetailsById } from '../../../redux/reducer/ProductSlice';
-import { Confirm } from '../Confirm';
+import AddImport from './AddImport';
 const CollapseRow = (props) => {
     const dispatch = useDispatch()
     const { row, category, itemDetails, setDisplayAddProduct, productId } = props
     const [open, setOpen] = useState(false)
-    const [displayAddProductDetails, setDisplayAddProductDetails] = useState(false)
-    const [deleteProductId, setDeleteProductId] = useState(0)
-    const [openConfirmProduct, setOpenConfirmProduct] = useState(false)
-    const [deleteProductDetailId, setDeleteProductDetailId] = useState(0)
-    const [openConfirmProductDetail, setOpenConfirmProductDetail] = useState(false)
-    const [details,setDetails] = useState([])
-    const handleOpenEditProductScreen = (id) => {
-        dispatch(getProductById(id))
-        setDisplayAddProduct(true)
-    }
+    const [displayImport, setDisplayImport] = useState(false)
+    const [productDetail,setProductDetail] = useState(null)
     const getImportantRow = () => {
         const first = itemDetails[0]
         let attr = []
@@ -31,37 +22,10 @@ const CollapseRow = (props) => {
         return attr
     }
 
-    const handleDeleteProduct = (id) => {
-        setDeleteProductId(id)
-        setOpenConfirmProduct(true)
+    const handleOpenEditProductDetails = (items) => {
+        setProductDetail(items)
+        setDisplayImport(true)
     }
-    const doDeleteProduct = (id) => {
-        dispatch(deleteProduct(id))
-        setOpenConfirmProduct(false)
-        setDeleteProductId(0)
-    }
-
-    const handleOpenEditProductDetails = (value) => {
-        setDetails(value)
-        setDisplayAddProductDetails(true)
-    }
-
-    const handleOpenAddProductDetails = () => {
-        setDetails([])
-        setDisplayAddProductDetails(true)
-    }
-
-    const handleDeleteProductDetails = (id) => {
-        setDeleteProductDetailId(id)
-        setOpenConfirmProductDetail(true)
-    }
-
-    const doDeleteProductDetail = (id) => {
-        dispatch(deleteProductDetails({ productId : productId, productItemId:id }))
-        setOpenConfirmProductDetail(false)
-        setDeleteProductDetailId(0)
-    }
-
     return (
         <React.Fragment>
             <TableRow>
@@ -77,18 +41,6 @@ const CollapseRow = (props) => {
                 <TableCell component="th" scope='row' align='center'>{row.productId}</TableCell>
                 <TableCell align='center'>{row.name}</TableCell>
                 <TableCell align='center'>{row.category.name}</TableCell>
-                <TableCell align='center'>
-                    <IconButton
-                        onClick={() => handleOpenEditProductScreen(row.productId)}
-                    >
-                        <BorderColorOutlinedIcon color='info' />
-                    </IconButton>
-                    <IconButton
-                        onClick={() => handleDeleteProduct(row.productId)}
-                    >
-                        <DeleteOutlinedIcon color='error' />
-                    </IconButton>
-                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -103,13 +55,6 @@ const CollapseRow = (props) => {
                                     Mẫu sản phẩm
                                 </Typography>}
                                 {itemDetails.length === 0 && <Box sx={{ textAlign: "center", mb: 1 }}>Chưa có mẫu sản phẩm vui lòng thêm mới</Box>}
-                                <Box
-                                    sx={{
-                                        display: "flex", justifyContent: "center"
-                                    }}
-                                >
-                                    <Button onClick={() => handleOpenAddProductDetails()} variant='outlined' color="error" size='small' >Thêm mẫu sản phẩm</Button>
-                                </Box>
                             </Box>
                             {itemDetails.length !== 0 && <Table size="small" aria-label="purchases">
                                 <TableHead>
@@ -142,12 +87,7 @@ const CollapseRow = (props) => {
                                                     <IconButton
                                                         onClick={() => handleOpenEditProductDetails(items)}
                                                     >
-                                                        <BorderColorOutlinedIcon color='info' />
-                                                    </IconButton>
-                                                    <IconButton
-                                                        onClick={() => handleDeleteProductDetails(otherAttr.productItemId)}
-                                                    >
-                                                        <DeleteOutlinedIcon color='error' />
+                                                        <AddBusinessOutlinedIcon color='info' />
                                                     </IconButton>
                                                 </TableCell>
                                             </TableRow>
@@ -160,10 +100,9 @@ const CollapseRow = (props) => {
                     </Collapse>
                 </TableCell>
             </TableRow>
-            {displayAddProductDetails && <AddProductDetails itemDetails={details} setDisplayAddProduct={setDisplayAddProductDetails} category={category} productId={productId} />}
-            {openConfirmProduct && <Confirm name="PRODUCT" noAction={() => setOpenConfirmProduct(false)} yesAction={() => doDeleteProduct(deleteProductId)} />}
-            {openConfirmProductDetail && <Confirm name="PRODUCT DETAIL" noAction={() => setOpenConfirmProductDetail(false)} yesAction={() => doDeleteProductDetail(deleteProductDetailId)} />}
-
+            {
+                displayImport && <AddImport setDisplayImport={setDisplayImport} itemDetails={productDetail} row={row}  /> 
+            }
         </React.Fragment >
     )
 }

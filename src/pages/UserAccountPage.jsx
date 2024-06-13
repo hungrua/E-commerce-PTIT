@@ -14,52 +14,58 @@ import Header from "../components/Layout/Header/Header";
 import Footer from "../components/Layout/Footer/Footer";
 import Notification from "../components/User/Notification/Notification";
 import ChangePassword from "../components/User/Profile/ChangePassword";
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { getOwnInformation } from "../redux/reducer/UserSlice";
+import { notify } from "../components/Admin/notify";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const UserAccountPage = () => {
-    const {id} = useParams()
+    const dispatch = useDispatch()
+    const { id } = useParams()
     const [activeTab, setActiveTab] = useState(0)
-    useEffect(()=>{
-        console.log(id)
-        if(id!==undefined) setActiveTab(id)
+    const loginUser = useSelector(state => state.users.loginUser)
+    var message = useSelector((state) => state.users.alert);
+    useEffect(() => {
+        console.log(message)
+        if (message != undefined) notify(message.message, message.code)
+    }, [message])
+    useEffect(() => {
+        dispatch(getOwnInformation())
+    }, [dispatch])
+    useEffect(() => {
+        if (id !== undefined) setActiveTab(id)
         else setActiveTab(0)
-    },[])
+    }, [])
     const tabs = {
         0: {
             name: 'Thông tin tài khoản',
             icon: <FaUser />,
             display: true,
-            tab: <UserProfile activeTab={activeTab} setActiveTab={setActiveTab} />
+            tab: loginUser ? <UserProfile loginUser={loginUser} activeTab={activeTab} setActiveTab={setActiveTab} /> : <p>Loading...</p>
         },
         1: {
-            name: 'Thông báo của tôi',
-            icon: <FaBell />,
-            display: true,
-            tab: <Notification/>
-        },
-        2: {
             name: 'Quản lý đơn hàng',
             icon: <IoReceipt />,
             display: true,
             tab: <Order />
         },
-        3: {
+        2: {
             name: 'Nhận xét sản phẩm',
             icon: <BiSolidCommentDetail />,
             display: true
         },
-        4: {
+        3: {
             name: 'Đánh giá sản phẩm',
             icon: <FaStarHalfAlt />
         },
-        5: {
+        4: {
             name: 'Sản phẩm đã xem',
             icon: <FaEye />,
             display: true
         },
-        6 : {
+        5: {
             name: 'Thay đổi mật khẩu',
-            tab: <ChangePassword />,
+            tab: <ChangePassword loginUser={loginUser} />,
             display: false
         }
     }
@@ -91,7 +97,8 @@ const UserAccountPage = () => {
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
+            <ToastContainer></ToastContainer>
         </>
 
     )

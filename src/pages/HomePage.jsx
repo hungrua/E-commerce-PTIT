@@ -12,16 +12,13 @@ import { useDispatch } from "react-redux";
 import { fetchProduct } from "../redux/reducer/ProductSlice";
 import { fetchCategory } from "../redux/reducer/CategorySlice";
 import voucherSlice, { fetchVoucherForUser } from "../redux/reducer/VoucherSlice";
-import { getOwnInformation } from "../redux/reducer/UserSlice";
-import { fetchOrderOfUser } from "../redux/reducer/OrderSlice";
 const HomePage = () => {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchCategory())
-  }, [dispatch])
+  }, [])
   useEffect(()=>{
     dispatch(fetchVoucherForUser())
-    dispatch(fetchOrderOfUser())
     dispatch(voucherSlice.actions.setUsingVoucher(null))
     sessionStorage.clear()
   },[dispatch])

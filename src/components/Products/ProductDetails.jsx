@@ -18,6 +18,7 @@ import cartSlice, { addItemToCart } from "../../redux/reducer/CartSlice";
 import { notify } from "../Admin/notify";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchCommentOfProduct } from "../../redux/reducer/ReviewSlice";
 const ProductDetails = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
@@ -33,7 +34,7 @@ const ProductDetails = () => {
   const message = useSelector((state) => state.cart.alert)
   useEffect(() => {
     dispatch(getProductById(id))
-    console.log()
+    dispatch(fetchCommentOfProduct(id))
   }, [])
   useEffect((product) => {
     if (message !== undefined) notify(message.message, message.code)
@@ -49,14 +50,15 @@ const ProductDetails = () => {
       let totalSold = product.itemDetails.reduce((a, b) => a + b.at(-1).quantity_sold, 0)
       let tmpProduct = {
         ...product,
-        isAvailable: product.itemDetails.some(item => item.isAvailable == true),
+        isAvailable: !product.itemDetails.some(item => item.at(-1).quantity_stock ===0),
         minPrice: formatCurrency(Math.min(...priceArray)),
         maxPrice: formatCurrency(Math.max(...priceArray)),
         totalSold: totalSold
 
       }
-      // console.log(tmpProduct)
+      console.log(tmpProduct)
       setDisplayProduct(tmpProduct)
+      setRating(product.rating)
     }
   }, [product])
   const formatCurrency = (value) => {
@@ -81,7 +83,7 @@ const ProductDetails = () => {
     if (selectItemDetail) {
       let cartItem = {
         quantity: quantity,
-        productItemId: selectItemDetail.at(-1).productItemId
+        productItemId: selectItemDetail.productItemId
       }
       console.log(cartItem)
       dispatch(addItemToCart(cartItem))
@@ -185,12 +187,12 @@ const ProductDetails = () => {
                 </div>
                 <div className="flex items-center gap-1 relative">
                   <div className="absolute h-4 w-[1px] bg-[#000] top-[50%] left-[-1rem] translate-x-[-50%] translate-y-[-50%]"></div>
-                  <span className="font-[700]">{displayProduct.numberRating}</span>
+                  <span className="font-[700]">{displayProduct.number_rating}</span>
                   <span className="text-[14px] mt-[1px]"> đánh giá</span>
                 </div>
                 <div className="flex items-center gap-1 relative">
                   <div className="absolute h-4 w-[1px] bg-[#000] top-[50%] left-[-1rem] translate-x-[-50%] translate-y-[-50%]"></div>
-                  <span className="font-[700]">{selectItemDetail ? selectItemDetail.soldNumber : displayProduct.totalSold}</span>
+                  <span className="font-[700]">{selectItemDetail ? selectItemDetail.quantity_sold : displayProduct.totalSold}</span>
                   <span className="text-[14px] mt-[1px]"> lượt mua</span>
                 </div>
                 <div className="w-[30px] h-[30px] relative rounded-[50%] flex items-center justify-center text-[#f66315] bg-[#feefe8] text-[13px] duration-300 cursor-pointer hover:text-white hover:bg-[#f66315]">
@@ -306,9 +308,9 @@ const ProductDetails = () => {
                      displayProduct.itemDetails && displayProduct.itemDetails[0].slice(0,displayProduct.itemDetails[0].length-1).map((attr) => {
                       if(attr.important!==1)
                         return(
-                          <div className="flex items-center gap-[10px]">
+                          <div key={attr.id_variation_option} className="flex items-center gap-[10px]">
                             <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                              <MdOutlineCheckCircle size="small" color="red" />
+                              <MdOutlineCheckCircle  color="red" />
                             </span>
                             <span className="text-[#444545] text-[16px] font-[400]">
                               {attr.name}: <span className="font-bold">{attr.value}</span>
@@ -317,9 +319,6 @@ const ProductDetails = () => {
                         )
 
                     })
-
-
-
                   }
                 </div>
               </div>
@@ -378,7 +377,7 @@ const ProductDetails = () => {
             </div>
           ) : null}
           {active === 1 ? (
-            <Reviews />
+            <Reviews id={id} rating={rating} />
           ) : null}
         </div>
       </div>

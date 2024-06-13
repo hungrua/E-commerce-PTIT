@@ -17,12 +17,24 @@ const AddProductToPromotion = ({ setDisplayAddPromotion, setAddProductToPromotio
 
   var products = useSelector((state) => state.product.products)
   useEffect(() => {
-    let productId = currentSetPromotion.items.map((item) => item.id)
-    let notIn = products.filter((item) => !productId.includes(item.id))
+    let productId = currentSetPromotion.products.map((item) => item.productId)
+    let notIn = products.filter((item) => !productId.includes(item.productId))
     setNotInPromotionProducts(notIn)
     setDisplayNotInPromotionProducts(notIn)
-    setInPromotionProducts(currentSetPromotion.items)
-    setDisplayInPromotionProducts(currentSetPromotion.items)
+    const inPromotion = Object.values(
+      currentSetPromotion.products.reduce((acc, curr) => {
+        if (!acc[curr.productId]) {
+          acc[curr.productId] = curr;
+        }
+        return acc;
+      }, {})
+    ).map((item) => ({
+      productId: item.productId,
+      name: item.name
+    }))
+    console.log(inPromotion)
+    setInPromotionProducts(inPromotion)
+    setDisplayInPromotionProducts(inPromotion)
 
   }, [dispatch])
   const addToPromotionList = (item) => {
@@ -33,22 +45,22 @@ const AddProductToPromotion = ({ setDisplayAddPromotion, setAddProductToPromotio
       return [...prevList, item]
     })
     setNotInPromotionProducts((prevList) => {
-      let newList = prevList.filter(product => product.id !== item.id)
+      let newList = prevList.filter(product => product.productId !== item.productId)
       return newList
     })
     setDisplayNotInPromotionProducts((prevList) => {
-      let newList = prevList.filter(product => product.id !== item.id)
+      let newList = prevList.filter(product => product.productId !== item.productId)
       return newList
     })
   }
 
   const removeFromPromotionList = (item) => {
     setInPromotionProducts((prevList) => {
-      let newList = prevList.filter(product => product.id !== item.id)
+      let newList = prevList.filter(product => product.productId !== item.productId)
       return newList
     })
     setDisplayInPromotionProducts((prevList) => {
-      let newList = prevList.filter(product => product.id !== item.id)
+      let newList = prevList.filter(product => product.productId !== item.productId)
       return newList
     })
     setNotInPromotionProducts((prevList) => {
@@ -76,8 +88,8 @@ const AddProductToPromotion = ({ setDisplayAddPromotion, setAddProductToPromotio
   }
 
   const handleSavePromotion = () => {
-    let productId = currentSetPromotion.items.map((item) => item.id)
-    let inPromotion = inPromotionProducts.map((item) => item.id)
+    let productId = currentSetPromotion.products.map((item) => item.productId)
+    let inPromotion = inPromotionProducts.map((item) => item.productId)
     let addList = getItemsInAOnly(inPromotion, productId)
     let removeList = getItemsInAOnly(productId, inPromotion)
     const newPromotion = {
@@ -85,6 +97,7 @@ const AddProductToPromotion = ({ setDisplayAddPromotion, setAddProductToPromotio
       "idItems": addList,
       "idItemsRemove": removeList
     }
+    console.log(newPromotion)
     if (newPromotion.id === null) dispatch(addPromotion(newPromotion))
     else dispatch(editPromotion(newPromotion))
     dispatch(getPromtionById(-1))
@@ -105,9 +118,8 @@ const AddProductToPromotion = ({ setDisplayAddPromotion, setAddProductToPromotio
                 <TableHead>
                   <TableRow>
                     <TableCell align='center'>Stt</TableCell>
-                    <TableCell align='center' >Mã sản phẩm</TableCell>
                     <TableCell align='center'>Tên sản phẩm</TableCell>
-                    <TableCell align='center'>Thêm vào khuyến mãi</TableCell>
+                    <TableCell align='center'></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -115,7 +127,6 @@ const AddProductToPromotion = ({ setDisplayAddPromotion, setAddProductToPromotio
                     return (
                       <TableRow>
                         <TableCell align='center' >{index + 1}</TableCell>
-                        <TableCell align='center'>{item.id}</TableCell>
                         <TableCell>{item.name}</TableCell>
                         <TableCell align='center'>
                           <IconButton onClick={() => addToPromotionList(item)}>
@@ -140,9 +151,8 @@ const AddProductToPromotion = ({ setDisplayAddPromotion, setAddProductToPromotio
                 <TableHead>
                   <TableRow>
                     <TableCell align='center'>Stt</TableCell>
-                    <TableCell align='center'>Mã sản phẩm</TableCell>
                     <TableCell align='center'>Tên sản phẩm</TableCell>
-                    <TableCell align='center'>Xóa khỏi khuyến mãi</TableCell>
+                    <TableCell align='center'></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -151,7 +161,6 @@ const AddProductToPromotion = ({ setDisplayAddPromotion, setAddProductToPromotio
                       return (
                         <TableRow>
                           <TableCell align='center'>{index + 1}</TableCell>
-                          <TableCell align='center'>{item.id}</TableCell>
                           <TableCell>{item.name}</TableCell>
                           <TableCell align='center'>
                             <IconButton onClick={() => removeFromPromotionList(item)}>

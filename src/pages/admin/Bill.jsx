@@ -4,9 +4,17 @@ import TabPanel from '../../components/Admin/TabPanel'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import BillDetails from '../../components/Admin/Bill/BillDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import { formatCurrency } from '../../components/basicFunction';
+import { getOrderById, updateOrderStatus } from '../../redux/reducer/OrderSlice';
+import { getInvoiceById } from '../../redux/reducer/ImportSlice';
+import InvoiceDetails from '../../components/Admin/Bill/InvoiceDetails';
 
 function Bill() {
-  const columns = [
+  const dispatch = useDispatch()
+  const orders = useSelector((state) => state.order.orders)
+  const invoices = useSelector((state) => state.import.invoices)
+  const columnsOrder = [
     {
       field: 'billcode',
       headerName: 'Mã hóa đơn',
@@ -27,17 +35,17 @@ function Bill() {
     {
       field: 'paymentMethod',
       headerName: "Phương thức thanh toán",
-      minWidth: '300'
+      minWidth: '200'
     },
     {
       field: 'shippingMethod',
       headerName: "Phương thức giao hàng",
-      minWidth: '200'
+      minWidth: '300'
     },
     {
       field: 'total',
       headerName: "Tổng tiền",
-      minWidth: '200'
+      minWidth: '150'
     },
     {
       field: 'action',
@@ -46,43 +54,88 @@ function Bill() {
       sortable: false,
       headerAlign: 'center',
       renderCell: (params) => {
-        return <Box style={{ display: 'flex', justifyContent: 'center',width:"100%" }} >
-          <IconButton size="medium" sx={{ m: 1 }} onClick={() => { setDisplayBillDetails(true) }} >
+        return <Box style={{ display: 'flex', justifyContent: 'center', width: "100%" }} >
+          <IconButton size="medium" sx={{ m: 1 }} onClick={() => {
+            console.log(params.row.billcode)
+            dispatch(getOrderById(params.row.billcode))
+            setDisplayBillDetails(true)
+          }} >
             <InfoOutlinedIcon />
           </IconButton>
         </Box>
       }
     }
-
   ]
-  const rows =
-    [
-      {
-        id: 1,
-        billcode: 'HĐ001',
-        createAt: '22/02/2024',
-        status: "Đã thanh toán",
-        paymentMethod:"Thanh toán trực tuyến",
-        shippingMethod:"Nhanh",
-        total: "20.000.000"
-      },
-      {
-        id: 2,
-        billcode: 'HĐ002',
-        createAt: '23/02/2024',
-        status: "Đã thanh toán",
-        paymentMethod:"Thanh toán khi nhận được hàng",
-        shippingMethod:"Hỏa tốc",
-        total: "34.000.000"
+  const columnsInvoice = [
+    {
+      field: 'billcode',
+      headerName: 'Mã hóa đơn',
+      minWidth: '300',
+      hideable: false
+
+    },
+    {
+      field: 'createAt',
+      headerName: "Ngày tạo",
+      minWidth: '250'
+    },
+    {
+      field: 'supplier',
+      headerName: "Nhà cung cấp",
+      minWidth: '300'
+    },
+    {
+      field: 'total',
+      headerName: "Tổng tiền",
+      minWidth: '300'
+    },
+    {
+      field: 'action',
+      headerName: 'Xem chi tiết',
+      minWidth: '140',
+      sortable: false,
+      headerAlign: 'center',
+      renderCell: (params) => {
+        return <Box style={{ display: 'flex', justifyContent: 'center', width: "100%" }} >
+          <IconButton size="medium" sx={{ m: 1 }} onClick={() => {
+            dispatch(getInvoiceById(params.row.billcode))
+            setDisplayInvoiceDetails(true)
+          }} >
+            <InfoOutlinedIcon />
+          </IconButton>
+        </Box>
       }
-      
-    ]
+    }
+  ]
+  const rowsOrder = orders.map((order) => (
+    {
+      id: order.id,
+      billcode: order.id,
+      createAt: order.createDate,
+      status: order.statusOrder,
+      paymentMethod: order.payment.name,
+      shippingMethod: `${order.shipment.name} (${order.shipment.description})`,
+      total: formatCurrency(order.totalPrice)
+    }
+  ))
+  const rowsInvoice = invoices.map((invoice) => (
+    {
+      id: invoice.id,
+      billcode: invoice.id,
+      createAt: invoice.createDate,
+      supplier: invoice.supplier.name,
+      total: formatCurrency(invoice.totalPrice)
+
+    }
+  ))
+
   const [value, setValue] = useState(0)
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
   const [displayBillDetails, setDisplayBillDetails] = useState(false)
+  const [displayInvoiceDetails, setDisplayInvoiceDetails] = useState(false)
   return (
     <div>
       <Box>
@@ -95,17 +148,18 @@ function Bill() {
           <TabPanel value={value} index={0}>
             <DataGrid
               sx={{ boxShadow: 2, mt: 2 }}
-              columns={columns}
-              rows={rows}
+              columns={columnsOrder}
+              rows={rowsOrder}
               slots={{
                 toolbar: GridToolbar,
               }}
+              pageSizeOptions={[1, 2, 3]}
             ></DataGrid>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <DataGrid
-              columns={columns}
-              rows={rows}
+              columns={columnsInvoice}
+              rows={rowsInvoice}
               slots={{
                 toolbar: GridToolbar,
               }}
@@ -115,6 +169,7 @@ function Bill() {
         </Box>
       </Box>
       {displayBillDetails && <BillDetails setDisplayBillDetails={setDisplayBillDetails} typeBill={value} />}
+      {displayInvoiceDetails && <InvoiceDetails setDisplayInvoiceDetails={setDisplayInvoiceDetails} />}
     </div>
   )
 }

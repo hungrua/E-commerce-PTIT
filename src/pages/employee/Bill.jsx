@@ -1,23 +1,36 @@
 import { Box, Button, IconButton, Tab, Tabs, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TabPanel from '../../components/Admin/TabPanel'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import BillDetails from '../../components/Admin/Bill/BillDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchOrder, getOrderById, updateOrderStatus } from '../../redux/reducer/OrderSlice';
+import { fetchInvoices, getInvoiceById } from '../../redux/reducer/ImportSlice';
+import InvoiceDetails from '../../components/Admin/Bill/InvoiceDetails';
+import { formatCurrency } from '../../components/basicFunction';
 
 function Bill() {
-  const columns = [
+  const dispatch = useDispatch()
+  const orders = useSelector((state) => state.order.orders)
+  const invoices = useSelector((state) => state.import.invoices)
+  useEffect(()=>{
+    dispatch(fetchOrder(null))
+    dispatch(fetchInvoices())
+    console.log(orders)
+  },[])
+  const columnsOrder = [
     {
       field: 'billcode',
       headerName: 'Mã hóa đơn',
-      minWidth: '200',
+      minWidth: '150',
       hideable: false
 
     },
     {
       field: 'createAt',
       headerName: "Ngày tạo",
-      minWidth: '150'
+      minWidth: '100'
     },
     {
       field: 'status',
@@ -27,17 +40,35 @@ function Bill() {
     {
       field: 'paymentMethod',
       headerName: "Phương thức thanh toán",
-      minWidth: '300'
+      minWidth: '200'
     },
     {
       field: 'shippingMethod',
       headerName: "Phương thức giao hàng",
-      minWidth: '200'
+      minWidth: '250'
     },
     {
       field: 'total',
       headerName: "Tổng tiền",
-      minWidth: '200'
+      minWidth: '150'
+    },
+    {
+      field: 'actionOrder',
+      headerName: 'Thao tác đơn hàng',
+      minWidth: '170',
+      sortable: false,
+      headerAlign: 'center',
+      renderCell: (params) => {
+        const buttonContent = convertOrderStatus(params.row.status)
+        return <Box style={{ display: 'flex', justifyContent: 'center', alignsItems: "center", height: "100%", width: "100%", }} >
+          <Button disabled={params.row.status == "Đã nhận hàng" || params.row.status == "Đã hủy đơn" || params.row.status == "Đang vận chuyển"}
+            onClick={() => {
+              handleUpdateOrderStatus(params.row.billcode,buttonContent.code)
+            }} >
+            {buttonContent.content}
+          </Button>
+        </Box>
+      }
     },
     {
       field: 'action',
@@ -46,43 +77,106 @@ function Bill() {
       sortable: false,
       headerAlign: 'center',
       renderCell: (params) => {
-        return <Box style={{ display: 'flex', justifyContent: 'center',width:"100%" }} >
-          <IconButton size="medium" sx={{ m: 1 }} onClick={() => { setDisplayBillDetails(true) }} >
+
+        return <Box style={{ display: 'flex', justifyContent: 'center', width: "100%" }} >
+          <IconButton size="medium" sx={{ m: 1 }} onClick={() => {
+            dispatch(getOrderById(params.row.billcode))
+            setDisplayBillDetails(true)
+          }} >
             <InfoOutlinedIcon />
           </IconButton>
         </Box>
       }
     }
-
   ]
-  const rows =
-    [
-      {
-        id: 1,
-        billcode: 'HĐ001',
-        createAt: '22/02/2024',
-        status: "Đã thanh toán",
-        paymentMethod:"Thanh toán trực tuyến",
-        shippingMethod:"Nhanh",
-        total: "20.000.000"
-      },
-      {
-        id: 2,
-        billcode: 'HĐ002',
-        createAt: '23/02/2024',
-        status: "Đã thanh toán",
-        paymentMethod:"Thanh toán khi nhận được hàng",
-        shippingMethod:"Hỏa tốc",
-        total: "34.000.000"
+  const columnsInvoice = [
+    {
+      field: 'billcode',
+      headerName: 'Mã hóa đơn',
+      minWidth: '300',
+      hideable: false
+
+    },
+    {
+      field: 'createAt',
+      headerName: "Ngày tạo",
+      minWidth: '250'
+    },
+    {
+      field: 'supplier',
+      headerName: "Nhà cung cấp",
+      minWidth: '300'
+    },
+    {
+      field: 'total',
+      headerName: "Tổng tiền",
+      minWidth: '300'
+    },
+    {
+      field: 'action',
+      headerName: 'Xem chi tiết',
+      minWidth: '140',
+      sortable: false,
+      headerAlign: 'center',
+      renderCell: (params) => {
+        return <Box style={{ display: 'flex', justifyContent: 'center', width: "100%" }} >
+          <IconButton size="medium" sx={{ m: 1 }} onClick={() => {
+            dispatch(getInvoiceById(params.row.billcode))
+            setDisplayInvoiceDetails(true)
+          }} >
+            <InfoOutlinedIcon />
+          </IconButton>
+        </Box>
       }
-      
-    ]
+    }
+  ]
+  const rowsOrder = orders.map((order) => (
+    {
+      id: order.id,
+      billcode: order.id,
+      createAt: order.createDate,
+      status: order.statusOrder,
+      paymentMethod: order.payment.name,
+      shippingMethod: `${order.shipment.name} (${order.shipment.description})`,
+      total: formatCurrency(order.totalPrice)
+    }
+  ))
+  const rowsInvoice = invoices.map((invoice) => (
+    {
+      id: invoice.id,
+      billcode: invoice.id,
+      createAt: invoice.createDate,
+      supplier: invoice.supplier.name,
+      total: formatCurrency(invoice.totalPrice)
+
+    }
+  ))
+  const handleUpdateOrderStatus = (orderId, status) => {
+    dispatch(updateOrderStatus({orderId:orderId,status:status,cancel:""}))
+  }
+  const convertOrderStatus = (status) => {
+    if (status === "Đang xử lý") return {
+      content: "Duyệt đơn hàng",
+      code: 1
+    }
+    else if (status === "Đã nhận đơn") return {
+      content: "Vận chuyển",
+      code: 2
+    }
+    else {
+      return {
+        content: status,
+        code: 3
+      }
+    }
+  }
   const [value, setValue] = useState(0)
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
   const [displayBillDetails, setDisplayBillDetails] = useState(false)
+  const [displayInvoiceDetails, setDisplayInvoiceDetails] = useState(false)
   return (
     <div>
       <Box>
@@ -95,17 +189,18 @@ function Bill() {
           <TabPanel value={value} index={0}>
             <DataGrid
               sx={{ boxShadow: 2, mt: 2 }}
-              columns={columns}
-              rows={rows}
+              columns={columnsOrder}
+              rows={rowsOrder}
               slots={{
                 toolbar: GridToolbar,
               }}
+              pageSizeOptions={[1, 2, 3]}
             ></DataGrid>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <DataGrid
-              columns={columns}
-              rows={rows}
+              columns={columnsInvoice}
+              rows={rowsInvoice}
               slots={{
                 toolbar: GridToolbar,
               }}
@@ -115,6 +210,7 @@ function Bill() {
         </Box>
       </Box>
       {displayBillDetails && <BillDetails setDisplayBillDetails={setDisplayBillDetails} typeBill={value} />}
+      {displayInvoiceDetails && <InvoiceDetails setDisplayInvoiceDetails={setDisplayInvoiceDetails} />}
     </div>
   )
 }

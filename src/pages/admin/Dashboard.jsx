@@ -1,5 +1,5 @@
-import { Box, Card, Divider, Grid, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Card, Divider, Grid, MenuItem, Select, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import ColorText from '../../components/Admin/ColorText'
 import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import CrisisAlertOutlinedIcon from '@mui/icons-material/CrisisAlertOutlined';
@@ -12,63 +12,66 @@ import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import StatisticChart from '../../components/Admin/Dashboard/StatisticChart';
 import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
 import RankProduct from '../../components/Admin/Dashboard/RankProduct';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchStatisticInMonth, getTop10BestSeller } from '../../redux/reducer/StatisticSlice';
+import { formatCurrency, formatNumberWithDots } from '../../components/basicFunction';
 function Dashboard() {
-    const top10 = [
-        {
-            "id": 1,
-            "name": "Máy lọc không khí chống dị ứng thú cưng Levoit Vital 100S",
-            "sale": 250
-        },
-        {
-            "id": 2,
-            "name": "Samsung Galaxy S24 Ultra 12GB 256GB",
-            "sale": 230
-        },
-        {
-            "id": 3,
-            "name": "Bàn chải điện Oral-B Vitality Crossaction Blue D12.513",
-            "sale": 210
-        },
-        {
-            "id": 4,
-            "name": "Apple iPhone 14 Pro Max 256GB",
-            "sale": 200
-        },
-        {
-            "id": 5,
-            "name": "Google Pixel 7 XL 128GB",
-            "sale": 180
-        },
-        {
-            "id": 6,
-            "name": "OnePlus 10 Pro 12GB 256GB",
-            "sale": 150
-        },
-        {
-            "id": 7,
-            "name": "Xiaomi Mi 13 Ultra 12GB 512GB",
-            "sale": 120
-        },
-        {
-            "id": 8,
-            "name": "Huawei P50 Pro 8GB 256GB",
-            "sale": 100
-        },
-        {
-            "id": 9,
-            "name": "Sony Xperia 1 III 12GB 256GB",
-            "sale": 80
-        },
-        {
-            "id": 10,
-            "name": "LG Velvet 3 5G 8GB 128GB",
-            "sale": 50
+    const dispatch = useDispatch()
+    
+    const getLast12Months = () => {
+        const months = [];
+        const now = new Date();
+        for (let i = 0; i < 12; i++) {
+            const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
+            
+            const year = monthStart.getFullYear();
+            const month = (monthStart.getMonth() + 1).toString().padStart(2, '0'); // Ensure two digits for month
+            const startDay = monthStart.getDate().toString().padStart(2, '0'); // Ensure two digits for day
+            const endDay = monthEnd.getDate().toString().padStart(2, '0'); // Ensure two digits for day
+
+            months.push({
+                month: `${month}/${year}`,
+                value: {
+                    start: `${year}-${month}-${startDay}`,
+                    end: `${year}-${month}-${endDay}`
+                }
+            });
         }
-    ]
+        return months.reverse();
+    }
+    const [selectedMonth,setSelectedMonth] = useState(getLast12Months().at(-1).month)
+    const statisticNumber = useSelector(state => state.statistic.statisticNumber)
+    const top10 = useSelector(state => state.statistic.top10BestSeller)
+    useEffect(()=>{
+        const valueDateMonth = getLast12Months().find((item)=> item.month == selectedMonth)?.value
+        if(valueDateMonth) dispatch(fetchStatisticInMonth(valueDateMonth))
+    },[selectedMonth])
+    useEffect(()=>{
+        dispatch(getTop10BestSeller())
+    },[])
+    const CustomSelect = styled(Select)(({ theme }) => ({
+        '& .MuiOutlinedInput-notchedOutline': {
+            border: 'none',
+        },
+        '& .MuiSelect-select': {
+            padding: '8px',
+            backgroundColor: 'transparent',
+            fontSize: "x-large"
+        },
+    }));
     return (
         <Box>
-            <Typography sx={style.pageTitle} variant='h5'>Thống kê doanh thu </Typography>
-            <Box sx={{marginBottom:"50px"}} >
+            <Typography sx={style.pageTitle} variant='h5'>
+                Thống kê trong tháng
+                <CustomSelect value={selectedMonth} onChange={(e)=>setSelectedMonth(e.target.value)} >
+                    {getLast12Months().map((month)=>{
+                        return (<MenuItem value={month.month} >{month.month}</MenuItem>)
+                    })}
+                </CustomSelect>
+            </Typography>
+            <Box sx={{ marginBottom: "50px" }} >
                 <Grid container rowSpacing={5} columnSpacing={5}>
                     <Grid item xs={12} sm={6} md={3}>
                         <Card sx={style.item}>
@@ -79,7 +82,7 @@ function Dashboard() {
                                 </Box>
                             </Box>
                             <Box sx={style.item.cardNumber}>
-                                <ColorText color="#2D9596" children="115" />
+                                <ColorText color="#2D9596" children={formatNumberWithDots(statisticNumber?.quantitySold)} />
                             </Box>
                             <Divider />
                             <Box sx={style.item.statistic}>
@@ -109,7 +112,7 @@ function Dashboard() {
                                 </Box>
                             </Box>
                             <Box sx={style.item.cardNumber}>
-                                <ColorText color="#2D9596" children="54.000.000 VND" />
+                                <ColorText color="#2D9596" children={formatCurrency(statisticNumber?.totalPrice)} />
                             </Box>
                             <Divider />
                             <Box sx={style.item.statistic}>
@@ -132,14 +135,14 @@ function Dashboard() {
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
                         <Card sx={style.item}>
-                            <Box sx={{ backgroundColor: "#2D9596" }}>
+                            <Box sx={{ backgroundColor: statisticNumber?.profit < 0?"#cc0000":"#2D9596" }}>
                                 <Box sx={style.item.cardTitle}>
                                     <PaidOutlinedIcon />
                                     <Box sx={style.item.cardTitle.text} >Lợi nhuận</Box>
                                 </Box>
                             </Box>
                             <Box sx={style.item.cardNumber}>
-                                <ColorText color="#2D9596" children="0 VND" />
+                                <ColorText color={statisticNumber?.profit < 0?"#cc0000":"#2D9596"} children={formatCurrency(statisticNumber?.profit)}  />
                             </Box>
                             <Divider />
                             <Box sx={style.item.statistic}>
@@ -169,7 +172,7 @@ function Dashboard() {
                                 </Box>
                             </Box>
                             <Box sx={style.item.cardNumber}>
-                                <ColorText color="#2D9596" children="54.000.000 VND" />
+                                <ColorText color="#2D9596" children={formatCurrency(statisticNumber?.cost)}  />
                             </Box>
                             <Divider />
                             <Box sx={style.item.statistic}>
@@ -190,7 +193,7 @@ function Dashboard() {
                             </Box>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={7} style={{maxHeight:"500px"}}>
+                    <Grid item xs={12} sm={12} md={7} style={{ maxHeight: "500px" }}>
                         <Card sx={style.item}>
                             <Box sx={{ backgroundColor: "#2D9596" }}>
                                 <Box sx={style.item.cardTitle}>
@@ -203,7 +206,7 @@ function Dashboard() {
                             </Box>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} sm={12} md={5} style={{maxHeight:"500px"}}>
+                    <Grid item xs={12} sm={12} md={5} style={{ maxHeight: "500px" }}>
                         <Card sx={style.item}>
                             <Box sx={{ backgroundColor: "#2D9596" }}>
                                 <Box sx={style.item.cardTitle}>
@@ -212,9 +215,9 @@ function Dashboard() {
                                 </Box>
                             </Box>
                             <Box sx={style.item.rankProductContainer}>
-                                {top10.map((product,index)=>{
-                                    return(
-                                        <RankProduct key={product.id} number={index+1} product={product} />
+                                {top10.map((product, index) => {
+                                    return (
+                                        <RankProduct key={product.product_id} number={index + 1} product={product} />
                                     )
                                 })}
                             </Box>

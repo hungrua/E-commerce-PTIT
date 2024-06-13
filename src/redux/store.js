@@ -10,6 +10,8 @@ import reviewSlice from "./reducer/ReviewSlice";
 import shipmentSlice from "./reducer/ShipmentSlice";
 import paymentSlice from "./reducer/PaymentSlice";
 import orderSlice from "./reducer/OrderSlice";
+import ImportSlice from "./reducer/ImportSlice";
+import StatisticSlice from "./reducer/StatisticSlice";
 
 const store = configureStore({
     reducer: {
@@ -23,7 +25,9 @@ const store = configureStore({
         review: reviewSlice.reducer,
         shipment: shipmentSlice.reducer,
         payment: paymentSlice.reducer,
-        order: orderSlice.reducer
+        order: orderSlice.reducer,
+        import: ImportSlice.reducer,
+        statistic: StatisticSlice.reducer
     }
 })
 
