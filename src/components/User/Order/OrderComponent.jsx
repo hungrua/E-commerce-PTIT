@@ -10,14 +10,12 @@ import BillDetails from '../../Admin/Bill/BillDetails'
 import { useDispatch } from 'react-redux';
 import { getOrderById, updateOrderStatus } from '../../../redux/reducer/OrderSlice';
 import { Confirm } from './Confirm';
-import { RatingProduct } from './RatingProduct';
 export const OrderComponent = (props) => {
     const dispatch = useDispatch()
     const { order } = props
     const [displayBillDetails, setDisplayBillDetails] = useState(false)
     const [displayCancelConfirm, setDisplayCancelConfirm] = useState(false)
     const [displayRecievedConfirm, setDisplayRecievedConfirm] = useState(false)
-    const [displayRatingProduct,setDisplayRatingProduct] = useState(false)
     const hanldeViewOrderDetails = () => {
         dispatch(getOrderById(order.id))
         setDisplayBillDetails(true)
@@ -102,12 +100,6 @@ export const OrderComponent = (props) => {
                                 className='px-2 py-1 outline-none rounded-md text-[#ffb900] border-[1px] border-[#ffb900] hover:text-white hover:bg-[#ffb900]'>
                                 Đã nhận được hàng
                             </button>}
-                        {(order.statusOrder === "Đã nhận hàng") &&
-                            <button
-                                onClick={() => setDisplayRatingProduct(true)}
-                                className='px-2 py-1 outline-none rounded-md text-[#ffb900] border-[1px] border-[#ffb900] hover:text-white hover:bg-[#ffb900]'>
-                                Đánh giá sản phẩm
-                            </button>}
                         <button
                             onClick={() => hanldeViewOrderDetails()}
                             className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>
@@ -120,7 +112,6 @@ export const OrderComponent = (props) => {
             {displayBillDetails && <BillDetails setDisplayBillDetails={setDisplayBillDetails} />}
             {displayCancelConfirm && <Confirm action="cancel" content="Bạn có chắc chắn muốn hủy đơn hàng này ?" yesAction={() => handleCancelBill()} noAction={() => setDisplayCancelConfirm(false)} />}
             {displayRecievedConfirm && <Confirm action="received" content="Bạn đã nhận được đơn hàng này ?" yesAction={() => handleReceivedBill()} noAction={() => setDisplayRecievedConfirm(false)} />}
-            {displayRatingProduct && <RatingProduct />}
         </div>
     )
 }

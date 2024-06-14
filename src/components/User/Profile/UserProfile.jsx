@@ -28,10 +28,12 @@ const UserProfile = (props) => {
     const [address, setAddress] = useState(loginUser.address)
     useEffect(() => {
         setUser(loginUser)
-        let dob = loginUser.dob.split("-")
-        setSelectedDay(dob[2].replace(/^0+/, ''))
-        setSelectedMonth(dob[1].replace(/^0+/, ''))
-        setSelectedYear(dob[0])
+        if (loginUser?.dob) {
+            let dob = loginUser.dob.split("-")
+            setSelectedDay(dob[2].replace(/^0+/, ''))
+            setSelectedMonth(dob[1].replace(/^0+/, ''))
+            setSelectedYear(dob[0])
+        }
     }, [])
     useEffect(() => {
         let maxDay = maxDayOfMonthInYear(selectedMonth, selectedYear)
@@ -92,7 +94,7 @@ const UserProfile = (props) => {
         setTimeout(() => {
             emailRef.current.focus();
         })
-        if(isChangeEmail) handleUpdateEmail()
+        if (isChangeEmail) handleUpdateEmail()
     }
 
     const handleChangePassword = () => {
@@ -185,7 +187,7 @@ const UserProfile = (props) => {
                     <input className="flex-1 h-9 px-3 py-4 border-solid border-[rgb(196_196_207)] border-[1px] rounded"
                         type="text" name=""
                         id="address" placeholder="Nhập địa chỉ thường trú" value={address}
-                        onChange={(e)=>setAddress(e.target.value)}
+                        onChange={(e) => setAddress(e.target.value)}
                     />
                 </div>
                 <div className="text-center">
@@ -208,7 +210,7 @@ const UserProfile = (props) => {
                         <div className="flex flex-col">
                             <span>Số điện thoại</span>
                             <input value={phoneNumber} disabled={!isChangePhoneNumber} className="p-1 rounded w-[250px]" ref={phoneNumberRef}
-                                onChange={(e)=>setPhoneNumber(e.target.value)}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
                             />
                         </div>
                     </div>
@@ -227,8 +229,8 @@ const UserProfile = (props) => {
                         <div className="flex flex-col col-span-1">
                             <span>Email</span>
                             <input type="email" ref={emailRef} disabled={!isChangeEmail} value={email}
-                            className="p-1 rounded w-[250px]"
-                            onChange={(e)=>setEmail(e.target.value)}
+                                className="p-1 rounded w-[250px]"
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                     </div>

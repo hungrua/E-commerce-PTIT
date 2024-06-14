@@ -1,13 +1,6 @@
 import { Box, IconButton, Grid, Button, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import PersonPinOutlinedIcon from '@mui/icons-material/PersonPinOutlined';
-import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined';
-import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
-import HomeWorkOutlinedIcon from '@mui/icons-material/HomeWorkOutlined';
-import StarRateOutlinedIcon from '@mui/icons-material/StarRateOutlined';
-import BasicDatePicker from '../BasicDatePicker';
 import { useSelector } from 'react-redux';
 import { formatCurrency } from '../../basicFunction';
 function BillDetails({ setDisplayBillDetails }) {
@@ -23,7 +16,7 @@ function BillDetails({ setDisplayBillDetails }) {
     }
     const getDiscount = () => {
         console.log(orderDetails.voucher)
-        if (orderDetails.infoOrder.voucher) {
+        if (orderDetails.infoOrder?.voucher) {
             const discountVoucher = orderDetails.infoOrder.voucher.voucher
             console.log(discountVoucher)
             let total = totalPriceOfProduct()

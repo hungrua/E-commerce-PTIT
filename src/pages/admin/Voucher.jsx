@@ -13,8 +13,8 @@ const Voucher = () => {
   const dispatch = useDispatch()
   const [displayAddVoucher, setDisplayAddVoucher] = useState(false)
   const [voucherList, setVoucherList] = useState([])
-  const [openConfirm,setOpenConfirm] = useState(false)
-  const [deleteId,setDeleteId] = useState(0)
+  const [openConfirm, setOpenConfirm] = useState(false)
+  const [deleteId, setDeleteId] = useState(0)
   var vouchers = useSelector((state) => state.voucher.vouchers)
   useEffect(() => {
     dispatch(fetchVoucherForAdmin())
@@ -23,7 +23,7 @@ const Voucher = () => {
     console.log(vouchers)
     setVoucherList(vouchers)
   }, [vouchers])
-  var message = useSelector((state)=> state.voucher.alert)
+  var message = useSelector((state) => state.voucher.alert)
   useEffect(() => {
     if (message !== undefined) notify(message.message, message.code)
     return () => {
@@ -87,7 +87,7 @@ const Voucher = () => {
           <IconButton size="medium" sx={{ m: 1 }} onClick={() => { handleOpenAddVoucher(params.row.id) }} >
             <ModeEditIcon color="info" />
           </IconButton>
-          <IconButton size="medium" sx={{ m: 1 }} onClick={()=>{handleDeleteVoucher(params.row.id)} }>
+          <IconButton size="medium" sx={{ m: 1 }} onClick={() => { handleDeleteVoucher(params.row.id) }}>
             <DeleteIcon color="error" />
           </IconButton>
         </Box>
@@ -103,21 +103,21 @@ const Voucher = () => {
       startDate: voucher.startDate,
       endDate: voucher.endDate,
       percent: voucher.discount,
-      limit: voucher.discountConditions*1000,
+      limit: voucher.discountConditions * 1000,
       numberOfVoucher: voucher.numberVoucher,
       numberOfVoucherLeft: voucher.numberVoucher
     }
   }
   )
-  const handleOpenAddVoucher = (id)=>{
+  const handleOpenAddVoucher = (id) => {
     dispatch(getVoucherById(id))
     setDisplayAddVoucher(true)
   }
-  const handleDeleteVoucher=(id)=>{
+  const handleDeleteVoucher = (id) => {
     setDeleteId(id)
     setOpenConfirm(true)
   }
-  const doDelete = (id) =>{
+  const doDelete = (id) => {
     dispatch(deleteVoucher(id))
     setOpenConfirm(false)
     setDeleteId(0)
@@ -140,11 +140,15 @@ const Voucher = () => {
             slots={{
               toolbar: GridToolbar,
             }}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 5 } }
+            }}
+            pageSizeOptions={[5, 10, 25]}
           ></DataGrid>
         </Box>
       </Box>
-      {displayAddVoucher && <AddVoucher setDisplayAddVoucher={setDisplayAddVoucher}  />}
-      {openConfirm && <Confirm noAction={()=>setOpenConfirm(false)} yesAction={()=>doDelete(deleteId)} name="VOUCHER" />}
+      {displayAddVoucher && <AddVoucher setDisplayAddVoucher={setDisplayAddVoucher} />}
+      {openConfirm && <Confirm noAction={() => setOpenConfirm(false)} yesAction={() => doDelete(deleteId)} name="VOUCHER" />}
     </div>
   )
 }

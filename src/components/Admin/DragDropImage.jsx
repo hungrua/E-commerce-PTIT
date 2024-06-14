@@ -86,7 +86,6 @@ export default function DragDropImage({ setAddImages,initImages }) {
                         )
                     })
                 }
-
             </Box>
 
         </Box>

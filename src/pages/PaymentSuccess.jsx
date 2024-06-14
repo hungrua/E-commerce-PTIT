@@ -11,7 +11,7 @@ const PaymentSuccess = () => {
     useEffect(() => {
         let orderParams = getUrlParams()
         const address = sessionStorage.getItem("receiveAddress")
-
+        console.log(orderParams)
         orderParams = {
             ...orderParams,
             shipment: JSON.parse(sessionStorage.getItem("choosenShipment")).id,
@@ -21,8 +21,10 @@ const PaymentSuccess = () => {
         const orderItemList =  orderItems.map((item)=> item.cartItemId) 
         const orderBody = {
             address: address,
-            itemOrders: orderItemList
+            itemOrders: orderItemList,
+            totalPrice: Number(orderParams.vnp_Amount)/100
         }
+        console.log(orderBody)
         if(!status) dispatch(createOrder({orderParams:orderParams,orderBody:orderBody}))
         return ()=>{
             sessionStorage.clear()

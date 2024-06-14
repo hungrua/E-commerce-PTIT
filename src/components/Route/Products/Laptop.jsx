@@ -43,11 +43,6 @@ const Laptop = () => {
                     return <ProductCard key={item.productId} details={item} />
                   })
                 }
-                {/* <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard /> */}
               </div>
             </div>
             {/* right */}

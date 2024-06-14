@@ -64,6 +64,8 @@ const userSlice = createSlice({
           }
           return user
         })
+        if(action.payload.role==="USER") state.loginUser = action.payload.newUser
+        
       })
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.alert = action.payload.data
@@ -150,6 +152,7 @@ export const addUser = createAsyncThunk("user/addUser", async (newUser) => {
 export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
   if(!newUser.passwordOld) newUser.password = null
   const token = getUser().token
+  const role = getUser().role
   const options = {
     method: "PUT",
     body: JSON.stringify(newUser),
@@ -162,7 +165,8 @@ export const editUser = createAsyncThunk("user/editUser", async (newUser) => {
   const data = await res.json();
   return {
     newUser: newUser,
-    data: data
+    data: data,
+    role: role
   };
 });
 export const deleteUser = createAsyncThunk("user/deleteUser", async (id) => {

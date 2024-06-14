@@ -153,8 +153,11 @@ function Bill() {
               slots={{
                 toolbar: GridToolbar,
               }}
-              pageSizeOptions={[1, 2, 3]}
-            ></DataGrid>
+              initialState={{
+                pagination: { paginationModel: { pageSize: 5 } }
+              }}
+              pageSizeOptions={[5, 10, 25]}
+            />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <DataGrid
@@ -164,6 +167,10 @@ function Bill() {
                 toolbar: GridToolbar,
               }}
               sx={{ boxShadow: 2, mt: 2 }}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 5 } }
+              }}
+              pageSizeOptions={[5, 10, 25]}
             ></DataGrid>
           </TabPanel>
         </Box>

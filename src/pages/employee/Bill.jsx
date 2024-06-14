@@ -14,11 +14,11 @@ function Bill() {
   const dispatch = useDispatch()
   const orders = useSelector((state) => state.order.orders)
   const invoices = useSelector((state) => state.import.invoices)
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(fetchOrder(null))
     dispatch(fetchInvoices())
     console.log(orders)
-  },[])
+  }, [])
   const columnsOrder = [
     {
       field: 'billcode',
@@ -63,7 +63,7 @@ function Bill() {
         return <Box style={{ display: 'flex', justifyContent: 'center', alignsItems: "center", height: "100%", width: "100%", }} >
           <Button disabled={params.row.status == "Đã nhận hàng" || params.row.status == "Đã hủy đơn" || params.row.status == "Đang vận chuyển"}
             onClick={() => {
-              handleUpdateOrderStatus(params.row.billcode,buttonContent.code)
+              handleUpdateOrderStatus(params.row.billcode, buttonContent.code)
             }} >
             {buttonContent.content}
           </Button>
@@ -152,7 +152,7 @@ function Bill() {
     }
   ))
   const handleUpdateOrderStatus = (orderId, status) => {
-    dispatch(updateOrderStatus({orderId:orderId,status:status,cancel:""}))
+    dispatch(updateOrderStatus({ orderId: orderId, status: status, cancel: "" }))
   }
   const convertOrderStatus = (status) => {
     if (status === "Đang xử lý") return {
@@ -194,7 +194,10 @@ function Bill() {
               slots={{
                 toolbar: GridToolbar,
               }}
-              pageSizeOptions={[1, 2, 3]}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 5 } }
+              }}
+              pageSizeOptions={[5, 10, 25]}
             ></DataGrid>
           </TabPanel>
           <TabPanel value={value} index={1}>
@@ -205,6 +208,10 @@ function Bill() {
                 toolbar: GridToolbar,
               }}
               sx={{ boxShadow: 2, mt: 2 }}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 5 } }
+              }}
+              pageSizeOptions={[5, 10, 25]}
             ></DataGrid>
           </TabPanel>
         </Box>

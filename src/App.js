@@ -25,6 +25,7 @@ import {getUser} from "./redux/reducer/UserSlice.jsx"
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import EmployeeHomePage from "./pages/employee/EmployeeHomePage.jsx";
 import OrderSuccess from "./pages/OrderSuccess.jsx";
+import { BuyedProducts } from "./components/User/Rating/BuyedProducts.jsx";
 
 const App = () => {
   const user = getUser();
@@ -49,6 +50,7 @@ const App = () => {
               <Route path="/test" element={<NotFoundPage />} />
               <Route path="/paymentSuccess" element={<PaymentSuccess />} />
               <Route path="/orderSuccess" element={<OrderSuccess />} />
+              <Route path="/buyedProduct" element= {<BuyedProducts />} />
               {
                 user.role === 'ADMIN' && (
                   <Route path="/admin/*" element={<AdminHomePage />} />

@@ -21,8 +21,8 @@ function UserManager() {
   var users = useSelector((state) => state.users.users);
   const [customers, setCustomers] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [openConfirm,setOpenConfirm] = useState(false)
-  const [deleteId,setDeleteId] = useState(0)
+  const [openConfirm, setOpenConfirm] = useState(false)
+  const [deleteId, setDeleteId] = useState(0)
   useEffect(() => {
     dispatch(fetchUser())
   }, [dispatch]);
@@ -36,10 +36,10 @@ function UserManager() {
     setCustomers(customers);
     setEmployees(employees);
   }, [users]);
-  useEffect(()=>{
+  useEffect(() => {
     console.log(message)
-    if(message!=undefined) notify(message.message,message.code)
-  },[message])
+    if (message != undefined) notify(message.message, message.code)
+  }, [message])
   const columnsCustomer = [
     {
       field: "username",
@@ -103,7 +103,7 @@ function UserManager() {
                 handleDeleteUser(params.row.id);
               }}
             >
-              <DeleteIcon color="error"/>
+              <DeleteIcon color="error" />
             </IconButton>
           </Box>
         );
@@ -215,13 +215,13 @@ function UserManager() {
   const [displayAddUser, setDisplayAddUser] = useState(false);
   const handleOpenDisplayAddUser = (id) => {
     dispatch(getUserById(id));
-    setTimeout(setDisplayAddUser(true),1000);
+    setTimeout(setDisplayAddUser(true), 1000);
   };
   const handleDeleteUser = (id) => {
     setDeleteId(id)
     setOpenConfirm(true)
   };
-  const doDelete = (id) =>{
+  const doDelete = (id) => {
     dispatch(deleteUser(id));
     setOpenConfirm(false)
     setDeleteId(0)
@@ -256,6 +256,10 @@ function UserManager() {
               slots={{
                 toolbar: GridToolbar,
               }}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 5 } }
+              }}
+              pageSizeOptions={[5, 10, 25]}
             ></DataGrid>
           </TabPanel>
           <TabPanel value={value} index={1}>
@@ -277,7 +281,10 @@ function UserManager() {
                 toolbar: GridToolbar,
               }}
               sx={{ boxShadow: 2, mt: 2 }}
-              pageSizeOptions={[5,10,15]}
+              initialState={{
+                pagination: { paginationModel: { pageSize: 5 } }
+              }}
+              pageSizeOptions={[5, 10, 25]}
             />
           </TabPanel>
         </Box>
@@ -285,8 +292,8 @@ function UserManager() {
       {displayAddUser && (
         <AddUser setDisplayAddUser={setDisplayAddUser} typeUser={value} />
       )}
-      {openConfirm && <Confirm noAction={()=>setOpenConfirm(false)} yesAction={()=>doDelete(deleteId)} name="USER" />}
-      
+      {openConfirm && <Confirm noAction={() => setOpenConfirm(false)} yesAction={() => doDelete(deleteId)} name="USER" />}
+
     </div>
   );
 }

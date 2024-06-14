@@ -87,7 +87,7 @@ const ProductCard = ({ details }) => {
                 </div>
             </Link>
             <div className="absolute top-1/3 right-0 opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-300">
-                <Link to={`/san-pham/${details.id}`}>
+                <Link onClick={()=>dispatch(getProductById(details.productId))} to={`/san-pham/${details.productId}`}>
                     <div className="mr-2 p-1.5 rounded-full border-2 border-solid border-red cursor-pointer text-[#f66315] hover:text-white hover:bg-[#f66315] transition-all duration-300 ease-in-out">
                         <FaCartPlus size={20} />
                     </div>

@@ -19,6 +19,8 @@ import { getOwnInformation } from "../redux/reducer/UserSlice";
 import { notify } from "../components/Admin/notify";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { BuyedProducts } from "../components/User/Rating/BuyedProducts";
+import { fetchProduct } from "../redux/reducer/ProductSlice";
 const UserAccountPage = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
@@ -31,6 +33,7 @@ const UserAccountPage = () => {
     }, [message])
     useEffect(() => {
         dispatch(getOwnInformation())
+        dispatch(fetchProduct({ brandId:"", categoryId:"", key:"" }))
     }, [dispatch])
     useEffect(() => {
         if (id !== undefined) setActiveTab(id)
@@ -52,7 +55,8 @@ const UserAccountPage = () => {
         2: {
             name: 'Nhận xét sản phẩm',
             icon: <BiSolidCommentDetail />,
-            display: true
+            display: true,
+            tab: <BuyedProducts />
         },
         3: {
             name: 'Đánh giá sản phẩm',

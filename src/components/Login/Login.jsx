@@ -40,7 +40,7 @@ const Login = () => {
           </Link>
           <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-[#e95221] md:text-2xl">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-[#e95221] md:text-2xl text-center">
                 Đăng nhập tài khoản
               </h1>
               <form className="space-y-4 md:space-y-6" >
