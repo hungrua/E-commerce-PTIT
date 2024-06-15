@@ -8,15 +8,16 @@ const getUser = () => {
 const productSlice = createSlice({
   name: "product",
   initialState: {
+    fullProducts: [],
     products: [],
     laptop: [],
     phone: [],
     accessory: [],
     brand: [],
-    variations:[],
-    variationsObjArr:[],
+    variations: [],
+    variationsObjArr: [],
     currentSetProduct: {
-      productId:-1,
+      productId: -1,
       category: {
         id: 1,
         variations: []
@@ -43,12 +44,12 @@ const productSlice = createSlice({
     resetAlert: (state, action) => {
       state.alert = action.payload
     },
-    changeVariationArr :(state,action)=>{
+    changeVariationArr: (state, action) => {
       const tmp = action.payload
       let tmpArr = current(state.variationsObjArr)
       let arr = []
-      arr = tmpArr.map((item)=> {
-        if(item.id == tmp.id) return tmp
+      arr = tmpArr.map((item) => {
+        if (item.id == tmp.id) return tmp
         else return item
       })
       state.variationsObjArr = arr
@@ -60,10 +61,13 @@ const productSlice = createSlice({
         state.brand = action.payload
       })
       .addCase(fetchProduct.fulfilled, (state, action) => {
-        state.products = action.payload;
-        state.laptop = action.payload.filter(item => item.category.id == 1)
-        state.phone = action.payload.filter(item => item.category.id == 2)
-        state.accessory = action.payload.filter(item => item.category.id == 3)
+        if (action.payload.key === "") {
+          state.fullProducts = action.payload.data
+        }
+        state.products = action.payload.data;
+        state.laptop = action.payload.data.filter(item => item.category.id == 1)
+        state.phone = action.payload.data.filter(item => item.category.id == 2)
+        state.accessory = action.payload.data.filter(item => item.category.id == 3)
 
       })
       .addCase(getProductById.fulfilled, (state, action) => {
@@ -142,11 +146,11 @@ const productSlice = createSlice({
       })
       .addCase(getVariationByCategory.fulfilled, (state, action) => {
         const data = action.payload
-        let variationsObjArr = data.map((item)=>{
-            return {
-                id: item.id,
-                variationOptionValue:""
-            }
+        let variationsObjArr = data.map((item) => {
+          return {
+            id: item.id,
+            variationOptionValue: ""
+          }
         })
         state.variations = data
         state.variationsObjArr = variationsObjArr
@@ -160,7 +164,10 @@ export const fetchProduct = createAsyncThunk(
     const res = await fetch(IP + `/customer/api/items?brandId=${brandId}&categoryId=${categoryId}&key=${key}`);
     const data = await res.json();
     console.log(data)
-    return data;
+    return {
+      key: key,
+      data: data,
+    };
   }
 );
 export const getProductById = createAsyncThunk(
@@ -168,7 +175,7 @@ export const getProductById = createAsyncThunk(
   async (id) => {
     const empty =
     {
-      productId:-1,
+      productId: -1,
       category: {
         id: 1,
         variations: []
@@ -189,7 +196,7 @@ export const getProductById = createAsyncThunk(
 );
 export const addProduct = createAsyncThunk(
   "product/addProduct",
-  async ({newProduct,brandId}) => {
+  async ({ newProduct, brandId }) => {
 
     console.log(newProduct)
     const token = getUser().token
@@ -272,7 +279,7 @@ export const getProductDetailsById = createAsyncThunk(
 );
 export const addProductDetails = createAsyncThunk(
   "product/addProductDetails",
-  async ({variationsOption,productId}) => {
+  async ({ variationsOption, productId }) => {
     const token = getUser().token
     const options = {
       method: "POST",
@@ -292,11 +299,11 @@ export const addProductDetails = createAsyncThunk(
 );
 export const editProductDetails = createAsyncThunk(
   "product/editProductDetails",
-  async ({newProductDetails,productId}) => {
+  async ({ newProductDetails, productId }) => {
     const token = getUser().token
     const noChange = [...newProductDetails.variationOptions]
     const productItemId = newProductDetails.variationOptions.pop().productItemId
-    let fetchDataArr =  newProductDetails.variationOptions.map((item)=>{
+    let fetchDataArr = newProductDetails.variationOptions.map((item) => {
       return {
         id: item.id_variation_option,
         value: item.value
@@ -333,7 +340,7 @@ export const deleteProductDetails = createAsyncThunk(
     };
     const res = await fetch(IP + `/admin/api/item/detail?productItemId=${productItemId}`, options);
     const data = await res.json();
-    
+
     return {
       productId: productId,
       id: productItemId,
