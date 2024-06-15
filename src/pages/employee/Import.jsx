@@ -11,10 +11,11 @@ import ImportSlice, { importSupply } from "../../redux/reducer/ImportSlice";
 import AddImport from "../../components/Employee/Product/AddImport";
 import { fetchSupplier } from "../../redux/reducer/SupplierSlice";
 import { Confirm } from "../../components/Employee/Confirm";
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 function Import() {
   const dispatch = useDispatch();
-  var message = useSelector((state) => state.users.alert);
+  var message = useSelector((state) => state.import.alert);
   const invoice = useSelector((state) => state.import.itemInvoices)
   const totalImport = invoice.reduce((total, item) => total + item.importPrice * item.importQuantity, 0)
   const suppliers = useSelector(state => state.supplier.suppliers)
@@ -22,13 +23,13 @@ function Import() {
   const [supplier, setSupplier] = useState(null)
   const [editItemInvoice, setEditItemInvoice] = useState(null)
   useEffect(() => {
-    console.log(message)
+    dispatch(fetchSupplier())
+    dispatch(ImportSlice.actions.resetAlert(undefined))
+  }, [dispatch])
+  
+  useEffect(() => {
     if (message != undefined) notify(message.message, message.code)
   }, [message])
-  useEffect(() => {
-    dispatch(fetchSupplier())
-  }, [])
-
   const [displayImport, setDisplayImport] = useState(false);
 
   const deleteFromInvoice = (id) => {
@@ -42,15 +43,27 @@ function Import() {
     setSupplier(event.target.value);
   };
   const handleImportSupply = () => {
-    const productItems = invoice.map((item)=> ({
+    const productItems = invoice.map((item) => ({
       id: item.id,
-      soldPrice:item.soldPrice,
+      soldPrice: item.soldPrice,
       importPrice: item.importPrice,
-      importQuantity:item.importQuantity
+      importQuantity: item.importQuantity
     }))
     const importInfo = {
-      productItems:productItems,
+      productItems: productItems,
       supplierId: supplier
+    }
+    console.log(importInfo)
+    if (importInfo.supplierId === null) {
+      notify("Chưa chọn nhà cung cấp", 3)
+      setOpenConfirm(false)
+      return
+    }
+    if (productItems.length === 0) {
+      notify("Danh sách nhập trống", 3)
+      setOpenConfirm(false)
+
+      return
     }
     dispatch(importSupply(importInfo))
     setOpenConfirm(false)
@@ -81,7 +94,7 @@ function Import() {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            {suppliers.map((supplier)=>
+            {suppliers.map((supplier) =>
               (<MenuItem value={supplier.id}>{supplier.name}</MenuItem>)
             )
             }
@@ -144,8 +157,8 @@ function Import() {
             </TableContainer>
           </Box>
         </Box>
-        {invoice.length!=0 && <Box display="flex" justifyContent="flex-end" py={1}>
-          <Button variant="contained" color="info" onClick={()=>setOpenConfirm(true)}>Nhập hàng</Button>
+        {invoice.length != 0 && <Box display="flex" justifyContent="flex-end" py={1}>
+          <Button variant="contained" color="info" onClick={() => setOpenConfirm(true)}>Nhập hàng</Button>
         </Box>}
       </Box>
       <Box mt={2}>
@@ -158,7 +171,7 @@ function Import() {
         <AddImport setDisplayImport={setDisplayImport} itemInvoices={editItemInvoice} />
       )}
       {openConfirm && <Confirm noAction={() => setOpenConfirm(false)} yesAction={() => handleImportSupply()} />}
-
+      <ToastContainer />
     </div>
   );
 }

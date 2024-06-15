@@ -36,12 +36,17 @@ const CheckoutBill = (props) => {
     const handlePay = () => {
         const payment = JSON.parse(sessionStorage.getItem("choosenPayment"))
         const shipment = JSON.parse(sessionStorage.getItem("choosenShipment"))
+        const address = sessionStorage.getItem("receiveAddress")
         if (!payment) {
             notify("Bạn chưa chọn phương thức thanh toán", 2)
             return;
         }
         if (!shipment) {
             notify("Bạn chưa chọn phương thức giao hàng", 2)
+            return;
+        }
+        if (!address) {
+            notify("Bạn chưa chọn địa chỉ nhận hàng", 2)
             return;
         }
         if (payment.name.includes("VNPay")) {

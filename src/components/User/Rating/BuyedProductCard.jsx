@@ -47,14 +47,14 @@ export const BuyedProductCard = ({ details, setDisplayRatingProduct,setDisplayCo
                     <img src={productInfo.img}
                         alt="" />
                 </div>
-                <div className="absolute top-0 h-[31px] w-20 left-[-5px]"
+                {/* <div className="absolute top-0 h-[31px] w-20 left-[-5px]"
                     style={{
                         background: "url('/static/discount.png') center no-repeat",
                         backgroundSize: "contain"
                     }}>
                     <p className="text-xs font-bold text-center text-white my-[5px]">Giảm 12%</p>
 
-                </div>
+                </div> */}
 
             </div>
             <div className="px-2.5 pb-3">

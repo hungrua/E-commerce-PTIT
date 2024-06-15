@@ -12,6 +12,9 @@ const ImportSlice = createSlice({
     invoiceDetails:{}
   },
   reducers: {
+    resetAlert: (state, action) => {
+      state.alert = action.payload
+    },
     addToInvoice: (state, action) => {
       state.itemInvoices.push(action.payload)
     },
@@ -25,12 +28,19 @@ const ImportSlice = createSlice({
         if(item.id === action.payload.id) return action.payload
         return item
       })
+      
     }
   },
   extraReducers:(buider)=>{
     buider
     .addCase(importSupply.fulfilled,(state,action)=>{
       state.itemInvoices = []
+      const arrResult = action.payload
+      const check = !arrResult.some((result) => result.code ==0)
+      if(check) state.alert ={
+        code: 1,
+        message: "Nhập hàng thành công"
+      } 
     })
     .addCase(fetchInvoices.fulfilled,(state,action)=>{
       state.invoices = action.payload

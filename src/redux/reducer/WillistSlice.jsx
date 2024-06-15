@@ -8,15 +8,18 @@ const willistSlice = createSlice({
   name: "willist",
   initialState: {
     willist: [],
-    viewed:[]
+    viewed:[],
   },
   reducers: {
-
+    resetAlert: (state, action) => {
+      state.alert = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(addToWillist.fulfilled, (state, action) => {
         console.log(action.payload)
+        state.alert = action.payload.data
       })
       .addCase(fetchWillist.fulfilled,(state,action)=>{
         state.willist = action.payload

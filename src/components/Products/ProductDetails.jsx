@@ -19,6 +19,7 @@ import { notify } from "../Admin/notify";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchCommentOfProduct } from "../../redux/reducer/ReviewSlice";
+import willistSlice, { addToWillist } from "../../redux/reducer/WillistSlice";
 const ProductDetails = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
@@ -32,16 +33,22 @@ const ProductDetails = () => {
   const images = product.images ? product.images.map(img => img.path) : []
 
   const message = useSelector((state) => state.cart.alert)
+  const messageFavour = useSelector(state => state.willist.alert)
   useEffect(() => {
     dispatch(getProductById(id))
     dispatch(fetchCommentOfProduct(id))
   }, [])
-  useEffect((product) => {
+  useEffect(() => {
     if (message !== undefined) notify(message.message, message.code)
     return () => {
       dispatch(cartSlice.actions.resetAlert(undefined))
     }
   }, [message, dispatch])
+
+  useEffect(() => {
+    if (messageFavour !== undefined) notify(messageFavour.message, messageFavour.code)
+    dispatch(willistSlice.actions.resetAlert(undefined))
+  }, [messageFavour])
   useEffect(() => {
     if (product.productId != -1) {
       let priceArray = product.itemDetails.map(item => {
@@ -195,7 +202,9 @@ const ProductDetails = () => {
                   <span className="font-[700]">{selectItemDetail ? selectItemDetail.quantity_sold : displayProduct.totalSold}</span>
                   <span className="text-[14px] mt-[1px]"> lượt mua</span>
                 </div>
-                <div className="w-[30px] h-[30px] relative rounded-[50%] flex items-center justify-center text-[#f66315] bg-[#feefe8] text-[13px] duration-300 cursor-pointer hover:text-white hover:bg-[#f66315]">
+                <div className="w-[30px] h-[30px] relative rounded-[50%] flex items-center justify-center text-[#f66315] bg-[#feefe8] text-[13px] duration-300 cursor-pointer hover:text-white hover:bg-[#f66315]"
+                  onClick={()=>dispatch(addToWillist(displayProduct))}
+                >
                   <FaRegHeart />
                 </div>
               </div>
@@ -257,7 +266,7 @@ const ProductDetails = () => {
                 </div>
                 <div className="mt-[20px] pr-[20px] flex gap-[10px]">
                   <div className="bg-[#fff] hover:bg-[#f66315] text-[#031230]  hover:text-[white] border border-solid border-[#f66315] min-w-[180px] cursor-pointer relative overflow-hidden transition-all my-0  rounded-[40px] flex items-center justify-center"
-                    
+
                     onClick={handleAddToCart}
                   >
                     <span className="flex items-center justify-center py-[10px] px-[20px]">
@@ -306,12 +315,12 @@ const ProductDetails = () => {
                   }
 
                   {
-                     displayProduct.itemDetails && displayProduct.itemDetails[0].slice(0,displayProduct.itemDetails[0].length-1).map((attr) => {
-                      if(attr.important!==1)
-                        return(
+                    displayProduct.itemDetails && displayProduct.itemDetails[0].slice(0, displayProduct.itemDetails[0].length - 1).map((attr) => {
+                      if (attr.important !== 1)
+                        return (
                           <div key={attr.id_variation_option} className="flex items-center gap-[10px]">
                             <span className="flex w-[14px] h-[14px] items-center justify-center shrink-0">
-                              <MdOutlineCheckCircle  color="red" />
+                              <MdOutlineCheckCircle color="red" />
                             </span>
                             <span className="text-[#444545] text-[16px] font-[400]">
                               {attr.name}: <span className="font-bold">{attr.value}</span>

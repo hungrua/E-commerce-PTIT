@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { notify } from '../Admin/notify';
 
 const DeliveryAddress = (props) => {
     const userInfo = useSelector(state => state.users.loginUser)
@@ -21,8 +22,13 @@ const DeliveryAddress = (props) => {
         }
     }, [userInfo])
     const handleChangeAddress = () => {
-        setIsChangeAddress(!isChangeAddress);
+        if(isChangeAddress===false ) setIsChangeAddress(!isChangeAddress);
         if (isChangeAddress === true) {
+            if(address===""){
+                notify("Không được để trống địa chỉ",3)
+                return;
+            }
+            setIsChangeAddress(!isChangeAddress); 
             sessionStorage.setItem("receiveAddress",address)
         }
         setTimeout(() => {

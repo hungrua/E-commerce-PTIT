@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { notify } from '../../Admin/notify';
 import { editUser } from '../../../redux/reducer/UserSlice';
+import { hasEmptyField } from '../../basicFunction';
 
 const ChangePassword = (props) => {
     const loginUser = props.loginUser
@@ -22,6 +23,10 @@ const ChangePassword = (props) => {
             ...loginUser,
             password: newPassword,
             passwordOld: oldPassword
+        }
+        if (hasEmptyField(newUser)) {
+            notify("Chưa điền đủ thông tin", 3)
+            return;
         }
         dispatch(editUser(newUser))
     }

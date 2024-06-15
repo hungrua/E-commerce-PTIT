@@ -13,7 +13,6 @@ const Reviews = (props) => {
     const comments = useSelector((state)=> state.review.comments)
     const [statistics, setStatstics] = useState([]);
     const [percentages, setPercentages] = useState([]);
-    const [currentStarRating, setCurrentStarRating] = useState(0)
     const [comment, setComment] = useState("")
 
     useEffect(() => {
@@ -21,21 +20,10 @@ const Reviews = (props) => {
             setStatstics([10, 20, 30, 40, 10]);
         }
         fetchStatistics();
-        // setCurrentStarRating(rating)
     }, [])
     useEffect(() => {
         setPercentages(statistics)
     }, [statistics])
-    const handleAddComment = ()=>{
-        if(comment ==="") {
-            notify("Vui lòng nhập nội dung bình luận",3)
-            return;
-        }
-        const commentObj = {
-            content: comment
-        }
-        dispatch(addComment({id:id,comment:commentObj}))
-    }
     return (
         <div className="p-[30px] rounded-b-[12px] bg-[#feefe8] relative z-1">
             <div>
@@ -46,7 +34,7 @@ const Reviews = (props) => {
                                 {rating} <span className="text-[24px]">/5</span>
                             </p>
                             <div className="flex ml-4 gap-2 text-lg">
-                                <StarDisplay rating={currentStarRating} />
+                                <StarDisplay rating={rating} />
                             </div>
                         </div>
 
