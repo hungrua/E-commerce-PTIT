@@ -4,6 +4,8 @@ import { IoMdMail } from "react-icons/io";
 import { IoIosLock } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { editUser } from "../../../redux/reducer/UserSlice";
+import { hasEmptyField } from "../../basicFunction";
+import { notify } from "../../Admin/notify";
 
 
 const UserProfile = (props) => {
@@ -108,6 +110,11 @@ const UserProfile = (props) => {
             dob: [selectedYear, selectedMonth.toString().padStart(2, '0'), selectedDay.toString().padStart(2, '0')].join("-"),
             address: address
         }
+        console.log(newUser)
+        if (hasEmptyField(newUser)) {
+            notify("Chưa điền đủ thông tin", 3)
+            return;
+        }
         dispatch(editUser(newUser))
     }
 
@@ -116,12 +123,21 @@ const UserProfile = (props) => {
             ...loginUser,
             phoneNumber: phoneNumber
         }
+        if (hasEmptyField(newUser)) {
+            notify("Chưa điền đủ thông tin", 3)
+            return;
+        }
+
         dispatch(editUser(newUser))
     }
     const handleUpdateEmail = () => {
         const newUser = {
             ...loginUser,
             email: phoneNumber
+        }
+        if (hasEmptyField(newUser)) {
+            notify("Chưa điền đủ thông tin", 3)
+            return;
         }
         dispatch(editUser(newUser))
     }

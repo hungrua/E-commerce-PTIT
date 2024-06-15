@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategory } from "../../../redux/reducer/CategorySlice";
 import { fetchCartItem } from "../../../redux/reducer/CartSlice";
 import { fetchProduct } from "../../../redux/reducer/ProductSlice";
+import { Recommender } from "./Recommender/Recommender";
 
 const Header = () => {
   const navigate = useNavigate()
@@ -88,14 +89,16 @@ const Header = () => {
             <div className="flex items-center lg:order-2">
               <div className="flex gap-[0.8rem] items-center">
                 <div className="flex gap-[0.8rem] items-center">
-                  <form className="flex items-center w-96 justify-end">
+                  <form className="flex items-center w-96 justify-end relative">
                     <input type="text" placeholder="Search..." className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500"
                       onChange={(e) => setSearchValue(e.target.value)} value={searchValue} />
                     <button type="submit" className="bg-[#00B4CC] text-white w-10 h-10 flex items-center justify-center rounded-r-md"
                       onClick={handleSearch}>
                       <FaSearch />
                     </button>
-
+                    {searchValue && <div className="bg-[#ffffff] w-full absolute top-full left-0 z-10 rounded-md shadow-[0px_2px_10px_#000014]">
+                      <Recommender searchValue={searchValue} />
+                    </div>}
                   </form>
                 </div>
                 <div className="flex gap-[0.8rem] items-center">

@@ -23,16 +23,16 @@ function AddUser({ setDisplayAddUser, typeUser }) {
     const [position, setPosition] = useState("USER");
     const [currentUserOb, setCurrentUserOb] = useState({
         id: null,
-        username: "",
-        name: "",
-        email: "",
-        password: "",
-        address: "",
-        createDate: "",
-        modifiedDate: "",
-        roles: "",
-        phoneNumber: "",
-        dob: "",
+        username: null,
+        name: null,
+        email: null,
+        password: null,
+        address: null,
+        createDate: null,
+        modifiedDate: null,
+        roles: null,
+        phoneNumber: null,
+        dob: null,
     });
     var user = useSelector((state) => state.users.currentSetUser);
     var alert = useSelector((state) => state.users.alert);
@@ -60,9 +60,11 @@ function AddUser({ setDisplayAddUser, typeUser }) {
     const handleSaveUser = () => {
         console.log(position);
         if (currentUserOb.id === null || currentUserOb.id === "") {
-            dispatch(addUser(currentUserOb));
+            console.log(currentUserOb)
+            // dispatch(addUser(currentUserOb));
         } else {
-            dispatch(editUser(currentUserOb));
+            console.log(currentUserOb)
+            // dispatch(editUser(currentUserOb));
         }
         handleCloseAddUser();
     };

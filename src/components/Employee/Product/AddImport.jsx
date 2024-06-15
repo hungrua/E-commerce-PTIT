@@ -16,6 +16,8 @@ import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
 import MoveToInboxOutlinedIcon from '@mui/icons-material/MoveToInboxOutlined';
 import { useDispatch, useSelector } from "react-redux";
 import ImportSlice from "../../../redux/reducer/ImportSlice";
+import { hasEmptyOrNullField } from "../../basicFunction";
+import { notify } from "../../Admin/notify";
 const AddImport = ({ setDisplayImport,itemDetails,row,itemInvoices }) => {
   const dispatch = useDispatch();
   const [sellPrice,setSellPrice] = useState(itemInvoices?.soldPrice??itemDetails.at(-1).price)
@@ -40,6 +42,11 @@ const AddImport = ({ setDisplayImport,itemDetails,row,itemInvoices }) => {
       importPrice:Number(importPrice),
       importQuantity:importQuantity
     }
+    if(hasEmptyOrNullField(itemInvoice)){
+      notify("Điền chưa đủ thông tin",3)
+      return;
+    }
+
     if(!itemInvoices) dispatch(ImportSlice.actions.addToInvoice(itemInvoice))
     else dispatch(ImportSlice.actions.editInvoice(itemInvoice))
     setDisplayImport(false)
