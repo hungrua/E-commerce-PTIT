@@ -27,11 +27,14 @@ import EmployeeHomePage from "./pages/employee/EmployeeHomePage.jsx";
 import OrderSuccess from "./pages/OrderSuccess.jsx";
 import { BuyedProducts } from "./components/User/Rating/BuyedProducts.jsx";
 import { WillistPage } from "./pages/WillistPage.jsx";
+import ChatPage from "./components/Chatbot/ChatAI.jsx";
+import ChatAI from "./components/Chatbot/ChatAI.jsx";
 
 const App = () => {
   const user = getUser();
   console.log(user )
   return (
+    
     <Provider store={store}>
       <Routes> 
         {
@@ -48,7 +51,7 @@ const App = () => {
               <Route path="/order-status/:id" element={<UserAccountPage />} />
               <Route path="/search" element={<SearchProductsPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
-              <Route path="/test" element={<NotFoundPage />} />
+              <Route path="/test" element={<ChatPage />} />
               <Route path="/paymentSuccess" element={<PaymentSuccess />} />
               <Route path="/orderSuccess" element={<OrderSuccess />} />
               <Route path="/buyedProduct" element= {<BuyedProducts />} />
@@ -76,6 +79,7 @@ const App = () => {
         }
 
       </Routes>
+      <ChatAI/>
     </Provider >
   );
 };
