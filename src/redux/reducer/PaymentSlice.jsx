@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP } from "../../config/const";
+import { notify } from "../../components/Admin/notify";
 const getUser = () => {
   const user = JSON.parse(localStorage.getItem("authorization"))
   return user
@@ -23,7 +24,10 @@ const paymentSlice = createSlice({
         state.payments = action.payload;
       })
       .addCase(getVNPay.fulfilled,(state,action) =>{
-        window.location.href = action.payload.url
+        if(action.payload.code===1) window.location.href = action.payload.url
+        else {
+          console.log(action.payload)
+        }
       }) 
   },
 });

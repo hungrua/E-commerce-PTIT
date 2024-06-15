@@ -15,25 +15,38 @@ import Footer from "../components/Layout/Footer/Footer";
 import Notification from "../components/User/Notification/Notification";
 import ChangePassword from "../components/User/Profile/ChangePassword";
 import { useDispatch, useSelector } from "react-redux";
-import { getOwnInformation } from "../redux/reducer/UserSlice";
+import userSlice, { getOwnInformation } from "../redux/reducer/UserSlice";
 import { notify } from "../components/Admin/notify";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { BuyedProducts } from "../components/User/Rating/BuyedProducts";
 import { fetchProduct } from "../redux/reducer/ProductSlice";
+import reviewSlice from "../redux/reducer/ReviewSlice";
 const UserAccountPage = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
     const [activeTab, setActiveTab] = useState(0)
     const loginUser = useSelector(state => state.users.loginUser)
-    var message = useSelector((state) => state.users.alert);
+    const message = useSelector((state) => state.users.alert);
+    const messageReview = useSelector((state) => state.review.alert);
+
     useEffect(() => {
         console.log(message)
-        if (message != undefined) notify(message.message, message.code)
+        if (message != undefined) {
+            dispatch(userSlice.actions.resetAlert(undefined))
+            notify(message.message, message.code)
+        }
     }, [message])
     useEffect(() => {
+        console.log(messageReview)
+        if (messageReview != undefined) {
+            dispatch(reviewSlice.actions.resetAlert(undefined))
+            notify(messageReview.message, messageReview.code)
+        }
+    }, [messageReview])
+    useEffect(() => {
         dispatch(getOwnInformation())
-        dispatch(fetchProduct({ brandId:"", categoryId:"", key:"" }))
+        dispatch(fetchProduct({ brandId: "", categoryId: "", key: "" }))
     }, [dispatch])
     useEffect(() => {
         if (id !== undefined) setActiveTab(id)

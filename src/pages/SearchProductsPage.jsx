@@ -11,7 +11,7 @@ const SearchProductsPage = () => {
     return (
         <div>
             <Header />
-            <SearchProducts query={query}/>
+            <SearchProducts query={query} />
             <Footer />
         </div>
     );

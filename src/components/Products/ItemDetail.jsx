@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 const ItemDetail = (props) => {
     const { data: itemDetail, setSelectItemDetail, setSelectImage, selectItemDetail } = props;
-    const isAvailable = itemDetail.at(-1).quantity_stock
+    const isAvailable = itemDetail.at(-1).quantity_stock > itemDetail.at(-1).quantity_sold
 
     const handleChange = () => {
         setSelectItemDetail(itemDetail.at(-1));
@@ -37,7 +37,7 @@ const ItemDetail = (props) => {
         // </div>
         <div className='relative'>
             <div
-                className={`block bg-[#f3f4f6] pt-[5px] pb-[5px] pl-[10px] pr-[10px] border rounded-[10px] relative overflow-hidden z-1 before:content-[''] before:absolute before:top-full before:left-0 before:w-full before:h-full before:bg-white before:transition-all before:duration-500 before:z-2 hover:before:top-0 before:ease-in-out hover:shadow-[0px_0px_9px_1px_#add8e6] ${isSelected ? 'bg-white shadow-[0px_0px_9px_1px_#add8e6]' : ''} ${isAvailable === 0 ? 'pointer-events-none' : ''}`}
+                className={`block bg-[#f3f4f6] pt-[5px] pb-[5px] pl-[10px] pr-[10px] border rounded-[10px] relative overflow-hidden z-1 before:content-[''] before:absolute before:top-full before:left-0 before:w-full before:h-full before:bg-white before:transition-all before:duration-500 before:z-2 hover:before:top-0 before:ease-in-out hover:shadow-[0px_0px_9px_1px_#add8e6] ${isSelected ? 'bg-white shadow-[0px_0px_9px_1px_#add8e6]' : ''} ${!isAvailable ? 'pointer-events-none' : ''}`}
                 onClick={handleChange}
             >
                 <div className="relative items-center w-full z-3 text-sm">
@@ -56,7 +56,7 @@ const ItemDetail = (props) => {
                     }
                 </div>
             </div>
-            {isAvailable === 0 && (
+            {!isAvailable && (
                 <div className='absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10 text-xl font-bold'>
                     Hết hàng
                 </div>

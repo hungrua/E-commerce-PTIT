@@ -18,7 +18,7 @@ const StarRating = ({ totalStars = 5,setCurrentStarRating }) => {
   };
 
   return (
-    <div style={{ display: 'flex', cursor: 'pointer' }}>
+    <div style={{ display: 'flex', cursor: 'pointer',justifyContent:"center" }}>
       {Array.from({ length: totalStars }, (_, index) => {
         const starValue = index + 1;
         return (

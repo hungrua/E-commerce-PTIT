@@ -67,7 +67,7 @@ const CartItem = (props) => {
                     </div> */}
                 </div>
             </div>
-            <div className="font-bold">{formatCurrency(itemInfo.details.price)}</div>
+            <div className="font-bold">{formatCurrency(itemInfo.price)}</div>
             <div className="flex justify-start">
                 <button className="border-solid border-[1px] border-[rgb(200_200_200)] cursor-pointer rounded-tl-lg rounded-bl-lg px-[6px]"
                     onClick={() => handleChangeQuantity(1)}

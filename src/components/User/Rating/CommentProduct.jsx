@@ -6,41 +6,68 @@ import ColorText from '../../Admin/ColorText'
 import { FaStar } from "react-icons/fa";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import StarRating from './StarRating';
-import { notify } from '../../Admin/notify';
-import { addRating } from '../../../redux/reducer/ReviewSlice';
 import { useDispatch } from 'react-redux';
-export const RatingProduct = ({ setDisplayRatingProduct, ratingProduct }) => {
+import { addComment } from '../../../redux/reducer/ReviewSlice';
+import { notify } from '../../Admin/notify';
+export const CommentProduct = ({ setDisplayCommentProduct, ratingProduct }) => {
     const dispatch = useDispatch()
     const [currentStarRating, setCurrentStarRating] = useState(0)
-    const handleRating =()=>{
-        if(currentStarRating==="") {
-            notify("Đánh giá phải trong khoảng 1 đến 5 sao",3)
+    const [comment, setComment] = useState("")
+    const handleComment =()=>{
+        if(comment==="") {
+            notify("Không được để trống nhận xét",3)
             return
         }
         const body = {
-            ranking: currentStarRating
+            content: comment
         }
-        dispatch(addRating({id:ratingProduct.productId,ranking:body}))
-        setDisplayRatingProduct(false)
+        dispatch(addComment({id:ratingProduct.productId,comment:body}))
+        setDisplayCommentProduct(false)
     }
     return (
         <Box style={styles.coverer} >
             <Box style={styles.confirmBox}>
                 <Box style={{ display: 'flex', justifyContent: "flex-end" }}>
                     <IconButton
-                        onClick={() => { setDisplayRatingProduct(false) }}
+                        onClick={() => { setDisplayCommentProduct(false) }}
                     >
                         <CancelOutlinedIcon color='error' />
                     </IconButton>
                 </Box>
                 <Box style={styles.contentBox}>
-                    <Typography variant='h6' >Đánh giá sản phẩm</Typography>
-                    <StarRating setCurrentStarRating={setCurrentStarRating} />
-                    <Box display="flex" justifyContent="center" mt={1}>
+                    <Typography variant='h6'>Thông tin sản phẩm</Typography>
+                    <Box sx={styles.images} mt={2} >
+                        {
+                            ratingProduct.images.map((img, index) => {
+                                return (
+                                    <Box sx={styles.images.image} key={index} >
+                                        <img src={img.path} alt={img.id} style={{ height: "100%" }} ></img>
+                                    </Box>
+                                )
+                            })
+                        }
+                    </Box>
+                    <Box mt={3}>
+                        <Box> <span className='font-medium'>Tên sản phẩm : </span>{ratingProduct.name}</Box>
+                    </Box>
+                    <Box mt={1}>
+                        <Box> <span className='font-medium'>Lượt đánh giá : </span>{ratingProduct.number_rating} </Box>
+                    </Box>
+                    <Box mt={1}  >
+                        <Box display="flex" alignItems="center"><span className='font-medium'>Sao hiện tại : </span> <span className='mx-1'>{ratingProduct.rating}</span><FaStar color="#ffa534" /></Box>
+                    </Box>
+                    <Typography variant='h6' mt={1}>Nhận xét sản phẩm</Typography>
+                    <textarea value={comment} style={{ border: "1px solid gray", width: "100%", maxHeight: "100px", padding: "10px" }}
+                        max
+                        onChange={(e) => {
+                            setComment(e.target.value)
+                        }} >
+                    </textarea>
+                    <Box display="flex" justifyContent="flex-end" mt={1}>
                         <button
-                            onClick={()=> handleRating()}
-                            className='px-2 py-1 outline-none rounded-md text-[#ffa500] border-[1px] border-[#ffa500] hover:text-white hover:bg-[#ffa500]'>
-                            Gửi đánh giá
+                            onClick={()=>handleComment()}
+                            className='px-2 py-1 outline-none rounded-md text-[rgb(10_104_255)] border-[1px] border-[rgb(10_104_255)] hover:text-white hover:bg-[rgb(10_104_255)]'>
+                            Gửi nhận xét
                         </button>
                     </Box>
                 </Box>
@@ -61,7 +88,7 @@ const styles = {
     },
     confirmBox: {
         backgroundColor: "white",
-        // width: "50%",
+        width: "50%",
         position: 'absolute',
         top: "50%",
         left: "50%",

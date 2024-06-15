@@ -61,7 +61,6 @@ const productSlice = createSlice({
       })
       .addCase(fetchProduct.fulfilled, (state, action) => {
         state.products = action.payload;
-        
         state.laptop = action.payload.filter(item => item.category.id == 1)
         state.phone = action.payload.filter(item => item.category.id == 2)
         state.accessory = action.payload.filter(item => item.category.id == 3)
@@ -160,6 +159,7 @@ export const fetchProduct = createAsyncThunk(
   async ({ brandId, categoryId, key }) => {
     const res = await fetch(IP + `/customer/api/items?brandId=${brandId}&categoryId=${categoryId}&key=${key}`);
     const data = await res.json();
+    console.log(data)
     return data;
   }
 );

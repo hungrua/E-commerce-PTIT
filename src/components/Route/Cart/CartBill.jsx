@@ -66,7 +66,7 @@ const CartBill = (props) => {
 
             <button className="w-full bg-[rgb(254_56_52)] py-[13px] px-[10px] text-white text-base mt-[10px] rounded outline-none"
                 onClick={handleCheckout}>
-                Mua hàng <span>(2)</span>
+                Mua hàng <span>({cartItem.length})</span>
             </button>
             <div className="mt-[10px]">
                 <div className="overflow-hidden rounded-[5px] hidden lg:block">

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { FaHeart, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { FaCartPlus } from "react-icons/fa6";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getProductById } from "../../../redux/reducer/ProductSlice";
-import { RatingProduct } from "./RatingProduct";
+import { RatingProduct } from "./CommentProduct";
 
-export const BuyedProductCard = ({ details, setDisplayRatingProduct, setRatingProduct }) => {
+export const BuyedProductCard = ({ details, setDisplayRatingProduct,setDisplayCommentProduct, setRatingProduct }) => {
     const [productInfo, setProductInfo] = useState(details)
     const dispatch = useDispatch()
+
     useEffect(() => {
         let priceArray = details.itemDetails.map(item => {
             return item.at(-1).price
@@ -85,16 +86,30 @@ export const BuyedProductCard = ({ details, setDisplayRatingProduct, setRatingPr
                     <div className="pl-2 text-[13px]">( {productInfo.numberRating} đánh giá)</div>
                 </div>
                 <div className="mt-8">
-                    <div
-                        onClick={() => {
-                            setRatingProduct(details)
-                            setDisplayRatingProduct(true)
-                        }}
-                        className="mt-3 border border-solid border-[#f66315] min-w-[120px] rounded-[2rem] absolute left-3 right-3 bottom-3 ">
-                        <div className="p-3 text-[#fff] cursor-pointer relative bg-[#f66315] hover:bg-[#fff] hover:text-[#031230] duration-300 mx-auto rounded-[4rem] items-center justify-center flex">
-                            <span className="text-[16px] font-[500] leading-[1.2]">
-                                Đánh giá sản phẩm
-                            </span>
+                    <div className="flex absolute left-0 right-0  bottom-3 justify-evenly  ">
+                        <div
+                            onClick={() => {
+                                setRatingProduct(details)
+                                setDisplayRatingProduct(true)
+                            }}
+                            className="mt-3 border border-solid border-[#f66315] min-w-[120px] rounded-[2rem] ">
+                            <div className="p-3 text-[#fff] cursor-pointer relative bg-[#f66315] hover:bg-[#fff] hover:text-[#031230] duration-300 mx-auto rounded-[4rem] items-center justify-center flex">
+                                <span className="text-[16px] font-[500] leading-[1.2]">
+                                    Đánh giá
+                                </span>
+                            </div>
+                        </div>
+                        <div
+                            onClick={() => {
+                                setRatingProduct(details)
+                                setDisplayCommentProduct(true)
+                            }}
+                            className="mt-3 border border-solid border-[#00b4cc] min-w-[120px] rounded-[2rem] ">
+                            <div className="p-3 text-[#fff] cursor-pointer relative bg-[#00b4cc] hover:bg-[#fff] hover:text-[#00b4cc] duration-300 mx-auto rounded-[4rem] items-center justify-center flex">
+                                <span className="text-[16px] font-[500] leading-[1.2]">
+                                    Nhận xét
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

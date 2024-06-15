@@ -12,6 +12,7 @@ import paymentSlice from "./reducer/PaymentSlice";
 import orderSlice from "./reducer/OrderSlice";
 import ImportSlice from "./reducer/ImportSlice";
 import StatisticSlice from "./reducer/StatisticSlice";
+import willistSlice from "./reducer/WillistSlice";
 
 const store = configureStore({
     reducer: {
@@ -27,7 +28,8 @@ const store = configureStore({
         payment: paymentSlice.reducer,
         order: orderSlice.reducer,
         import: ImportSlice.reducer,
-        statistic: StatisticSlice.reducer
+        statistic: StatisticSlice.reducer,
+        willist: willistSlice.reducer
     }
 })
 

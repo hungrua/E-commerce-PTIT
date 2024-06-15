@@ -26,6 +26,7 @@ import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import EmployeeHomePage from "./pages/employee/EmployeeHomePage.jsx";
 import OrderSuccess from "./pages/OrderSuccess.jsx";
 import { BuyedProducts } from "./components/User/Rating/BuyedProducts.jsx";
+import { WillistPage } from "./pages/WillistPage.jsx";
 
 const App = () => {
   const user = getUser();
@@ -51,6 +52,7 @@ const App = () => {
               <Route path="/paymentSuccess" element={<PaymentSuccess />} />
               <Route path="/orderSuccess" element={<OrderSuccess />} />
               <Route path="/buyedProduct" element= {<BuyedProducts />} />
+              <Route path="/willist" element= {<WillistPage />} />
               {
                 user.role === 'ADMIN' && (
                   <Route path="/admin/*" element={<AdminHomePage />} />

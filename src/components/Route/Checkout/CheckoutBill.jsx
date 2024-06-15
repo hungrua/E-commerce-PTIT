@@ -46,7 +46,8 @@ const CheckoutBill = (props) => {
         }
         if (payment.name.includes("VNPay")) {
             let body = {
-                totalPrice: total - discount + shipmentFee
+                totalPrice: total - discount + shipmentFee,
+                itemOrders : orderItems.map((item)=> item.cartItemId) 
             }
             dispatch(getVNPay(body))
         }

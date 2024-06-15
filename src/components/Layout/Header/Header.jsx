@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   FaAngleDown,
   FaRegBell,
-  FaUser
+  FaUser,
+  FaRegHeart
 } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
@@ -14,6 +15,7 @@ import HeaderNotification from "./HeaderNotification";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategory } from "../../../redux/reducer/CategorySlice";
 import { fetchCartItem } from "../../../redux/reducer/CartSlice";
+import { fetchProduct } from "../../../redux/reducer/ProductSlice";
 
 const Header = () => {
   const navigate = useNavigate()
@@ -66,6 +68,7 @@ const Header = () => {
     e.preventDefault();
     if (searchValue.length !== 0) {
       navigate("/search?query=" + searchValue)
+      dispatch(fetchProduct({ brandId: "", categoryId: "", key: searchValue }))
     }
   }
 
@@ -111,6 +114,14 @@ const Header = () => {
                       className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
                     >
                       <FaUser className="text-[16px] hover:text-[#f66315]" />
+                    </Link>
+                  </div>
+                  <div>
+                    <Link
+                      to="/willist"
+                      className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
+                    >
+                      <FaRegHeart className="text-[16px] hover:text-[#f66315]" />
                     </Link>
                   </div>
                   <div>
@@ -205,10 +216,18 @@ const Header = () => {
                   </li>
                   <li>
                     <Link
-                      to="/order-status/2"
+                      to="/order-status/1"
                       className="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Tra đơn hàng
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/order-status/2"
+                      className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
+                    >
+                      Sản phẩm đã mua
                     </Link>
                   </li>
                   {/* <li>
@@ -296,6 +315,14 @@ const Header = () => {
                       className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Tra đơn hàng
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/order-status/2"
+                      className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
+                    >
+                      Sản phẩm đã mua
                     </Link>
                   </li>
                   {/* <li>

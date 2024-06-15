@@ -50,7 +50,7 @@ const ProductDetails = () => {
       let totalSold = product.itemDetails.reduce((a, b) => a + b.at(-1).quantity_sold, 0)
       let tmpProduct = {
         ...product,
-        isAvailable: !product.itemDetails.some(item => item.at(-1).quantity_stock ===0),
+        isAvailable: product.itemDetails.some(item => item.at(-1).quantity_stock > item.at(-1).quantity_sold),
         minPrice: formatCurrency(Math.min(...priceArray)),
         maxPrice: formatCurrency(Math.max(...priceArray)),
         totalSold: totalSold
@@ -168,7 +168,7 @@ const ProductDetails = () => {
               </div>
               <div className="flex gap-[28px]">
                 <div className="flex items-center gap-1">
-                  <span className="font-[700] text-[#f6af15]">{displayProduct.rating}</span>
+                  <span className="font-[700] text-[#f6af15]">{rating}</span>
                   <div className="flex">
                     {
                       Array.from({ length: parseInt(displayProduct.rating) }, (_, index) => (
@@ -257,6 +257,7 @@ const ProductDetails = () => {
                 </div>
                 <div className="mt-[20px] pr-[20px] flex gap-[10px]">
                   <div className="bg-[#fff] hover:bg-[#f66315] text-[#031230]  hover:text-[white] border border-solid border-[#f66315] min-w-[180px] cursor-pointer relative overflow-hidden transition-all my-0  rounded-[40px] flex items-center justify-center"
+                    
                     onClick={handleAddToCart}
                   >
                     <span className="flex items-center justify-center py-[10px] px-[20px]">
@@ -377,7 +378,7 @@ const ProductDetails = () => {
             </div>
           ) : null}
           {active === 1 ? (
-            <Reviews id={id} rating={rating} />
+            <Reviews id={id} rating={rating} number_rating={displayProduct.number_rating} />
           ) : null}
         </div>
       </div>

@@ -11,12 +11,20 @@ const reviewSlice = createSlice({
         comments: []
     },
     reducers: {
-
+        resetAlert: (state, action) => {
+            state.alert = action.payload
+          },
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchCommentOfProduct.fulfilled, (state, action) => {
                 state.comments = action.payload
+            })
+            .addCase(addComment.fulfilled,(state,action)=>{
+                state.alert = action.payload
+            })
+            .addCase(addRating.fulfilled,(state,action)=>{
+                state.alert = action.payload
             })
     }
 })
@@ -50,6 +58,23 @@ export const addComment = createAsyncThunk('review/addComment',
             body: JSON.stringify(comment)
         }
         const res = await fetch(`${IP}/api/comment?itemId=${id}`,options)
+        const data = res.json()
+        return data
+    }
+)
+
+export const addRating = createAsyncThunk('review/addRating',
+    async ({id,ranking}) => {
+        const token = getUser().token
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(ranking)
+        }
+        const res = await fetch(`${IP}/api/review?itemId=${id}`,options)
         const data = res.json()
         return data
     }

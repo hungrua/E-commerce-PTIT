@@ -8,7 +8,6 @@ const Phone = () => {
   const phone = useSelector(state => state.product.phone)
   useEffect(() => {
     dispatch(fetchProduct({ brandId: "", categoryId: "", key: "" }))
-    console.log(1)
   }, [dispatch])
   return (
     <div className="relative mt-[100px]">
@@ -59,6 +58,9 @@ const Phone = () => {
             {/* right */}
             <div className="w-[70%] px-[7px] max-sm:w-full">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+                {
+                  console.log(phone)
+                }
                 {
                   phone.map(item => {
                     return <ProductCard key={item.productId} details={item} />

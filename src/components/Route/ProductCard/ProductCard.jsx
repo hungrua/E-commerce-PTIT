@@ -4,6 +4,7 @@ import { FaCartPlus } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { getProductById } from "../../../redux/reducer/ProductSlice";
+import { addToWillist } from "../../../redux/reducer/WillistSlice";
 
 const ProductCard = ({ details }) => {
     const [productInfo, setProductInfo] = useState(details)
@@ -22,6 +23,7 @@ const ProductCard = ({ details }) => {
             numberRating : details.number_rating
         }
         setProductInfo(productDetail)
+        console.log(details)
     }, [])
 
     const formatCurrency = (value) => {
@@ -92,7 +94,9 @@ const ProductCard = ({ details }) => {
                         <FaCartPlus size={20} />
                     </div>
                 </Link>
-                <div className="mt-2 mr-2 p-1.5 rounded-full border-2 border-solid border-red cursor-pointer text-[#f66315] hover:text-red-600 hover:bg-gray-200 transition-all duration-300 ease-in-out">
+                <div
+                onClick={()=> dispatch(addToWillist(details))}
+                className="mt-2 mr-2 p-1.5 rounded-full border-2 border-solid border-red cursor-pointer text-[#f66315] hover:text-red-600 hover:bg-gray-200 transition-all duration-300 ease-in-out">
                     <FaHeart size={20} />
                 </div>
             </div>

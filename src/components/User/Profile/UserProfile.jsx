@@ -99,7 +99,7 @@ const UserProfile = (props) => {
 
     const handleChangePassword = () => {
         setIsChangePassword(!isChangePassword);
-        props.setActiveTab(6);
+        props.setActiveTab(5);
     }
     const handleUpdateBasicInfo = () => {
         const newUser = {

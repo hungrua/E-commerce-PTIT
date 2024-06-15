@@ -13,23 +13,24 @@ const Review = (props) => {
         }
         return acronym;
     }
-    const getDurationCreateAccount = () => {
-        let created = new Date(user.createDate);
-        let now = new Date();
-        let days = parseInt((now - created) / (1000 * 3600 * 24));
-        let months = parseInt(days / 30);
-        let years = parseInt(days / 365);
-        if(years >= 1) {
-            return years + " năm trước";
-        }
-        if(months >= 1 ) {
-            return months + " tháng trước";
-        }
-        if (days < 1) {
-            return "hôm nay";
-        }
-        return days + " ngày trước"
-    }
+    // const getDurationCreateAccount = () => {
+    //     console.log(data)
+    //     let created = new Date(user.createDate);
+    //     let now = new Date();
+    //     let days = parseInt((now - created) / (1000 * 3600 * 24));
+    //     let months = parseInt(days / 30);
+    //     let years = parseInt(days / 365);
+    //     if(years >= 1) {
+    //         return years + " năm trước";
+    //     }
+    //     if(months >= 1 ) {
+    //         return months + " tháng trước";
+    //     }
+    //     if (days < 1) {
+    //         return "hôm nay";
+    //     }
+    //     return days + " ngày trước"
+    // }
     return (
         <div className='bg-[rgb(168,233,245)] p-3 rounded-lg flex'>
             <div className='w-1/4 flex justify-center items-center flex-col '>
@@ -44,9 +45,6 @@ const Review = (props) => {
                 <div className=''>
                     <div>
                         {data.user.name}
-                    </div>
-                    <div className='text-sm italic text-[rgb(128,128,137)]'>
-                        Đã tham gia {getDurationCreateAccount()}
                     </div>
                 </div>
             </div>
@@ -69,10 +67,6 @@ const Review = (props) => {
                 <div className="pb-4">
                     <p>{data.content}</p>
                 </div>
-                {/* <div className="flex gap-x-4">
-                    <button className="px-3 py-1 border-solid border-[#198754] text-[#198754] border-[1px] rounded hover:bg-[#198754] hover:text-white flex items-center">Chỉnh sửa bình luận</button>
-                    <button className="px-3 py-1 border-solid border-[#dc3545] text-[#dc3545] border-[1px] rounded hover:bg-[#dc3545] hover:text-white flex items-center">Xóa bình luận</button>
-                </div> */}
             </div>
         </div>
     );

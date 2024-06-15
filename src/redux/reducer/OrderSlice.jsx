@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { IP } from "../../config/const";
+import { notify } from "../../components/Admin/notify";
 const getUser = () => {
   const user = JSON.parse(localStorage.getItem("authorization"))
   return user
@@ -11,16 +12,18 @@ const orderSlice = createSlice({
     orderDetails: {}
   },
   reducers: {
+
   },
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.fulfilled, (state, action) => {
         state.orderStatus = action.payload.data
         console.log(action.payload.data)
-        console.log(action.payload.paymentId)
         if (action.payload.paymentId === 1) {
-          window.location.href = "http://localhost:3000/orderSuccess"
+          if(action.payload.data.code ===1 ) window.location.href = "http://localhost:3000/orderSuccess"
+          else notify(action.payload.data.message,action.payload.data.code)
         }
+        
       })
       .addCase(fetchOrder.fulfilled, (state, action) => {
         state.orders = action.payload

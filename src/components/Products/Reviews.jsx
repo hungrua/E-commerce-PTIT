@@ -7,7 +7,7 @@ import { notify } from '../Admin/notify';
 import { addComment } from '../../redux/reducer/ReviewSlice';
 import StarDisplay from './StarDisplay';
 const Reviews = (props) => {
-    const {id,rating} = props
+    const {id,rating,number_rating} = props
     const dispatch = useDispatch()
     const [reviews, setReviews] = useState([])
     const comments = useSelector((state)=> state.review.comments)
@@ -21,7 +21,7 @@ const Reviews = (props) => {
             setStatstics([10, 20, 30, 40, 10]);
         }
         fetchStatistics();
-        setCurrentStarRating(rating)
+        // setCurrentStarRating(rating)
     }, [])
     useEffect(() => {
         setPercentages(statistics)
@@ -43,14 +43,16 @@ const Reviews = (props) => {
                     <div className="mb-[20px]">
                         <div className='flex max-[800px]:flex-col items-center'>
                             <p className="text-[#f6af15] font-[700] text-[40px]">
-                                {currentStarRating} <span className="text-[24px]">/5</span>
+                                {rating} <span className="text-[24px]">/5</span>
                             </p>
                             <div className="flex ml-4 gap-2 text-lg">
                                 <StarDisplay rating={currentStarRating} />
                             </div>
                         </div>
 
-                        <span>({statistics.reduce((a, b) => a + b, 0)} đánh giá)</span>
+                        <span>( 
+                            {/* {statistics.reduce((a, b) => a + b, 0)} */}
+                            {number_rating} đánh giá)</span>
                     </div>
 
                     <div>

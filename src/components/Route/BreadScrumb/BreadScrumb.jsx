@@ -14,10 +14,10 @@ const BreadScrumb = () => {
                 </div>
             </div>
             <div  className="flex pt-[30px] pb-[30px] gap-x-[10px]">
+                {/* <Tag/>
                 <Tag/>
                 <Tag/>
-                <Tag/>
-                <Tag/>
+                <Tag/> */}
             </div>
         </div>
 

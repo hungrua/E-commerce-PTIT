@@ -9,8 +9,9 @@ import { useParams } from "react-router-dom";
 
 const ProductListPage = () => {
     const {category} = useParams()
-    const [categoryId,setCategoryId] = useState(1)
+    const [categoryId,setCategoryId] = useState(category)
     useEffect(()=>{
+        console.log(category)
         setCategoryId(category=="laptop"?1:category=="dienthoai"?2:3)
     },[category])
     return (
@@ -19,7 +20,7 @@ const ProductListPage = () => {
             <div className="px-[62px] pt-2.5 bg-[#f6f6f6]">
                 <BreadScrumb />
                 <div className="flex">
-                    <Filter />
+                    {/* <Filter /> */}
                     <ProductsGrid categoryId={categoryId} />
                 </div>
                 <div className="mt-5">
