@@ -1,11 +1,88 @@
 import { AppBar, Badge, Box, IconButton, Toolbar } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo.png';
+import mqtt from "mqtt";
+
 function AppHeader(props) {
+    //------------------------------Begin: Notification test-----------------------------------
+    const [client, setClient] = useState(null);
+    const [notiQuantity, setNotiQuantity] = useState(0);
+    const role = JSON.parse(localStorage.getItem("authorization"));
+
+    const mqttConnect = (url, options) => {
+        console.log(options.username);
+        setClient(mqtt.connect(url, options));
+    };
+
+    useEffect(() => {
+        const url = `ws://localhost:8083/mqtt`;
+        const options = {
+            username: "test_mqtt1_" + role.role,
+            password: "1234",
+            clean: true,
+            reconnectPeriod: 1000, // ms
+            connectTimeout: 30 * 1000, // ms
+        };
+        mqttConnect(url, options)
+    }, [])
+
+    useEffect(() => {
+        // connect
+        if (client) {
+            client.on("connect", () => {
+                // setConnectStatus("Connected");
+                console.log("connection successful");
+                // setConnectSuccess(true);
+                mqttSub(client);
+            });
+            client.on("error", (err) => {
+                console.error("Connection error: ", err);
+                client.end();
+            });
+            client.on("reconnect", () => {
+                // setConnectStatus("Reconnecting");
+            });
+            client.on("message", (topic, message) => {
+                const payload = { topic, message: message.toString() };
+                setNotiQuantity(payload.message);
+                // console.log(message);
+            });
+        }
+    }, [client]);
+    // đăng ký nhận tin nhắn từ topic
+    const onFinish = () => {
+        const url = `ws://localhost:8083/mqtt`;
+        const options = {
+            username: "test_mqtt1_" + role.role,
+            password: "Tronghuong2002@",
+            clean: true,
+            reconnectPeriod: 1000, // ms
+            connectTimeout: 30 * 1000, // ms
+        };
+        mqttConnect(url, options);
+        // mqttSub()
+    };
+    const mqttSub = (client) => {
+        if (client) {
+            client.subscribe("buy", 2, (error) => {
+                if (error) {
+                    console.log("Subscribe to topics error", error);
+                    return;
+                }
+                console.log("Đã đăng ký tới topic buy");
+                // setIsSub(true);
+            });
+        }
+    };
+
+    // mqttConnect(url, options)
+    // mqttSub()
+    //------------------------------End: Notification test-----------------------------------
+
     const handleLogout = () => {
         localStorage.removeItem("authorization")
         window.location.href = "/login"
@@ -23,7 +100,7 @@ function AppHeader(props) {
                     src={logo} />
                 <Box sx={{ flexGrow: 1 }} />
                 <IconButton title='Notification' color='secondary'>
-                    <Badge badgeContent={14} color='error'>
+                    <Badge badgeContent={notiQuantity} color='error'>
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
