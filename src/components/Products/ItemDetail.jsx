@@ -40,7 +40,7 @@ const ItemDetail = (props) => {
                 className={`block bg-[#f3f4f6] pt-[5px] pb-[5px] pl-[10px] pr-[10px] border rounded-[10px] relative overflow-hidden z-1 before:content-[''] before:absolute before:top-full before:left-0 before:w-full before:h-full before:bg-white before:transition-all before:duration-500 before:z-2 hover:before:top-0 before:ease-in-out hover:shadow-[0px_0px_9px_1px_#add8e6] ${isSelected ? 'bg-white shadow-[0px_0px_9px_1px_#add8e6]' : ''} ${!isAvailable ? 'pointer-events-none' : ''}`}
                 onClick={handleChange}
             >
-                <div className="relative items-center w-full z-3 text-sm">
+                <div className="relative items-center w-full z-0 text-sm">
                     {
                         console.log(itemDetail)
                         
@@ -57,7 +57,7 @@ const ItemDetail = (props) => {
                 </div>
             </div>
             {!isAvailable && (
-                <div className='absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-4 text-xl font-bold'>
+                <div className='absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-1 text-xl font-bold'>
                     Hết hàng
                 </div>
             )}

@@ -27,7 +27,7 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrder.fulfilled, (state, action) => {
         state.orders = action.payload
-        console.log(action.payload)
+        console.log(action.payload.reverse())
       })
       .addCase(getOrderById.fulfilled, (state, action) => {
         state.orderDetails = action.payload
