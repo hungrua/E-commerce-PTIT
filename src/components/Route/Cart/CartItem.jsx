@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import cartSlice, { deleteCartItem, updateCartItem } from '../../../redux/reducer/CartSlice';
 import { formatCurrency } from '../../basicFunction';
+import { notify } from '../../Admin/notify';
 
 
 const CartItem = (props) => {
@@ -14,19 +15,24 @@ const CartItem = (props) => {
     const [quantity, setQuantity] = useState(itemInfo.quantity)
     const preOrder = useSelector(state => state.cart.preOrder)
     const [checked, setChecked] = useState(() => {
-        return preOrder.find(item => item.cartItemId === itemInfo.cartItemId)?true:false
+        return preOrder.find(item => item.cartItemId === itemInfo.cartItemId) ? true : false
     })
     const renderName = (name) => {
         let attrString = ""
-        itemInfo.details.map((attr)=>{
-            if(attr.important) attrString+=`- ${attr.value} ` 
+        itemInfo.details.map((attr) => {
+            if (attr.important) attrString += `- ${attr.value} `
         })
-        attrString= attrString.substring(1,attrString.length)
+        attrString = attrString.substring(1, attrString.length)
         return `${name} ( ${attrString} )`
     }
     const handleChangeQuantity = (value) => {
         if (quantity < 2 && value == 1) return
         let afterCount = quantity - value
+        const productLeft = itemInfo.details.at(-1).quantity_stock - itemInfo.details.at(-1).quantity_sold
+        if (afterCount > productLeft) {
+            notify("Không còn sản phẩm trong kho để thêm", 2)
+            return;
+        }
         setQuantity(afterCount)
         let cartItem = {
             cartItemId: itemInfo.cartItemId,
