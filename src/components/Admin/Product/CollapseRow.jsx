@@ -61,6 +61,10 @@ const CollapseRow = (props) => {
         setOpenConfirmProductDetail(false)
         setDeleteProductDetailId(0)
     }
+    const inStock =(sold,in_stock) =>{
+        if(sold>in_stock) return 0
+        return in_stock-sold
+    }
 
     return (
         <React.Fragment>
@@ -137,7 +141,7 @@ const CollapseRow = (props) => {
                                                 })}
                                                 <TableCell align='center'>{otherAttr.price??0}</TableCell>
                                                 <TableCell align='center'>{otherAttr.quantity_sold??0}</TableCell>
-                                                <TableCell align='center'>{otherAttr.quantity_stock??0}</TableCell>
+                                                <TableCell align='center'>{inStock(otherAttr.quantity_sold,otherAttr.quantity_stock)}</TableCell>
                                                 <TableCell align='center'>
                                                     <IconButton
                                                         onClick={() => handleOpenEditProductDetails(items)}

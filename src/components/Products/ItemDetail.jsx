@@ -57,7 +57,7 @@ const ItemDetail = (props) => {
                 </div>
             </div>
             {!isAvailable && (
-                <div className='absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10 text-xl font-bold'>
+                <div className='absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-4 text-xl font-bold'>
                     Hết hàng
                 </div>
             )}

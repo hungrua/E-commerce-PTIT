@@ -228,6 +228,7 @@ export const editProduct = createAsyncThunk(
     };
     const res = await fetch(IP + `/admin/api/item?brandId=${brand}`, options);
     const data = await res.json();
+    console.log(data)
     return {
       newProduct: newProduct,
       alert: data

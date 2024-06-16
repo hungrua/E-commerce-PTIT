@@ -61,7 +61,6 @@ const ProductDetails = () => {
         minPrice: formatCurrency(Math.min(...priceArray)),
         maxPrice: formatCurrency(Math.max(...priceArray)),
         totalSold: totalSold
-
       }
       console.log(tmpProduct)
       setDisplayProduct(tmpProduct)
@@ -84,6 +83,18 @@ const ProductDetails = () => {
   }
   const changeQuantity = (value) => {
     if (quantity < 2 && value === 1) return
+    if(value===-1) {
+      if(!selectItemDetail){
+        notify("Chưa chọn mặt hàng",2)
+        return;
+      }
+      console.log(selectItemDetail)
+      const productLeft = selectItemDetail.quantity_stock - selectItemDetail.quantity_sold
+      if(quantity-value>productLeft) {
+        notify("Không còn sản phẩm trong kho để thêm",2)
+        return;
+      }
+    }
     setQuantity((pre) => pre - value)
   }
   const handleAddToCart = () => {
@@ -327,7 +338,6 @@ const ProductDetails = () => {
                             </span>
                           </div>
                         )
-
                     })
                   }
                 </div>

@@ -6,11 +6,10 @@ import { fetchProduct } from '../../../redux/reducer/ProductSlice'
 
 const ProductCollapseTable = ({setDisplayAddProduct}) => {
     const dispatch = useDispatch()
-    var products = useSelector((state)=> state.product.products)
+    const products = useSelector((state)=> state.product.products)
     useEffect(()=>{
         dispatch(fetchProduct({brandId:"",categoryId:"",key:""}))
-        
-    },[])
+    },[dispatch])
     return (
         <Box mt={4}>
             <TableContainer component={Paper}>

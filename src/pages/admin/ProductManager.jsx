@@ -14,10 +14,10 @@ import { fetchSupplier } from '../../redux/reducer/SupplierSlice';
 const ProductManager = () => {
   const dispatch = useDispatch()
   const [displayAddProduct, setDisplayAddProduct] = useState(false)
+  
   var message = useSelector((state)=> state.product.alert)
   useEffect(()=>{
     if(message!==undefined) notify(message.message,message.code)
-
     return ()=>{
       dispatch(fetchBrand())
       dispatch(fetchProduct())
