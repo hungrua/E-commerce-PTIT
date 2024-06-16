@@ -15,6 +15,9 @@ const cartSlice = createSlice({
         resetAlert: (state, action) => {
             state.alert = action.payload
         },
+        resetPreOrder: (state, action) => {
+            state.preOrder = []
+        },
         updatePreOrder: (state,action) =>{
             const cartItemId = action.payload.cartItemId
             let order = [...state.preOrder]

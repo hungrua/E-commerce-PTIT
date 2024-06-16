@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createOrder } from '../redux/reducer/OrderSlice';
+import cartSlice from '../redux/reducer/CartSlice';
 
 const PaymentSuccess = () => {
     const dispatch = useDispatch()
@@ -28,6 +29,7 @@ const PaymentSuccess = () => {
         if(!status) dispatch(createOrder({orderParams:orderParams,orderBody:orderBody}))
         return ()=>{
             sessionStorage.clear()
+            dispatch(cartSlice.actions.resetPreOrder())
         }
     }, [])
     useEffect(()=>{

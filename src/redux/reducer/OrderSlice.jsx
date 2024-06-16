@@ -12,7 +12,7 @@ const orderSlice = createSlice({
     orderDetails: {}
   },
   reducers: {
-
+  
   },
   extraReducers: (builder) => {
     builder
