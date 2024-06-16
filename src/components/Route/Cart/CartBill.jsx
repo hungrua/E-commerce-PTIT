@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from '../../basicFunction';
 import { notify } from '../../Admin/notify';
+import cartSlice from '../../../redux/reducer/CartSlice';
 const CartBill = (props) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -11,9 +12,11 @@ const CartBill = (props) => {
     const discountVoucher = useSelector(state => state.voucher.usingVoucher)
     const [discount,setDiscount] = useState(0)
     const [total, setTotal] = useState(0)
+    useEffect(()=>{
+        dispatch(cartSlice.actions.resetPreOrder())
+    },[])
     useEffect(() => {
         if (cartItem) {
-            console.log(cartItem)
             let total = cartItem.reduce((cucl, item) => {
                 return parseInt(cucl) + parseInt(item.totalPrice)
             }, 0)
