@@ -33,7 +33,7 @@ export const VariationsOption = ({ variationsOption,setVariationOptions }) => {
                 </Box>
             </Grid>
             {variationsOption.map((option, index) => {
-                if (option.important === null)
+                if (option.important === 0)
                     return (
                         <Grid key={option.id_variation_option} item xs={12} sm={6} md={6} sx={style.inputContainer}>
                             <FormControl fullWidth={true} >
