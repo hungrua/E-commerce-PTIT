@@ -158,7 +158,7 @@ const Header = () => {
                       <FaSearch />
                     </button>
                     {searchValue && <div className="bg-[#ffffff] w-full absolute top-full left-0 z-10 rounded-md shadow-[0px_2px_10px_#000014]">
-                      <Recommender searchValue={searchValue} />
+                      <Recommender searchValue={searchValue} setSearchValue={setSearchValue} />
                     </div>}
                   </form>
                 </div>
