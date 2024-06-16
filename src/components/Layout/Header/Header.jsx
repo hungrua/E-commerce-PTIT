@@ -43,49 +43,67 @@ const Header = () => {
     setClient(mqtt.connect(url, options));
   };
 
-  // useEffect(() => {
-  //   if (client) {
-  //     client.on('connect', () => {
-  //       setConnectStatus('Connected')
-  //       console.log('connection successful')
-  //       mqttSub(client);
-  //     })
-  //     client.on('error', (err) => {
-  //       console.error('Connection error: ', err)
-  //       client.end()
-  //     })
-  //     client.on('reconnect', () => {
-  //       setConnectStatus('Reconnecting')
-  //     })
-  //     client.on('message', (topic, message) => {
-  //       const payload = { topic, message: message.toString() }
-  //       setNotiQuantity(message)
-  //       setMessage(`Số lượng thông báo chưa đọc ${message}`);
-  //     })
-  //   }
-  // }, [client])
+  useEffect(() => {
+    const url = `ws://localhost:8083/mqtt`;
+    const options = {
+      username: "test_mqtt1_" + role.role,
+      password: "1234",
+      clean: true,
+      reconnectPeriod: 1000, // ms
+      connectTimeout: 30 * 1000, // ms
+    };
+    mqttConnect(url, options)
+  }, [])
+
+  useEffect(() => {
+    // connect
+    if (client) {
+      client.on("connect", () => {
+        // setConnectStatus("Connected");
+        console.log("connection successful");
+        // setConnectSuccess(true);
+        mqttSub(client);
+      });
+      client.on("error", (err) => {
+        console.error("Connection error: ", err);
+        client.end();
+      });
+      client.on("reconnect", () => {
+        // setConnectStatus("Reconnecting");
+      });
+      client.on("message", (topic, message) => {
+        const payload = { topic, message: message.toString() };
+        setNotiQuantity(payload.message);
+        // console.log(message);
+      });
+    }
+  }, [client]);
   // đăng ký nhận tin nhắn từ topic
-  // const mqttSub = (client) => {
-  //   if (client) {
-  //     client.subscribe("buy", 2, (error) => {
-  //       if (error) {
-  //         console.log('Subscribe to topics error', error)
-  //         return
-  //       }
-  //       console.log("Đã đăng ký tới topic buy");
-  //       setIsSub(true)
-  //     })
-  //   }
-  // }
-  // connect
-  // const url = `ws://localhost:8083/mqtt`
-  // const options = {
-  //   username: "test_mqtt1",
-  //   password: "Tronghuong2002@",
-  //   clean: true,
-  //   reconnectPeriod: 1000, // ms
-  //   connectTimeout: 30 * 1000, // ms
-  // }
+  const onFinish = () => {
+    const url = `ws://localhost:8083/mqtt`;
+    const options = {
+      username: "test_mqtt1_" + role.role,
+      password: "Tronghuong2002@",
+      clean: true,
+      reconnectPeriod: 1000, // ms
+      connectTimeout: 30 * 1000, // ms
+    };
+    mqttConnect(url, options);
+    // mqttSub()
+  };
+  const mqttSub = (client) => {
+    if (client) {
+      client.subscribe("buy", 2, (error) => {
+        if (error) {
+          console.log("Subscribe to topics error", error);
+          return;
+        }
+        console.log("Đã đăng ký tới topic buy");
+        // setIsSub(true);
+      });
+    }
+  };
+
   // mqttConnect(url, options)
   // mqttSub()
   //------------------------------End: Notification test-----------------------------------
@@ -178,9 +196,9 @@ const Header = () => {
                     >
                       <FaRegBell className="text-[16px] hover:text-[#f66315]" />
                     </button>
-                    <div className="absolute w-[20px] h-[20px] rounded-[50%] border border-solid border-[#feefe8] bg-[#e10600] text-[#fff] text-[10px] font-[500] flex items-center justify-center top-0 left-full translate-x-[-55%] translate-y-[-50%] z-1">
+                    {notiQuantity !== 0 && <div className="absolute w-[20px] h-[20px] rounded-[50%] border border-solid border-[#feefe8] bg-[#e10600] text-[#fff] text-[10px] font-[500] flex items-center justify-center top-0 left-full translate-x-[-55%] translate-y-[-50%] z-1">
                       <span>{notiQuantity}</span>
-                    </div>
+                    </div>}
                     {openNotification && <HeaderNotification />}
                   </div>
                   <div title="Tài khoản của bạn">

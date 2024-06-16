@@ -16,7 +16,7 @@ function AppHeader(props) {
     const [client, setClient] = useState(null);
     const [notiQuantity, setNotiQuantity] = useState(0);
     const role = JSON.parse(localStorage.getItem("authorization"));
-    const [displayNotify,setDisplayNotify] = useState(false)
+    const [displayNotify, setDisplayNotify] = useState(false)
     const mqttConnect = (url, options) => {
         console.log(options.username);
         setClient(mqtt.connect(url, options));
@@ -104,8 +104,8 @@ function AppHeader(props) {
                     src={logo} />
                 <Box sx={{ flexGrow: 1 }} />
                 <IconButton title='Notification' color='secondary'
-                onClick={()=> setDisplayNotify(!displayNotify)}
-                sx={{ position: "relative" }}>
+                    onClick={() => setDisplayNotify(!displayNotify)}
+                    sx={{ position: "relative" }}>
                     <Badge badgeContent={notiQuantity} color='error'>
                         <NotificationsIcon />
                     </Badge>
