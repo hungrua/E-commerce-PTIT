@@ -43,7 +43,7 @@ const ImportSlice = createSlice({
       } 
     })
     .addCase(fetchInvoices.fulfilled,(state,action)=>{
-      state.invoices = action.payload
+      state.invoices = action.payload.reverse()
     })
     .addCase(getInvoiceById.fulfilled,(state,action)=>{
       state.invoiceDetails = action.payload

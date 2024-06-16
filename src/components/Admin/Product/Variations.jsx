@@ -24,7 +24,7 @@ export const Variations = ({ variations }) => {
                 </Box>
             </Grid>
             {variations.map((variation, index) => {
-                if(variation.important===null)
+                if(variation.important==0)
                 return (
                     <Grid key={variation.id} item xs={12} sm={6} md={6} sx={style.inputContainer}>
                         <FormControl fullWidth={true} >
