@@ -24,9 +24,9 @@ const Login = () => {
   }, [alert, dispatch])
   const handleSubmit = async () => {
     const res =  await dispatch(login({ username: username, password: password })).unwrap()
-    if (res) {
+    // const user = JSON.parse(localStorage.getItem("authorization"))
+    if (res && res.role) {
       let role = res.role
-      console.log()
       if (role === "ADMIN") window.location.href = '/admin'
       else if(role==="EMPLOYEE") window.location.href = '/employee'
       else window.location.href = '/'

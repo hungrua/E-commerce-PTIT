@@ -30,7 +30,7 @@ const OrderSuccess = () => {
             alt="ok"  />
             <div className='text-2xl text-[#4caf50] font-weight-500'>{`Đặt hàng ${status.code===1?"Thành công":"Thất bại"}`}</div>
             <div>
-                {status.code===1 && <Link to={'/'} className='rounded p-3 text-white mx-5 bg-[#4caf50] font-medium text-black hover:bg-[rgba(76,175,80,0.7)]'>Xem đơn hàng</Link>}
+                {status.code===1 && <Link to={'/order-status/1'} className='rounded p-3 text-white mx-5 bg-[#4caf50] font-medium text-black hover:bg-[rgba(76,175,80,0.7)]'>Xem đơn hàng</Link>}
                 <Link to={'/'} className='rounded p-3 text-white mx-5 bg-[#4caf50] font-medium text-black hover:bg-[rgba(76,175,80,0.7)]'>Về trang chủ</Link>
             </div>
         </div>

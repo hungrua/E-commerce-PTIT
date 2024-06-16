@@ -17,13 +17,14 @@ function HeaderNotification() {
         }
         fetchNoti()
     }, [])
- 
+
     return (
-        <div className='absolute flex flex-col gap-y-1 w-[400px] bg-white right-[-50px] mt-3 rounded-lg shadow-[0px_2px_10px_#000014] p-4'>
-            <div className='absolute top-[-8px] right-[58px] w-0 h-0 border-l-[10px] borderl-l-solid border-l-transparent border-r-[10px] border-r-solid border-r-transparent border-b-[10px] border-solid border-white drop-shadow-[0_-5px_3px_rgba(156,143,143,0.88)] z-10'></div>
+        <div className='max-h-80 overflow-scroll absolute flex flex-col gap-y-1 w-[400px] bg-white right-[-50px] mt-3 rounded-lg shadow-[0px_2px_10px_#000014] p-4'>
+            <div
+                className=' absolute top-[-8px] right-[58px] w-0 h-0 border-l-[10px] borderl-l-solid border-l-transparent border-r-[10px] border-r-solid border-r-transparent border-b-[10px] border-solid border-white drop-shadow-[0_-5px_3px_rgba(156,143,143,0.88)] z-10'></div>
             {
                 notifications.map((noti) => (
-                    <Link className='relative flex gap-x-2 bg-blue-100 rounded z-0'
+                    <Link className='relative flex gap-x-2 bg-blue-100 rounded z-0 p-2'
                         to={'/order-status/1'} title='Đi đến chi tiết'>
                         <div className='max-w-14'>
                             <img src="/static/images/notification/mascot-1.svg" alt="" />

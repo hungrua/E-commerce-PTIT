@@ -2,12 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import mqtt from "mqtt";
 
-import {
-  FaAngleDown,
-  FaRegBell,
-  FaUser,
-  FaRegHeart
-} from "react-icons/fa";
+import { FaAngleDown, FaRegBell, FaUser, FaRegHeart } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoLogOutOutline } from "react-icons/io5";
@@ -20,29 +15,33 @@ import { fetchProduct } from "../../../redux/reducer/ProductSlice";
 import { Recommender } from "./Recommender/Recommender";
 
 const Header = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const user = JSON.parse(localStorage.getItem("authorization"))
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("authorization"));
   const [openMenu, setOpenMenu] = useState(false);
   const [openProductList, setOpenProductList] = useState(false);
   const [openCartList, setOpenCartList] = useState(false);
-  const [categorieList, setCategorieList] = useState(['Laptop', 'Dien thoai', 'Phu kien'])
+  const [categorieList, setCategorieList] = useState([
+    "Laptop",
+    "Dien thoai",
+    "Phu kien",
+  ]);
   const [openNotification, setOpenNotification] = useState(false);
-  const [notiQuantity, setNotiQuantity] = useState(0)
-  const [searchValue, setSearchValue] = useState('')
-  const categories = (useSelector(state => state.category.categories)).map(item => ({ name: item.name, code: item.code.replace('-', '') }))
-  const cartItem = useSelector(state => state.cart.cartItems)
+  const [notiQuantity, setNotiQuantity] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
+  const categories = useSelector((state) => state.category.categories).map(
+    (item) => ({ name: item.name, code: item.code.replace("-", "") })
+  );
+  const cartItem = useSelector((state) => state.cart.cartItems);
 
   //------------------------------Begin: Notification test-----------------------------------
-  // const [client, setClient] = useState(null);
-  // const [isSub, setIsSub] = useState(false);
-  // const [connectStatus, setConnectStatus] = useState('Connect');
-  // const [message, setMessage] = useState("");
+  const [client, setClient] = useState(null);
+  const role = JSON.parse(localStorage.getItem("authorization"));
 
-  // const mqttConnect = (host, mqttOption) => {
-  //   setConnectStatus('Connecting')
-  //   setClient(mqtt.connect(host, mqttOption))
-  // }
+  const mqttConnect = (url, options) => {
+    console.log(options.username);
+    setClient(mqtt.connect(url, options));
+  };
 
   // useEffect(() => {
   //   if (client) {
@@ -92,9 +91,9 @@ const Header = () => {
   //------------------------------End: Notification test-----------------------------------
 
   useEffect(() => {
-    dispatch(fetchCartItem())
-    console.log(1)
-  }, [dispatch])
+    dispatch(fetchCartItem());
+    console.log(1);
+  }, [dispatch]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -112,28 +111,26 @@ const Header = () => {
     };
   }, []);
 
-  useEffect(() => {
-
-  }, [openNotification])
+  useEffect(() => { }, [openNotification]);
 
   const handleOpenNotification = () => {
-    setOpenNotification(!openNotification)
-  }
+    setOpenNotification(!openNotification);
+    setNotiQuantity(0);
+  };
   const handleLogout = () => {
-    localStorage.removeItem("authorization")
-    sessionStorage.clear()
+    localStorage.removeItem("authorization");
+    sessionStorage.clear();
 
-    window.location.href = "/login"
-  }
+    window.location.href = "/login";
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchValue.length !== 0) {
-      navigate("/search?query=" + searchValue)
-      dispatch(fetchProduct({ brandId: "", categoryId: "", key: searchValue }))
+      navigate("/search?query=" + searchValue);
+      dispatch(fetchProduct({ brandId: "", categoryId: "", key: searchValue }));
     }
-  }
-
+  };
 
   return (
     <>
@@ -142,7 +139,7 @@ const Header = () => {
           <div className="flex items-center justify-between px-4 mx-auto relative">
             <Link to="/" className="flex items-center">
               <img
-                src='/static/images/logo2.jpg'
+                src="/static/images/logo2.jpg"
                 className="w-11 mx-3 h-auto"
                 alt="Techshop"
               />
@@ -151,10 +148,18 @@ const Header = () => {
               <div className="flex gap-[0.8rem] items-center">
                 <div className="flex gap-[0.8rem] items-center">
                   <form className="flex items-center w-96 justify-end relative">
-                    <input type="text" placeholder="Search..." className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500"
-                      onChange={(e) => setSearchValue(e.target.value)} value={searchValue} />
-                    <button type="submit" className="bg-[#00B4CC] text-white w-10 h-10 flex items-center justify-center rounded-r-md"
-                      onClick={handleSearch}>
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      className="w-[70%] p-[5px] rounded-l-md border-[3px] border-r-0 border-[#00B4CC] outline-none focus:transition-[width] focus:w-full focus:ease-in-out focus:duration-500"
+                      onChange={(e) => setSearchValue(e.target.value)}
+                      value={searchValue}
+                    />
+                    <button
+                      type="submit"
+                      className="bg-[#00B4CC] text-white w-10 h-10 flex items-center justify-center rounded-r-md"
+                      onClick={handleSearch}
+                    >
                       <FaSearch />
                     </button>
                     {searchValue && <div className="bg-[#ffffff] w-full absolute top-full left-0 z-10 rounded-md shadow-[0px_2px_10px_#000014]">
@@ -162,20 +167,21 @@ const Header = () => {
                     </div>}
                   </form>
                 </div>
-                <div className="flex gap-[0.8rem] items-center" title="Thông báo">
+                <div
+                  className="flex gap-[0.8rem] items-center"
+                  title="Thông báo"
+                >
                   <div className="relative">
-                    <button className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
-                      onClick={handleOpenNotification}>
+                    <button
+                      className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
+                      onClick={handleOpenNotification}
+                    >
                       <FaRegBell className="text-[16px] hover:text-[#f66315]" />
                     </button>
-                    {
-                      notiQuantity !== 0 &&  <div className="absolute w-[20px] h-[20px] rounded-[50%] border border-solid border-[#feefe8] bg-[#e10600] text-[#fff] text-[10px] font-[500] flex items-center justify-center top-0 left-full translate-x-[-55%] translate-y-[-50%] z-1">
-                        <span>{notiQuantity}</span>
-                      </div>
-                    }
-                    {
-                      openNotification && <HeaderNotification />
-                    }
+                    <div className="absolute w-[20px] h-[20px] rounded-[50%] border border-solid border-[#feefe8] bg-[#e10600] text-[#fff] text-[10px] font-[500] flex items-center justify-center top-0 left-full translate-x-[-55%] translate-y-[-50%] z-1">
+                      <span>{notiQuantity}</span>
+                    </div>
+                    {openNotification && <HeaderNotification />}
                   </div>
                   <div title="Tài khoản của bạn">
                     <Link
@@ -194,8 +200,10 @@ const Header = () => {
                     </Link>
                   </div>
                   <div title="Đăng xuất">
-                    <button className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
-                      onClick={handleLogout}>
+                    <button
+                      className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
+                      onClick={handleLogout}
+                    >
                       <IoLogOutOutline className="text-[16px] hover:text-[#f66315]" />
                     </button>
                   </div>
@@ -216,9 +224,12 @@ const Header = () => {
                     <span>{cartItem.length}</span>
                   </div>
                   {/* gio hang detail */}
-                  {
-                    openCartList && <HeaderCart openCartList={openCartList} setOpenCartList={setOpenCartList} />
-                  }
+                  {openCartList && (
+                    <HeaderCart
+                      openCartList={openCartList}
+                      setOpenCartList={setOpenCartList}
+                    />
+                  )}
                 </div>
               </div>
               <button
@@ -350,20 +361,19 @@ const Header = () => {
                                   Danh mục sản phẩm
                                 </span>
                               </li>
-                              {
-                                categories.map((category, index) => (
-                                  <li key={index} className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
-                                    <Link
-                                      to={`/category/${category.code}`}
-                                      className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
-                                    >
-                                      {category.name}
-                                    </Link>
-                                  </li>
-                                ))
-                              }
-
-
+                              {categories.map((category, index) => (
+                                <li
+                                  key={index}
+                                  className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left"
+                                >
+                                  <Link
+                                    to={`/category/${category.code}`}
+                                    className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
+                                  >
+                                    {category.name}
+                                  </Link>
+                                </li>
+                              ))}
                             </ul>
                           </div>
                         </div>
