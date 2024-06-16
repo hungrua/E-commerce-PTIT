@@ -85,7 +85,7 @@ const productSlice = createSlice({
       .addCase(editProduct.fulfilled, (state, action) => {
         state.alert = action.payload.alert;
         const products = current(state.products)
-        console.log(action.payload.newProduct)
+        console.log(action.payload)
         state.products = products.map((product) => {
           if (product.productId === action.payload.newProduct.productId) {
             return action.payload.newProduct;

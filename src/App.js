@@ -41,11 +41,11 @@ const App = () => {
           user !== null ? (
             <>
               <Route path="/" element={<HomePage />} />
-              <Route path="/cua-hang" element={<ShopsPage />} />
+              <Route path="/stores" element={<ShopsPage />} />
               <Route path="/san-pham/:id" element={<ProductDetailPage />} />
               <Route path="/payment" element={<Payment />} />
               <Route path="/supplier" element={<Supplier />} />
-              <Route path="/loai-san-pham/:category" element={<ProductListPage />} />
+              <Route path="/category/:category" element={<ProductListPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/account" element={<UserAccountPage />} />
               <Route path="/order-status/:id" element={<UserAccountPage />} />

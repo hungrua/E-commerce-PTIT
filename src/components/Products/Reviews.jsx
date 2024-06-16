@@ -7,19 +7,19 @@ import { notify } from '../Admin/notify';
 import { addComment } from '../../redux/reducer/ReviewSlice';
 import StarDisplay from './StarDisplay';
 const Reviews = (props) => {
-    const {id,rating,number_rating,number_star} = props
+    const { id, rating, number_rating, number_star } = props
     const dispatch = useDispatch()
     const [reviews, setReviews] = useState([])
-    const comments = useSelector((state)=> state.review.comments)
+    const comments = useSelector((state) => state.review.comments)
     const [statistics, setStatstics] = useState([]);
     const [percentages, setPercentages] = useState([]);
     const [comment, setComment] = useState("")
 
     useEffect(() => {
         const fetchStatistics = () => {
-            let tmp = [0,0,0,0,0]
-            number_star.map((star)=>{
-                tmp[star.ranking-1] = star.number_ranking
+            let tmp = [0, 0, 0, 0, 0]
+            if (number_star) number_star.map((star) => {
+                tmp[star.ranking - 1] = star.number_ranking
             })
             setStatstics(tmp.reverse());
         }
@@ -42,7 +42,7 @@ const Reviews = (props) => {
                             </div>
                         </div>
 
-                        <span>( 
+                        <span>(
                             {/* {statistics.reduce((a, b) => a + b, 0)} */}
                             {number_rating} đánh giá)</span>
                     </div>

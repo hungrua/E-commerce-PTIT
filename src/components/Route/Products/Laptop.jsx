@@ -22,7 +22,7 @@ const Laptop = () => {
           <div className="border border-solid border-[#f66315] w-fit mr-6 min-w-[120px] rounded-[4rem] relative">
             <div className="text-[#fff] cursor-pointer relative bg-[#f66315] hover:bg-[#fff] hover:text-[#031230] duration-300 mx-auto rounded-[4rem] items-center justify-center flex">
               <Link
-                to="/loai-san-pham/laptop"
+                to="/category/laptop"
                 className="py-[10px] px-[10px] flex items-center justify-center gap-[6px]"
               >
                 <span className="text-[16px] font-[500] leading-[1.2]">

@@ -211,7 +211,7 @@ const Header = () => {
                   </li>
                   <li>
                     <Link
-                      to="/cua-hang"
+                      to="/stores"
                       className="block uppercase py-2 pl-3 pr-4 text-black border-b border-gray-100 hover:bg-[#f66315] hover:text-[#fff] lg:p-0"
                     >
                       Cửa hàng
@@ -288,7 +288,7 @@ const Header = () => {
                                 categories.map((category, index) => (
                                   <li key={index} className="lg:w-full lg:py-[4px] lg:pr-[4px] lg:pl-[8px] lg:float-left">
                                     <Link
-                                      to={`/loai-san-pham/${category.code}`}
+                                      to={`/category/${category.code}`}
                                       className="text-[16px] mb-0 text-[#444545] hover:text-[#f66315] font-[600] block leading-normal  w-full pb-[5px] no-underline"
                                     >
                                       {category.name}
@@ -306,7 +306,7 @@ const Header = () => {
                   </li>
                   <li>
                     <Link
-                      to="/cua-hang"
+                      to="/stores"
                       className="block uppercase py-2 pl-3 pr-4 text-gray-700  lg:hover:text-[#f66315] lg:p-0 "
                     >
                       Cửa hàng

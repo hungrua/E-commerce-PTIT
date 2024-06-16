@@ -28,7 +28,7 @@ const ProductCategories = () => {
               <div className="max-w-[1230px] flex-row flex mb-[-24px] flex-wrap mx-auto">
                 <div className="md:w-[276px] w-[190px] md:mr-[24px] mx-auto mt-0 mb-[24px] h-auto shrink-0 relative">
                   <div className="h-full">
-                    <Link to="/loai-san-pham/laptop"
+                    <Link to="/category/laptop"
                       className="group cursor-pointer  flex items-center justify-center flex-col gap-[20px] px-[12px] py-[32px] rounded-[12px] relative overflow-hidden h-full text-center "
                     >
                       <div className="absolute w-full bottom-0 h-[60%] bg-[#feefe8] duration-300 transition-all ease-in-out -z-1 group-hover:h-full group-hover:bg-[linear-gradient(0deg,rgba(148,187,233,1)_0%,rgba(238,174,202,1)_89%)]"></div>
@@ -50,7 +50,7 @@ const ProductCategories = () => {
 
                 <div className="md:w-[276px] w-[190px] md:mr-[24px] mx-auto mt-0 mb-[24px] h-auto shrink-0 relative">
                   <div className="h-full">
-                    <Link to="/loai-san-pham/dienthoai"
+                    <Link to="/category/dienthoai"
                       className="group cursor-pointer  flex items-center justify-center flex-col gap-[20px] px-[12px] py-[32px] rounded-[12px] relative overflow-hidden h-full text-center "
                     >
                       <div className="absolute w-full bottom-0 h-[60%] bg-[#fefae8] duration-300 transition-all ease-in-out -z-1 group-hover:h-full group-hover:bg-[linear-gradient(0deg,rgba(148,187,233,1)_0%,rgba(238,174,202,1)_89%)]"></div>
@@ -72,7 +72,7 @@ const ProductCategories = () => {
 
                 <div className="md:w-[276px] w-[190px] md:mr-[24px] mx-auto mt-0 mb-[24px] h-auto shrink-0 relative">
                   <div className="h-full">
-                    <Link to="/loai-san-pham/phukien"
+                    <Link to="/category/phukien"
                       className="group cursor-pointer  flex items-center justify-center flex-col gap-[20px] px-[12px] py-[32px] rounded-[12px] relative overflow-hidden h-full text-center "
                     >
                       <div className="absolute w-full bottom-0 h-[60%] bg-[#ece8fe] duration-300 transition-all ease-in-out -z-1 group-hover:h-full group-hover:bg-[linear-gradient(0deg,rgba(148,187,233,1)_0%,rgba(238,174,202,1)_89%)]"></div>
