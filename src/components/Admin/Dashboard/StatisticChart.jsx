@@ -10,28 +10,35 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { Box } from '@mui/material';
 Chart.register(...registerables);
-const StatisticChart = () => {
-    const chartData = {
-        labels: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"],
-        datasets: [{
-            label: "Doanh thu",
-            data: [50000000, 100000000, 400000000, 50000000, 50000000, 70000000, 80000000, 120000000, 250000000, 450000000, 50000000, 50000000],
-            backgroundColor: [
-                "rgba(255, 0, 0, 0.3)",      // Red
-                "rgba(255, 165, 0, 0.3)",    // Orange
-                "rgba(255, 255, 0, 0.3)",    // Yellow
-                "rgba(0, 255, 0, 0.3)",      // Green
-                "rgba(0, 255, 255, 0.3)",    // Cyan
-                "rgba(0, 0, 255, 0.3)",      // Blue
-                "rgba(128, 0, 128, 0.3)",    // Purple
-                "rgba(255, 20, 147, 0.3)",   // Deep Pink
-                "rgba(255, 105, 180, 0.3)",  // Pink
-                "rgba(255, 192, 203, 0.3)",  // Light Pink
-                "rgba(75, 0, 130, 0.3)",     // Indigo
-                "rgba(148, 0, 211, 0.3)"
-            ],
-            fill: true
-        }],
+const StatisticChart = ({statisticYear}) => {
+    const revenue = statisticYear.revenue.map((item)=> item.total)
+    const profit = statisticYear.profit.map((item)=> item.total)
+    const cost = statisticYear.cost.map((item)=> item.total)
+
+    const chartData = (label,data) => {
+        const config = {
+            labels: ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"],
+            datasets: [{
+                label: label,
+                data: data,
+                backgroundColor: [
+                    "rgba(255, 0, 0, 0.3)",      // Red
+                    "rgba(255, 165, 0, 0.3)",    // Orange
+                    "rgba(255, 255, 0, 0.3)",    // Yellow
+                    "rgba(0, 255, 0, 0.3)",      // Green
+                    "rgba(0, 255, 255, 0.3)",    // Cyan
+                    "rgba(0, 0, 255, 0.3)",      // Blue
+                    "rgba(128, 0, 128, 0.3)",    // Purple
+                    "rgba(255, 20, 147, 0.3)",   // Deep Pink
+                    "rgba(255, 105, 180, 0.3)",  // Pink
+                    "rgba(255, 192, 203, 0.3)",  // Light Pink
+                    "rgba(75, 0, 130, 0.3)",     // Indigo
+                    "rgba(148, 0, 211, 0.3)"
+                ],
+                fill: true
+            }],
+        }
+        return config
     }
     return (
         <div>
@@ -46,7 +53,7 @@ const StatisticChart = () => {
                 <SwiperSlide style={{ display: "flex", justifyContent: "center" }}>
                     <Box sx={style.chartHolder}>
                         <Bar
-                            data={chartData}
+                            data={chartData("Doanh thu",revenue)}
                             options={{
                                 color: "black",
                                 scales: {
@@ -62,7 +69,7 @@ const StatisticChart = () => {
                 <SwiperSlide style={{ display: "flex", justifyContent: "center" }} >
                     <Box sx={style.chartHolder}>
                         <Bar
-                            data={chartData}
+                            data={chartData("Lợi nhuận",profit)}
                             options={{
                                 color: "black",
                                 scales: {
@@ -78,7 +85,7 @@ const StatisticChart = () => {
                 <SwiperSlide style={{ display: "flex", justifyContent: "center" }} >
                     <Box sx={style.chartHolder}>
                         <Bar
-                            data={chartData}
+                            data={chartData("Chi phí",cost)}
                             options={{
                                 color: "black",
                                 scales: {

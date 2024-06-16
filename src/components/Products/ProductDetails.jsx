@@ -387,7 +387,7 @@ const ProductDetails = () => {
             </div>
           ) : null}
           {active === 1 ? (
-            <Reviews id={id} rating={rating} number_rating={displayProduct.number_rating} />
+            <Reviews id={id} rating={rating} number_rating={displayProduct.number_rating} number_star={displayProduct.number_star} />
           ) : null}
         </div>
       </div>

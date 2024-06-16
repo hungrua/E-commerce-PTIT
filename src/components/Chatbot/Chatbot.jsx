@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-const Chatbot = (onClose) => {
+const Chatbot = ({onClose}) => {
     const [requests, setRequests] = useState([])
     const [responses, setResponses] = useState([])
     const [prompt, setPrompt] = useState('')
@@ -51,7 +51,7 @@ const Chatbot = (onClose) => {
         <div className='fixed z-50 bottom-20 right-4 w-80 h-96 bg-white border border-gray-300 rounded-lg shadow-lg flex flex-col'>
             <div className='flex justify-between items-center bg-blue-500 text-white p-3 rounded-t-lg'>
                 <h3 className='text-lg'>Chatbot</h3>
-                <button onClick={onClose} className='text-white hover:text-gray-200'>
+                <button onClick={()=>onClose()} className='text-white hover:text-gray-200'>
                     X
                 </button>
             </div>

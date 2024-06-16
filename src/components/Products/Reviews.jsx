@@ -7,7 +7,7 @@ import { notify } from '../Admin/notify';
 import { addComment } from '../../redux/reducer/ReviewSlice';
 import StarDisplay from './StarDisplay';
 const Reviews = (props) => {
-    const {id,rating,number_rating} = props
+    const {id,rating,number_rating,number_star} = props
     const dispatch = useDispatch()
     const [reviews, setReviews] = useState([])
     const comments = useSelector((state)=> state.review.comments)
@@ -17,7 +17,11 @@ const Reviews = (props) => {
 
     useEffect(() => {
         const fetchStatistics = () => {
-            setStatstics([10, 20, 30, 40, 10]);
+            let tmp = [0,0,0,0,0]
+            number_star.map((star)=>{
+                tmp[star.ranking-1] = star.number_ranking
+            })
+            setStatstics(tmp.reverse());
         }
         fetchStatistics();
     }, [])

@@ -11,7 +11,7 @@ const ChatAI = () => {
   }
   return (
     <div>
-      {isChatOpen && <Chatbot onClose={toggleChat} />}
+      {isChatOpen && <Chatbot onClose={()=>toggleChat()} />}
       <div
         onClick={toggleChat}
         className='fixed bottom-5 right-5 w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center shadow-lg hover:bg-blue-700 cursor-pointer transition duration-300'

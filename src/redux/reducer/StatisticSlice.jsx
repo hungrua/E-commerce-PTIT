@@ -20,6 +20,9 @@ const StatisticSlice = createSlice({
     .addCase(getTop10BestSeller.fulfilled,(state,action) =>{
         state.top10BestSeller = action.payload
     })
+    .addCase(fetchStatisticYear.fulfilled,(state,action) =>{
+      state.statisticYear = action.payload
+    })
   }
 });
 
@@ -51,4 +54,19 @@ export const getTop10BestSeller = createAsyncThunk("statistic/getTop10BestSeller
         return data
       }
 )
+
+export const fetchStatisticYear = createAsyncThunk("statistic/fetchStatisticYear",
+  async(year)=>{
+    const token = getUser().token
+    const res = await fetch(`${IP}/admin/api/statistic/year?year=${year}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": 'application/json'
+      }
+    })
+    const data = await res.json()
+    return data
+  }
+)
+
 export default StatisticSlice;
