@@ -14,20 +14,28 @@ const Reviews = (props) => {
     const [statistics, setStatstics] = useState([]);
     const [percentages, setPercentages] = useState([]);
     const [comment, setComment] = useState("")
-
+    const convertToPercentages = (arr) => {
+        const sum = arr.reduce((acc, curr) => acc + curr, 0);
+        const percentages = arr.map(item => (item / sum) * 100);
+        console.log(percentages);
+        return percentages;
+    }
     useEffect(() => {
         const fetchStatistics = () => {
             let tmp = [0, 0, 0, 0, 0]
-            if (number_star) number_star.map((star) => {
-                tmp[star.ranking - 1] = star.number_ranking
-            })
+            console.log(number_star)
+            if (number_star) {
+
+                number_star.map((star) => {
+                    tmp[star.ranking - 1] = star.number_ranking
+                })
+            }
+            console.log(tmp)
+            setPercentages(convertToPercentages(tmp).reverse())
             setStatstics(tmp.reverse());
         }
         fetchStatistics();
-    }, [])
-    useEffect(() => {
-        setPercentages(statistics)
-    }, [statistics])
+    }, [number_star])
     return (
         <div className="p-[30px] rounded-b-[12px] bg-[#feefe8] relative z-1">
             <div>
@@ -69,7 +77,7 @@ const Reviews = (props) => {
                                 <FaStar color='orange' />
                             </div>
                             <div className='w-40 bg-[rgb(209,209,211)] h-2 rounded'>
-                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: percentages[0] }}></div>
+                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: `${percentages[0]}%` }}></div>
                             </div>
                             <div>{statistics[0]}</div>
                         </div>
@@ -82,7 +90,7 @@ const Reviews = (props) => {
                                 <FaStar color='rgb(209,209,211)' />
                             </div>
                             <div className='w-40 bg-[rgb(209,209,211)] h-2 rounded'>
-                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: percentages[1] }}></div>
+                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: `${percentages[1]}%` }}></div>
                             </div>
                             <div>{statistics[1]}</div>
                         </div>
@@ -95,7 +103,7 @@ const Reviews = (props) => {
                                 <FaStar color='rgb(209,209,211)' />
                             </div>
                             <div className='w-40 bg-[rgb(209,209,211)] h-2 rounded'>
-                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: percentages[2] }}></div>
+                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: `${percentages[2]}%` }}></div>
                             </div>
                             <div>{statistics[2]}</div>
                         </div>
@@ -108,7 +116,7 @@ const Reviews = (props) => {
                                 <FaStar color='rgb(209,209,211)' />
                             </div>
                             <div className='w-40 bg-[rgb(209,209,211)] h-2 rounded'>
-                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: percentages[3] }}></div>
+                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: `${percentages[3]}%` }}></div>
                             </div>
                             <div>{statistics[3]}</div>
                         </div>
@@ -121,7 +129,7 @@ const Reviews = (props) => {
                                 <FaStar color='rgb(209,209,211)' />
                             </div>
                             <div className='w-40 bg-[rgb(209,209,211)] h-2 rounded'>
-                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: percentages[4] }}></div>
+                                <div className={`bg-[rgb(10,104,255)] h-2 rounded`} style={{ width: `${percentages[4]}%` }}></div>
                             </div>
                             <div>{statistics[4]}</div>
                         </div>

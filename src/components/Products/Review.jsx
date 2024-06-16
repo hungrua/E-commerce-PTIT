@@ -32,23 +32,23 @@ const Review = (props) => {
     //     return days + " ngày trước"
     // }
     return (
-        <div className='bg-[rgb(168,233,245)] p-3 rounded-lg flex'>
+        <div className='bg-[#f5f5fa] p-3 rounded-lg flex'>
             <div className='w-1/4 flex justify-center items-center flex-col '>
-                <div className='rounded-full w-14 h-14 bg-[rgb(194,225,255)] flex justify-center items-center overflow-hidden'>
+                <div className='mb-1 rounded-full w-14 h-14 bg-[rgb(194,225,255)] flex justify-center items-center overflow-hidden'>
                     {data.avatarPath ? 
                     <div className='overflow-hidden'>
                         <img src={data.avatarPath} alt="" />
                     </div> :
-                    <div className=''>{getAcronym()}</div> 
+                    <div className='font-bold'>{getAcronym()}</div> 
                     }
                 </div>
-                <div className=''>
+                <div className='mt-2'>
                     <div>
                         {data.user.name}
                     </div>
                 </div>
             </div>
-            <div className="bg-[rgb(168,233,245)] p-3 rounded-lg">
+            <div className=" p-3 rounded-lg">
                 <div className="flex items-center pb-2 gap-x-4">
                     <div className="flex gap-x-1">
                         {
@@ -62,7 +62,7 @@ const Review = (props) => {
                             ))
                         }
                     </div>
-                    <div className="italic">Reviewed on {data.createDate}</div>
+                    <div className="italic text-[#95959e]">Reviewed on {data.createDate}</div>
                 </div>
                 <div className="pb-4">
                     <p>{data.content}</p>
