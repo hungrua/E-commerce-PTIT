@@ -28,14 +28,16 @@ export const OrderComponent = (props) => {
     const handleReceivedBill = () => {
         const orderProduct = order.cartItems.map((item)=> item.productId)
         let localOb = JSON.parse(localStorage.getItem("authorization"))
-        let buyedProduct = localOb.listProductBought
-        console.log(orderProduct)
+        let buyedProduct = [...localOb.listProductBought]
         orderProduct.forEach((id)=>{
             if(buyedProduct.find((idP) => idP === id) ===undefined) buyedProduct.push(id)
         })
-
-        console.log(buyedProduct)
-        // dispatch(updateOrderStatus({ status: 3, cancel: "", orderId: order.id }))
+        let newAuthorization = {
+            ...localOb,
+            listProductBought: buyedProduct
+        }
+        localStorage.setItem("authorization",JSON.stringify(newAuthorization))
+        dispatch(updateOrderStatus({ status: 3, cancel: "", orderId: order.id }))
         setDisplayRecievedConfirm(false)
     }
     const getIcon = (status) => {

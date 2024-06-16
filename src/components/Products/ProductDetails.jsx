@@ -58,8 +58,8 @@ const ProductDetails = () => {
       let tmpProduct = {
         ...product,
         isAvailable: product.itemDetails.some(item => item.at(-1).quantity_stock > item.at(-1).quantity_sold),
-        minPrice: formatCurrency(Math.min(...priceArray)),
-        maxPrice: formatCurrency(Math.max(...priceArray)),
+        minPrice: Math.min(...priceArray),
+        maxPrice: Math.max(...priceArray),
         totalSold: totalSold
       }
       console.log(tmpProduct)
@@ -228,10 +228,7 @@ const ProductDetails = () => {
                       ) : (
                         <div>
                           <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
-                            {displayProduct.minPrice}
-                          </span>
-                          <span className="max-[1200px]:text-[29px] font-[700] text-[#f66315] text-[34px]">
-                            - {displayProduct.maxPrice}
+                            {displayProduct.minPrice===displayProduct.maxPrice?`${formatCurrency(displayProduct.maxPrice)}`: `${formatCurrency(displayProduct.minPrice)} - ${formatCurrency(displayProduct.maxPrice)}` }
                           </span>
                         </div>
                       )

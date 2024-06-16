@@ -16,6 +16,7 @@ const Reviews = (props) => {
     const [comment, setComment] = useState("")
     const convertToPercentages = (arr) => {
         const sum = arr.reduce((acc, curr) => acc + curr, 0);
+        if(sum===0) return [0,0,0,0,0]
         const percentages = arr.map(item => (item / sum) * 100);
         console.log(percentages);
         return percentages;
@@ -24,8 +25,7 @@ const Reviews = (props) => {
         const fetchStatistics = () => {
             let tmp = [0, 0, 0, 0, 0]
             console.log(number_star)
-            if (number_star) {
-
+            if (number_star!==undefined) {
                 number_star.map((star) => {
                     tmp[star.ranking - 1] = star.number_ranking
                 })
