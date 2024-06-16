@@ -24,9 +24,10 @@ function Import() {
   const [editItemInvoice, setEditItemInvoice] = useState(null)
   useEffect(() => {
     dispatch(fetchSupplier())
-    dispatch(ImportSlice.actions.resetAlert(undefined))
   }, [dispatch])
-  
+  useEffect(()=>{
+    dispatch(ImportSlice.actions.resetAlert(undefined))
+  },[])
   useEffect(() => {
     if (message != undefined) notify(message.message, message.code)
   }, [message])

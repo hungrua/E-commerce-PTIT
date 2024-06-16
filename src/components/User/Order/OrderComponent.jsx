@@ -26,7 +26,16 @@ export const OrderComponent = (props) => {
         setDisplayCancelConfirm(false)
     }
     const handleReceivedBill = () => {
-        dispatch(updateOrderStatus({ status: 3, cancel: "", orderId: order.id }))
+        const orderProduct = order.cartItems.map((item)=> item.productId)
+        let localOb = JSON.parse(localStorage.getItem("authorization"))
+        let buyedProduct = localOb.listProductBought
+        console.log(orderProduct)
+        orderProduct.forEach((id)=>{
+            if(buyedProduct.find((idP) => idP === id) ===undefined) buyedProduct.push(id)
+        })
+
+        console.log(buyedProduct)
+        // dispatch(updateOrderStatus({ status: 3, cancel: "", orderId: order.id }))
         setDisplayRecievedConfirm(false)
     }
     const getIcon = (status) => {

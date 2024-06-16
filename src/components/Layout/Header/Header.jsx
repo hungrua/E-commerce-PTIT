@@ -87,7 +87,7 @@ const Header = () => {
     reconnectPeriod: 1000, // ms
     connectTimeout: 30 * 1000, // ms
   }
-  mqttConnect(url, options)
+  // mqttConnect(url, options)
   // mqttSub()
   //------------------------------End: Notification test-----------------------------------
 
