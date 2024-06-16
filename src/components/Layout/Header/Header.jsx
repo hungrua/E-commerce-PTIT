@@ -43,7 +43,6 @@ const Header = () => {
     setClient(mqtt.connect(url, options));
   };
 
-<<<<<<< HEAD
   useEffect(() => {
     const url = `ws://localhost:8083/mqtt`;
     const options = {
@@ -105,51 +104,6 @@ const Header = () => {
     }
   };
 
-=======
-  // useEffect(() => {
-  //   if (client) {
-  //     client.on('connect', () => {
-  //       setConnectStatus('Connected')
-  //       console.log('connection successful')
-  //       mqttSub(client);
-  //     })
-  //     client.on('error', (err) => {
-  //       console.error('Connection error: ', err)
-  //       client.end()
-  //     })
-  //     client.on('reconnect', () => {
-  //       setConnectStatus('Reconnecting')
-  //     })
-  //     client.on('message', (topic, message) => {
-  //       const payload = { topic, message: message.toString() }
-  //       setNotiQuantity(message)
-  //       setMessage(`Số lượng thông báo chưa đọc ${message}`);
-  //     })
-  //   }
-  // }, [client])
-  // đăng ký nhận tin nhắn từ topic
-  // const mqttSub = (client) => {
-  //   if (client) {
-  //     client.subscribe("buy", 2, (error) => {
-  //       if (error) {
-  //         console.log('Subscribe to topics error', error)
-  //         return
-  //       }
-  //       console.log("Đã đăng ký tới topic buy");
-  //       setIsSub(true)
-  //     })
-  //   }
-  // }
-  // connect
-  // const url = `ws://localhost:8083/mqtt`
-  // const options = {
-  //   username: "test_mqtt1",
-  //   password: "Tronghuong2002@",
-  //   clean: true,
-  //   reconnectPeriod: 1000, // ms
-  //   connectTimeout: 30 * 1000, // ms
-  // }
->>>>>>> f1a6c6b28e86463d40dbd7771ab1deea1ce8c356
   // mqttConnect(url, options)
   // mqttSub()
   //------------------------------End: Notification test-----------------------------------
