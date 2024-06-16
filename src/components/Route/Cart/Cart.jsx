@@ -11,11 +11,14 @@ import voucherSlice, { fetchUserVoucher } from "../../../redux/reducer/VoucherSl
 import { getOwnInformation } from "../../../redux/reducer/UserSlice";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import orderSlice from "../../../redux/reducer/OrderSlice";
+import cartSlice from "../../../redux/reducer/CartSlice";
 const Cart = () => {
     const dispatch = useDispatch()
     const cartItem = useSelector(state => state.cart.cartItems)
     useEffect(() => {
         dispatch(fetchUserVoucher())
+        sessionStorage.clear("preOrder")
     }, [])
     return (
         <div className="p-5 bg-[#efefef] mt-11">

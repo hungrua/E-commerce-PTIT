@@ -20,12 +20,13 @@ const cartSlice = createSlice({
         },
         updatePreOrder: (state,action) =>{
             const cartItemId = action.payload.cartItemId
-            let order = [...state.preOrder]
+            let order = JSON.parse(sessionStorage.getItem("preOrder"))??[]
             const check = order.find((item)=> item.cartItemId === cartItemId)
             if(check){
                 order = order.filter((item) => item.cartItemId!==cartItemId)
             }
             else order.push(action.payload)
+            console.log(order)
             state.preOrder = order
             sessionStorage.setItem("preOrder",JSON.stringify(order))
         },

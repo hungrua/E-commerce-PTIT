@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TiTick } from "react-icons/ti";
 import { FaTruckFast } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
@@ -14,9 +14,7 @@ const CartItem = (props) => {
     const dispatch = useDispatch()
     const [quantity, setQuantity] = useState(itemInfo.quantity)
     const preOrder = useSelector(state => state.cart.preOrder)
-    const [checked, setChecked] = useState(() => {
-        return preOrder.find(item => item.cartItemId === itemInfo.cartItemId) ? true : false
-    })
+    const [checked, setChecked] = useState(false)
     const renderName = (name) => {
         let attrString = ""
         itemInfo.details.map((attr) => {
