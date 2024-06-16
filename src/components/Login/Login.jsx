@@ -4,12 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import userSlice, { login } from "../../redux/reducer/UserSlice";
 import { notify } from "../Admin/notify";
 import { ToastContainer } from "react-toastify";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [visible, setVisible] = useState(false);
   const alert = useSelector(state => state.users.alert)
   useEffect(() => {
 
@@ -36,7 +38,7 @@ const Login = () => {
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-[90vh] lg:py-0">
           <Link to="/" className="flex items-center mb-6 text-2xl font-semibold">
             <img className="w-12 h-12 mr-2 mt-1" src="/static/images/web-images/logo.png" alt="logo" />
-            <span className="text-black">Technology Shop</span>
+            <span className="text-black">Tech Shop</span>
           </Link>
           <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 ">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -59,20 +61,33 @@ const Login = () => {
                     onChange={(e) => { setUsername(e.target.value) }}
                   />
                 </div>
-                <div>
+                <div className="relative">
                   <label
                     className="block mb-2 text-sm font-medium text-gray-900 "
                   >
                     Mật khẩu
                   </label>
                   <input
-                    type="password"
+                    type={visible ? "text" : "password"}
                     id="password"
                     placeholder="••••••••"
                     className="bg-gray-50 border-[2px] border-orange-300 text-gray-900 sm:text-sm rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 block w-full p-2.5"
                     required
                     onChange={(e) => { setPassword(e.target.value) }}
                   />
+                  {visible ? (
+                    <AiOutlineEye
+                      className="absolute right-2 top-[40px] cursor-pointer text-orange-500"
+                      size={20}
+                      onClick={() => setVisible(false)}
+                    />
+                  ) : (
+                    <AiOutlineEyeInvisible
+                      className="absolute right-2 top-[40px] cursor-pointer text-orange-500"
+                      size={20}
+                      onClick={() => setVisible(true)}
+                    />
+                  )}
                 </div>
                 {/* <div className="flex items-center justify-between">
                   <div className="flex items-start">

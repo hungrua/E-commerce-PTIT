@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import mqtt from "mqtt";
 
 import {
   FaAngleDown,
@@ -27,14 +28,74 @@ const Header = () => {
   const [openCartList, setOpenCartList] = useState(false);
   const [categorieList, setCategorieList] = useState(['Laptop', 'Dien thoai', 'Phu kien'])
   const [openNotification, setOpenNotification] = useState(false);
-  const [notifications, setNotifications] = useState([])
+  const [notiQuantity, setNotiQuantity] = useState(10)
   const [searchValue, setSearchValue] = useState('')
   const categories = (useSelector(state => state.category.categories)).map(item => ({ name: item.name, code: item.code.replace('-', '') }))
   const cartItem = useSelector(state => state.cart.cartItems)
+
+  //------------------------------Begin: Notification test-----------------------------------
+  const [client, setClient] = useState(null);
+  const [isSub, setIsSub] = useState(false);
+  const [connectStatus, setConnectStatus] = useState('Connect');
+  const [message, setMessage] = useState("");
+
+  const mqttConnect = (host, mqttOption) => {
+    setConnectStatus('Connecting')
+    setClient(mqtt.connect(host, mqttOption))
+  }
+
+  useEffect(() => {
+    if (client) {
+      client.on('connect', () => {
+        setConnectStatus('Connected')
+        console.log('connection successful')
+        mqttSub(client);
+      })
+      client.on('error', (err) => {
+        console.error('Connection error: ', err)
+        client.end()
+      })
+      client.on('reconnect', () => {
+        setConnectStatus('Reconnecting')
+      })
+      client.on('message', (topic, message) => {
+        const payload = { topic, message: message.toString() }
+        setNotiQuantity(message)
+        setMessage(`Số lượng thông báo chưa đọc ${message}`);
+      })
+    }
+  }, [client])
+  // đăng ký nhận tin nhắn từ topic
+  const mqttSub = (client) => {
+    if (client) {
+      client.subscribe("buy", 2, (error) => {
+        if (error) {
+          console.log('Subscribe to topics error', error)
+          return
+        }
+        console.log("Đã đăng ký tới topic buy");
+        setIsSub(true)
+      })
+    }
+  }
+  // connect
+  const url = `ws://localhost:8083/mqtt`
+  const options = {
+    username: "test_mqtt1",
+    password: "Tronghuong2002@",
+    clean: true,
+    reconnectPeriod: 1000, // ms
+    connectTimeout: 30 * 1000, // ms
+  }
+  mqttConnect(url, options)
+  // mqttSub()
+  //------------------------------End: Notification test-----------------------------------
+
   useEffect(() => {
     dispatch(fetchCartItem())
     console.log(1)
   }, [dispatch])
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
@@ -83,7 +144,7 @@ const Header = () => {
               <img
                 src='/static/images/logo2.jpg'
                 className="w-11 mx-3 h-auto"
-                alt="BadmintonShop Logo"
+                alt="Techshop"
               />
             </Link>
             <div className="flex items-center lg:order-2">
@@ -101,17 +162,20 @@ const Header = () => {
                     </div>}
                   </form>
                 </div>
-                <div className="flex gap-[0.8rem] items-center">
+                <div className="flex gap-[0.8rem] items-center" title="Thông báo">
                   <div className="relative">
                     <button className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
                       onClick={handleOpenNotification}>
                       <FaRegBell className="text-[16px] hover:text-[#f66315]" />
                     </button>
+                    <div className="absolute w-[20px] h-[20px] rounded-[50%] border border-solid border-[#feefe8] bg-[#e10600] text-[#fff] text-[10px] font-[500] flex items-center justify-center top-0 left-full translate-x-[-55%] translate-y-[-50%] z-1">
+                      <span>{notiQuantity}</span>
+                    </div>
                     {
                       openNotification && <HeaderNotification />
                     }
                   </div>
-                  <div>
+                  <div title="Tài khoản của bạn">
                     <Link
                       to="/account"
                       className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
@@ -119,7 +183,7 @@ const Header = () => {
                       <FaUser className="text-[16px] hover:text-[#f66315]" />
                     </Link>
                   </div>
-                  <div>
+                  <div title="Yêu thích">
                     <Link
                       to="/willist"
                       className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
@@ -127,7 +191,7 @@ const Header = () => {
                       <FaRegHeart className="text-[16px] hover:text-[#f66315]" />
                     </Link>
                   </div>
-                  <div>
+                  <div title="Đăng xuất">
                     <button className="flex items-center justify-center w-[32px] h-[32px] rounded-[50%] border-[1px] border-solid border-[#7f8080] cursor-pointer text-[#444545] transition-all"
                       onClick={handleLogout}>
                       <IoLogOutOutline className="text-[16px] hover:text-[#f66315]" />
