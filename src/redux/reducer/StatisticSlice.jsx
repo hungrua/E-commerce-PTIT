@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IP } from "../../config/const";
 const getUser = () => {
   const user = JSON.parse(localStorage.getItem("authorization"))
@@ -8,7 +8,12 @@ const StatisticSlice = createSlice({
   name: "statistic",
   initialState: {
     statisticNumber:{},
-    top10BestSeller: []
+    top10BestSeller: [],
+    statisticYear:{
+      revenue:[],
+      cost:[],
+      profit:[]
+    }
   },
   reducers: {
   },

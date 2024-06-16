@@ -79,7 +79,7 @@ const App = () => {
         }
 
       </Routes>
-      <ChatAI/>
+      {user !== null && user.role === 'USER' && <ChatAI/>}
     </Provider >
   );
 };

@@ -38,7 +38,7 @@ const Accessory = () => {
                 {
                   accessory.map(item => {
                     return <ProductCard key={item.productId} details={item} />
-                  })
+                  }).slice(0,6)
                 }
               </div>
             </div>

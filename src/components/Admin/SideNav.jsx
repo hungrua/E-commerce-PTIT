@@ -49,7 +49,7 @@ function SideNav(props) {
                                 <Typography variant='body2'>Dashboard</Typography>
                             </MenuItem>
                             <MenuItem active={location.pathname === '/admin/bill'} component={<Link to={'/admin/bill'} />} icon={<PaymentIcon />}>
-                                <Typography variant='body2'>Content</Typography>
+                                <Typography variant='body2'>Bill</Typography>
                             </MenuItem>
                             <MenuItem active={location.pathname === '/admin/productmanager'} component={<Link to={'/admin/productmanager'} />} icon={<Inventory2OutlinedIcon />}>
                                 <Typography variant='body2'>Product</Typography>
@@ -73,7 +73,7 @@ function SideNav(props) {
                     ) : (
                         <>
                             <MenuItem active={location.pathname === '/employee/'} component={<Link to={'/employee/'} />} icon={<DashboardOutlinedIcon />}>
-                                <Typography variant='body2'>Hóa đơn nhập</Typography>
+                                <Typography variant='body2'>Hóa đơn</Typography>
                             </MenuItem>
                             <MenuItem active={location.pathname === '/employee/import'} component={<Link to={'/employee/import'} />} icon={<PaymentIcon />}>
                                 <Typography variant='body2'>Nhập hàng</Typography>
