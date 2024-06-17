@@ -44,7 +44,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    const url = `ws://localhost:8083/mqtt`;
+    const url = `ws://192.168.211.122:8083/mqtt`;
     const options = {
       username: "test_mqtt1_" + role.role,
       password: "1234",

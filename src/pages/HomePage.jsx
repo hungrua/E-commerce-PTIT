@@ -22,16 +22,16 @@ const HomePage = () => {
   useEffect(() => {
     dispatch(fetchCategory())
     dispatch(fetchProduct())
-    dispatch(willistSlice.actions.resetAlert(undefined))
   }, [dispatch])
   useEffect(() => {
     if (message !== undefined) notify(message.message, message.code)
+    dispatch(willistSlice.actions.resetAlert(undefined))
   }, [message])
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(fetchVoucherForUser())
     dispatch(voucherSlice.actions.setUsingVoucher(null))
     sessionStorage.clear()
-  },[dispatch])
+  }, [dispatch])
 
   return (
     <div className="font-Roboto">

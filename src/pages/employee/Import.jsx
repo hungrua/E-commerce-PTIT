@@ -25,11 +25,9 @@ function Import() {
   useEffect(() => {
     dispatch(fetchSupplier())
   }, [dispatch])
-  useEffect(()=>{
-    dispatch(ImportSlice.actions.resetAlert(undefined))
-  },[])
   useEffect(() => {
     if (message != undefined) notify(message.message, message.code)
+    dispatch(ImportSlice.actions.resetAlert(undefined))
   }, [message])
   const [displayImport, setDisplayImport] = useState(false);
 
